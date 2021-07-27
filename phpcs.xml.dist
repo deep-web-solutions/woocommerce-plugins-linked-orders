@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CS DWS WordPress">
+    <description>Sniff for the coding standards of the DWS WordPress code.</description>
+
+    <!-- Check all PHP files in directory tree by default. -->
+	<arg name="extensions" value="php"/>
+	<file>.</file>
+
+    <!-- Ignore custom spacing in function comments. -->
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+    </rule>
+
+    <!-- Ignore end char rule since it conflicts with PhpStorm's code folding regions. -->
+    <rule ref="Squiz.Commenting.InlineComment">
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+    </rule>
+
+    <!-- Since all files contain classes, a file comment seems extraneous. -->
+    <rule ref="Squiz.Commenting.FileComment">
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+    </rule>
+
+    <!-- Minimum PHP and WP versions. -->
+    <config name="testVersion" value="7.4-"/>
+    <config name="minimum_supported_wp_version" value="5.5"/>
+
+	<!-- WordPress coding standards. -->
+    <rule ref="WordPress">
+        <!-- Exclude as plugin adheres to the PSR-4 standard. -->
+        <exclude name="WordPress.Files.FileName"/>
+    </rule>
+
+    <!-- Check that the proper text domain(s) is used everywhere. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="linked-orders-for-woocommerce"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- All content is namespaced properly and hooks are auto-generated. This sniff is a false positive. -->
+    <rule ref="WordPress.NamingConventions">
+        <exclude name="WordPress.NamingConventions.PrefixAllGlobals"/>
+        <exclude name="WordPress.NamingConventions.ValidHookName"/>
+    </rule>
+
+    <!-- Define some special rules for the Codeception tests. -->
+    <rule ref="PSR2.Methods.MethodDeclaration">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="WordPress.NamingConventions">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <!-- Ignore certain folders. -->
+    <exclude-pattern>*/bin/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/dependencies/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/tests/_support/*</exclude-pattern>
+
+    <!-- Ignore index.php files since they're just empty. -->
+    <exclude-pattern>*/index.php</exclude-pattern>
+</ruleset>

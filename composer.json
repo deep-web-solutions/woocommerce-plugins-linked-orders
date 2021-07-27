@@ -1,0 +1,173 @@
+{
+  "name": "deep-web-solutions/wc-linked-orders",
+  "type": "wordpress-plugin",
+
+  "description": "A WooCommerce extension for creating logical links between orders.",
+  "keywords": ["wordpress", "plugins", "Deep Web Solutions", "woocommerce", "orders", "link"],
+  "homepage": "https://www.deep-web-solutions.com",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Antonius Hegyes",
+      "email": "a.hegyes@deep-web-solutions.com",
+      "homepage": "https://www.linkedin.com/in/tonyhegyes",
+      "role": "Developer"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/deep-web-solutions/internal-comments/graphs/contributors"
+    }
+  ],
+
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*"
+      ]
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-json": "*",
+    "freemius/wordpress-sdk": "^2.4"
+  },
+  "require-dev": {
+    "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
+    "deep-web-solutions/wp-framework-helpers": "^1.4.0",
+    "deep-web-solutions/wp-framework-foundations": "^1.4.2",
+    "deep-web-solutions/wp-framework-utilities": "master@dev",
+    "deep-web-solutions/wp-framework-core": "master@dev",
+    "deep-web-solutions/wp-framework-settings": "master@dev",
+    "deep-web-solutions/wp-framework-woocommerce": "master@dev",
+    "php-di/php-di": "^6.3",
+
+    "deep-web-solutions/wordpress-configs": "master@dev",
+    "johnpbloch/wordpress-core": "5.5.*",
+    "wpackagist-plugin/woocommerce": "4.5.*",
+
+    "phpmd/phpmd": "2.*",
+    "squizlabs/php_codesniffer": "3.*",
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/php-compatibility": "*",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "wp-coding-standards/wpcs": "*",
+
+    "lucatume/wp-browser": "3.*",
+    "codeception/module-asserts": "^1.3",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-webdriver": "^1.2",
+    "codeception/module-db": "^1.1",
+    "codeception/module-filesystem": "^1.0",
+    "codeception/module-cli": "^1.1",
+    "codeception/util-universalframework": "^1.0",
+
+    "wpreadme2markdown/wp2md": "^3.1"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "DeepWebSolutions\\WC_Plugins\\LinkedOrders\\": "src/includes",
+
+      "DWS_LO_Deps\\Psr\\Container\\": "dependencies/psr/container/src",
+      "DWS_LO_Deps\\Psr\\Log\\": "dependencies/psr/log/Psr/Log",
+      "DWS_LO_Deps\\Opis\\Closure\\": "dependencies/dependency-injection/opis/closure/src",
+      "DWS_LO_Deps\\PhpDocReader\\": "dependencies/dependency-injection/php-di/phpdoc-reader/src",
+      "DWS_LO_Deps\\Invoker\\": "dependencies/dependency-injection/php-di/invoker/src",
+      "DWS_LO_Deps\\DI\\": "dependencies/dependency-injection/php-di/php-di/src",
+
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Helpers\\": "dependencies/deep-web-solutions/wp-framework-helpers/src/includes",
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Foundations\\": "dependencies/deep-web-solutions/wp-framework-foundations/src/includes",
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Utilities\\": "dependencies/deep-web-solutions/wp-framework-utilities/src/includes",
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Core\\": "dependencies/deep-web-solutions/wp-framework-core/src/includes",
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Settings\\": "dependencies/deep-web-solutions/wp-framework-settings/src/includes",
+      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\WooCommerce\\": "dependencies/deep-web-solutions/wp-framework-woocommerce/src/includes"
+    },
+    "files": [
+      "dependencies/dependency-injection/opis/closure/functions.php",
+      "dependencies/dependency-injection/php-di/php-di/src/functions.php",
+
+      "dependencies/deep-web-solutions/wp-framework-bootstrapper/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-helpers/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-foundations/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-utilities/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-core/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-settings/bootstrap.php",
+      "dependencies/deep-web-solutions/wp-framework-woocommerce/bootstrap.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DeepWebSolutions\\Plugins\\InternalComments\\Tests\\Acceptance\\": "tests/acceptance",
+      "DeepWebSolutions\\Plugins\\InternalComments\\Tests\\Functional\\": "tests/functional"
+    }
+  },
+
+  "scripts": {
+    "post-autoload-dump": [
+      "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::postAutoloadDump",
+      "DeepWebSolutions\\Config\\Composer\\DowngradePhp::postAutoloadDump"
+    ],
+
+    "composer:install": [
+      "@composer install --ignore-platform-reqs"
+    ],
+    "composer:update": [
+      "@composer update --ignore-platform-reqs"
+    ],
+
+    "downgrade-php": [
+      "@php vendor/bin/rector process --debug --config=./vendor/deep-web-solutions/wordpress-configs/src/rector/downgrade-php.php"
+    ],
+    "prefix-dependencies": [
+      "composer prefix-dependency-injection",
+      "composer prefix-dws-framework"
+    ],
+    "prefix-dependency-injection": [
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_IO_Deps --output-dir=./dependencies/dependency-injection --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/dependency-injection.inc.php --force --quiet"
+    ],
+    "prefix-dws-framework": [
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_IO_Deps --output-dir=./dependencies/psr --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr.inc.php --force --quiet",
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_IO_Deps --output-dir=./dependencies/deep-web-solutions --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/deep-web-solutions.inc.php --force --quiet"
+    ],
+
+    "mess-detector:check": [
+      "@php ./vendor/bin/phpmd . json phpmd.xml.dist"
+    ],
+    "coding-standards:check": [
+      "@php ./vendor/bin/phpcs --standard=phpcs.xml.dist -v"
+    ],
+    "coding-standards:fix": [
+      "@php ./vendor/bin/phpcbf --standard=phpcs.xml.dist -v"
+    ],
+
+    "test:clean": [
+      "@php ./vendor/bin/codecept clean"
+    ],
+    "test:functional": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php ./vendor/bin/codecept run functional --debug"
+    ],
+    "test:acceptance-free": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php ./vendor/bin/codecept run acceptance --env free --debug"
+    ],
+    "test:acceptance-premium": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php ./vendor/bin/codecept run acceptance --env premium --debug"
+    ],
+
+    "convert-readme": [
+      "@php ./vendor/bin/wp2md -i readme.txt -o README.md"
+    ]
+  },
+
+  "extra": {
+    "installer-paths": {
+      "vendor/wpackagist-plugin/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  }
+}

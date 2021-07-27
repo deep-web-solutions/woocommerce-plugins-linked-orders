@@ -1,0 +1,26 @@
+{
+  "name": "dws-linked-orders-for-woocommerce",
+  "version": "1.0.0",
+  "title": "Internal Comments",
+  "author": "Deep Web Solutions GmbH",
+  "homepage": "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders.git"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders/issues"
+  },
+  "devDependencies": {
+    "@lodder/time-grunt": "^4.0.0",
+    "grunt": "^1.4.1",
+    "grunt-glotpress": "^0.2.2",
+    "grunt-text-replace": "^0.4.0",
+    "grunt-wp-i18n": "^1.0.3",
+    "load-grunt-tasks": "^5.1.0"
+  },
+  "scripts": {
+    "build": "grunt build --verbose --debug"
+  }
+}
