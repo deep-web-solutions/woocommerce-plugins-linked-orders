@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 		echo wp_kses(
 			wp_sprintf(
 				/* translators: %s: Plugin Name */
-				__( 'It seems like <strong>%s</strong> is corrupted. Please reinstall!', 'internal-comments' ),
+				__( 'It seems like <strong>%s</strong> is corrupted. Please reinstall!', 'linked-orders-for-woocommerce' ),
 				dws_wc_lo_name()
 			),
 			array(

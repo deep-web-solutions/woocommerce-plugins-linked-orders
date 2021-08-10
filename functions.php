@@ -27,7 +27,7 @@ function dws_wc_lo_di_container( string $environment = 'prod' ): Container {
 
 	if ( is_null( $container ) ) {
 		/* @noinspection PhpUnhandledExceptionInspection */
-		$container = (new ContainerBuilder())
+		$container = ( new ContainerBuilder() )
 			->addDefinitions( __DIR__ . "/config_$environment.php" )
 			->build();
 	}

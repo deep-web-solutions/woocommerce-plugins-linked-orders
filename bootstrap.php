@@ -59,7 +59,7 @@ define( 'DWS_WC_LO_MIN_WP', '5.5' );
 if ( DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requirements_met( dws_wc_lo_min_php(), dws_wc_lo_min_wp() ) ) {
 	if ( ! function_exists( 'dws_wc_lo_fs' ) ) {
 		include __DIR__ . '/freemius.php';
-		dws_wc_lo_fs();
+		dws_wc_lo_fs_init();
 	}
 
 	include __DIR__ . '/functions.php';

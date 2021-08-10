@@ -87,35 +87,6 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	// region HOOKS
 
 	/**
-	 * Registers plugin actions on blog pages.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-	 *
-	 * @param   string[]    $actions        An array of plugin action links.
-	 * @param   string      $plugin_file    Path to the plugin file relative to the plugins directory.
-	 * @param   array       $plugin_data    An array of plugin data. See `get_plugin_data()`.
-	 * @param   string      $context        The plugin context. By default this can include 'all', 'active', 'inactive', 'recently_activated', 'upgrade', 'mustuse', 'dropins', and 'search'.
-	 *
-	 * @return  string[]
-	 */
-	public function register_plugin_actions( array $actions, string $plugin_file, array $plugin_data, string $context ): array {
-		$action_links = array();
-
-		if ( $this->is_active() ) {
-			$action_links['settings'] = '<a href="' . dws_wc_lpm_fs_settings_url() . '" aria-label="' . \esc_attr__( 'View settings', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Settings', 'locked-payment-methods-for-woocommerce' ) . '</a>';
-		}
-
-		if ( ! dws_wc_lpm_fs()->is_premium() || ! ( dws_wc_lpm_fs()->is_activation_mode() || dws_wc_lpm_fs()->can_use_premium_code() ) ) {
-			$action_links['upgrade'] = '<a href="' . \esc_url( dws_wc_lpm_fs()->get_upgrade_url() ) . '" aria-label="' . \esc_attr__( 'Upgrade for premium features', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Upgrade', 'locked-payment-methods-for-woocommerce' ) . '</a>';
-		}
-
-		return \array_merge( $action_links, $actions );
-	}
-
-	/**
 	 * Register plugin meta information and/or links.
 	 *
 	 * @since   1.0.0
@@ -137,21 +108,9 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 		}
 
 		$row_meta = array(
-			'support' => '<a href="' . \esc_url( dws_wc_lpm_fs()->get_support_forum_url() ) . '" aria-label="' . \esc_attr__( 'Visit community forums', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Community support', 'locked-payment-methods-for-woocommerce' ) . '</a>',
-			'contact' => '<a href="' . \esc_url( dws_wc_lpm_fs()->contact_url() ) . '" aria-label="' . \esc_attr__( 'Send us an inquiry', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Contact us', 'locked-payment-methods-for-woocommerce' ) . '</a>',
+			'support' => '<a href="' . \esc_url( dws_wc_lo_fs()->get_support_forum_url() ) . '" aria-label="' . \esc_attr__( 'Visit community forums', 'linked-orders-for-woocommerce' ) . '">' . \esc_html__( 'Community support', 'linked-orders-for-woocommerce' ) . '</a>',
+			'contact' => '<a href="' . \esc_url( dws_wc_lo_fs()->contact_url() ) . '" aria-label="' . \esc_attr__( 'Send us an inquiry', 'linked-orders-for-woocommerce' ) . '">' . \esc_html__( 'Contact us', 'linked-orders-for-woocommerce' ) . '</a>',
 		);
-
-		if ( dws_wc_lpm_fs()->is__premium_only() ) {
-			if ( dws_wc_lpm_fs()->is_activation_mode() ) {
-				unset( $row_meta['contact'] );
-			}
-			if ( dws_wc_lpm_fs()->can_use_premium_code() ) {
-				$row_meta = array(
-					'account' => '<a href="' . \esc_url( dws_wc_lpm_fs()->get_account_url() ) . '" aria-label="' . \esc_attr__( 'Visit your account area', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Account', 'locked-payment-methods-for-woocommerce' ) . '</a>',
-					'support' => '<a href="' . \esc_url( dws_wc_lpm_fs()->get_support_forum_url() ) . '" aria-label="' . \esc_attr__( 'Visit premium support forums', 'locked-payment-methods-for-woocommerce' ) . '">' . \esc_html__( 'Premium support', 'locked-payment-methods-for-woocommerce' ) . '</a>',
-				) + $row_meta;
-			}
-		}
 
 		return \array_merge( $plugin_meta, $row_meta );
 	}
