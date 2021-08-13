@@ -1,6 +1,7 @@
 <?php
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
 use DWS_LO_Deps\DI\Container;
@@ -101,5 +102,49 @@ function dws_wc_lo_plugin_uninstall() {
 	}
 }
 add_action( 'fs_after_uninstall_linked-orders-for-woocommerce', 'dws_wc_lo_plugin_uninstall' );
+
+// endregion
+
+// region SETTINGS
+
+/**
+ * Returns the raw database value of a plugin's option.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   string  $field_id   ID of the option field to retrieve.
+ *
+ * @return  mixed|null
+ */
+function dws_wc_lo_get_raw_setting( string $field_id ) {
+	try {
+		/** @var Settings $settings Instance of the settings component. */
+		$settings = dws_wc_lo_di_container()->get( 'settings' );
+		return $settings->get_setting( $field_id );
+	} catch ( Exception $exception ) {
+		return null;
+	}
+}
+
+/**
+ * Returns the validated database value of a plugin's option.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   string  $field_id   ID of the option field to retrieve.
+ *
+ * @return  mixed|null
+ */
+function dws_wc_lo_get_validated_setting( string $field_id ) {
+	try {
+		/** @var Settings $settings Instance of the settings component. */
+		$settings = dws_wc_lo_di_container()->get( 'settings' );
+		return $settings->get_validated_setting( $field_id );
+	} catch ( Exception $exception ) {
+		return null;
+	}
+}
 
 // endregion

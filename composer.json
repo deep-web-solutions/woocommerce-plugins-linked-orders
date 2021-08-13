@@ -149,13 +149,9 @@
       "Composer\\Config::disableProcessTimeout",
       "@php ./vendor/bin/codecept run functional --debug"
     ],
-    "test:acceptance-free": [
+    "test:acceptance": [
       "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run acceptance --env free --debug"
-    ],
-    "test:acceptance-premium": [
-      "Composer\\Config::disableProcessTimeout",
-      "@php ./vendor/bin/codecept run acceptance --env premium --debug"
+      "@php ./vendor/bin/codecept run acceptance --debug"
     ],
 
     "convert-readme": [

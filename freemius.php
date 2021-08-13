@@ -57,5 +57,23 @@ function dws_wc_lo_fs_init(): Freemius {
 
 	do_action( 'dws_wc_lo_fs_loaded' );
 
+	$freemius->add_filter( 'after_skip_url', 'dws_wc_lpm_fs_settings_url' );
+	$freemius->add_filter( 'after_connect_url', 'dws_wc_lpm_fs_settings_url' );
+	$freemius->add_filter( 'after_pending_connect_url', 'dws_wc_lpm_fs_settings_url' );
+
 	return $freemius;
+}
+
+/**
+ * Returns the URL to the settings page.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @return  string
+ */
+function dws_wc_lo_fs_settings_url(): string {
+	return dws_wc_lo_instance()->is_active()
+		? admin_url( 'admin.php?page=wc-settings&tab=advanced&section=dws-linked-orders' )
+		: admin_url( 'plugins.php' );
 }
