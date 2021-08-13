@@ -1,9 +1,10 @@
 <?php
 
-namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
+namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
 
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupScriptsStylesTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Assets\Handlers\ScriptsHandler;
@@ -18,7 +19,7 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
+ * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Screens
  */
 class OrdersArchive extends AbstractPluginFunctionality {
 	// region TRAITS
@@ -88,35 +89,35 @@ class OrdersArchive extends AbstractPluginFunctionality {
 	 * @return  array
 	 */
 	public function register_view_all_action( array $actions, \WC_Order $order ): array {
+		$new_actions = array();
+
 		if ( ! empty( $order->get_customer_id() ) ) {
 			if ( ! isset( $_GET['_customer_user'] ) ) { // phpcs:ignore
-				$actions = \array_merge(
-					array(
-						'view_all_customer_orders' => array(
-							'url'    => \admin_url( 'edit.php?post_type=shop_order&_customer_user=' . $order->get_customer_id() ),
-							'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
-							'action' => 'view-all-customer-orders',
-						),
-					),
-					$actions
+				$new_actions['view_all_customer_orders'] = array(
+					'url'    => \admin_url( 'edit.php?post_type=shop_order&_customer_user=' . $order->get_customer_id() ),
+					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
+					'action' => 'view-all-customer-orders',
 				);
 			}
 		} elseif ( ! empty( $order->get_billing_email() ) ) {
 			if ( ! isset( $_GET['_guest_customer_user'] ) ) { // phpcs:ignore
-				$actions = \array_merge(
-					array(
-						'view_all_customer_orders' => array(
-							'url'    => \admin_url( 'edit.php?post_type=shop_order&_guest_customer_user=' . \rawurldecode( $order->get_billing_email() ) ),
-							'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
-							'action' => 'view-all-customer-orders',
-						),
-					),
-					$actions
+				$new_actions['view_all_customer_orders'] = array(
+					'url'    => \admin_url( 'edit.php?post_type=shop_order&_guest_customer_user=' . \rawurldecode( $order->get_billing_email() ) ),
+					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
+					'action' => 'view-all-customer-orders',
 				);
 			}
 		}
 
-		return $actions;
+		if ( Users::has_capabilities( array( Permissions::CREATE_LINKED_ORDERS ) ) ) {
+			$new_actions['create_empty_linked_order'] = array(
+				'url'    => \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_wc_lo_create_empty_linked_order&order_id=' . $order->get_id() ), 'dws-lo-create-empty-linked-order' ),
+				'name'   => \__( 'Create new linked order', 'linked-orders-for-woocommerce' ),
+				'action' => 'create-empty-linked-order',
+			);
+		}
+
+		return \array_merge( $new_actions, $actions );
 	}
 
 	/**

@@ -4,6 +4,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\LinkingManager;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\OrdersArchive;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Plugin\PluginInterface;
@@ -80,9 +81,17 @@ return array_merge(
 			->constructorParameter( 'component_id', 'plugin-settings' )
 			->constructorParameter( 'component_name', 'Plugin Settings' ),
 
-		OrdersArchive::class                  => autowire( OrdersArchive::class )
-			->constructorParameter( 'component_id', 'orders-archive' )
-			->constructorParameter( 'component_name', 'Orders Archive' ),
+		Screens::class                        => autowire( Screens::class )
+			->constructorParameter( 'component_id', 'screens' )
+			->constructorParameter( 'component_name', 'Screens' ),
+
+		Screens\EditOrder::class              => autowire( Screens\EditOrder::class )
+			->constructorParameter( 'component_id', 'edit-order-screen' )
+			->constructorParameter( 'component_name', 'Edit Order Screen' ),
+
+		Screens\EditOrders::class             => autowire( Screens\EditOrders::class )
+			->constructorParameter( 'component_id', 'edit-orders-screen' )
+			->constructorParameter( 'component_name', 'Edit Orders Screen' ),
 	),
 	// Plugin aliases
 	array(
@@ -96,6 +105,8 @@ return array_merge(
 		'general-settings'    => get( Settings\GeneralSettings::class ),
 		'plugin-settings'     => get( Settings\PluginSettings::class ),
 
-		'orders-archive'      => get( OrdersArchive::class ),
+		'screens'             => get( Screens::class ),
+		'edit-order-screen'   => get( Screens\EditOrder::class ),
+		'edit-orders-screen'  => get( Screens\EditOrders::class ),
 	)
 );

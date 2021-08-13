@@ -81,8 +81,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 			array(
 				LinkingManager::class,
 				Permissions::class,
-				Order::class,
-				OrdersArchive::class,
+				Screens::class,
 				Settings::class,
 			)
 		);
