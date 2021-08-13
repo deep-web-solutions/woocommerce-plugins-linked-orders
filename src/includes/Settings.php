@@ -2,6 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings\GeneralSettings;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings\PluginSettings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Actions\Installable\UninstallFailureException;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Actions\UninstallableInterface;
@@ -43,7 +44,10 @@ class Settings extends AbstractPluginFunctionality implements UninstallableInter
 	 * @return  string[]
 	 */
 	protected function get_di_container_children(): array {
-		return array( PluginSettings::class );
+		return array(
+			GeneralSettings::class,
+			PluginSettings::class,
+		);
 	}
 
 	/**

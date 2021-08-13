@@ -7,14 +7,14 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationTypesE
 \defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers the plugin's Plugin Settings with WC.
+ * Registers the plugin's General Settings with WC.
  *
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Settings
  */
-class PluginSettings extends AbstractSettingsGroup {
+class GeneralSettings extends AbstractSettingsGroup {
 	// region INHERITED METHODS
 
 	/**
@@ -26,7 +26,7 @@ class PluginSettings extends AbstractSettingsGroup {
 	 * @return  string
 	 */
 	public function get_group_title(): string {
-		return \__( 'Plugin Settings', 'linked-orders-for-woocommerce' );
+		return \__( 'General Settings', 'linked-orders-for-woocommerce' );
 	}
 
 	/**
@@ -41,13 +41,16 @@ class PluginSettings extends AbstractSettingsGroup {
 		return \apply_filters(
 			$this->get_hook_tag( 'definition' ),
 			array(
-				'remove-data-uninstall' => array(
-					'title'    => \__( 'Remove all data on uninstallation?', 'linked-orders-for-woocommerce' ),
-					'type'     => 'select',
-					'class'    => 'wc-enhanced-select',
-					'default'  => $this->get_default_value( 'plugin/remove-data-uninstall' ),
-					'options'  => $this->get_supported_options( 'boolean' ),
-					'desc_tip' => \__( 'If enabled, the plugin will remove all database data when removed and you will need to reconfigure everything if you install it again at a later time.', 'linked-orders-for-woocommerce' ),
+				'max-depth' => array(
+					'title'             => \__( 'Maximum linked orders depth', 'linked-orders-for-woocommerce' ),
+					'type'              => 'number',
+					'custom_attributes' => array(
+						'min'  => 1,
+						'max'  => 99,
+						'step' => 1,
+					),
+					'default'           => $this->get_default_value( 'general/max-depth' ),
+					'desc_tip'          => \__( 'If enabled, the plugin will remove all database data when removed and you will need to reconfigure everything if you install it again at a later time.', 'linked-orders-for-woocommerce' ),
 				),
 			)
 		);
@@ -67,12 +70,12 @@ class PluginSettings extends AbstractSettingsGroup {
 		$value = $this->get_setting( $field_id );
 
 		switch ( $field_id ) {
-			case 'remove-data-uninstall':
-				$value = $this->validate( $value, "plugin/$field_id", ValidationTypesEnum::BOOLEAN );
+			case 'max-depth':
+				$value = $this->validate( $value, "general/$field_id", ValidationTypesEnum::INTEGER );
 				break;
 		}
 
-		return \apply_filters( $this->get_hook_tag( 'validated-setting', array( 'plugin' ) ), $value, $field_id );
+		return \apply_filters( $this->get_hook_tag( 'validated-setting', array( 'general' ) ), $value, $field_id );
 	}
 
 	// endregion

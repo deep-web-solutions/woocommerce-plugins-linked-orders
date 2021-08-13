@@ -7,6 +7,9 @@ defined( 'ABSPATH' ) || exit;
 $config = array(
 	'defaults' => array(
 		'null_value' => null,
+		'general'    => array(
+			'max-depth' => 1,
+		),
 		'plugin'     => array(
 			'remove-data-uninstall' => 'no',
 		),
