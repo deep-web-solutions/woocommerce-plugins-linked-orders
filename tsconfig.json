@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noEmit": false,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "./assets/dev/**/*.d.ts",
+    "./assets/dev/**/*.ts",
+    "./assets/dev/**/*.tsx"
+  ],
+  "exclude": [ "./node_modules" ]
+}

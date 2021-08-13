@@ -19,7 +19,7 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Helpers\Depend
  * @since   1.0.0
  * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LockedPaymentMethods
+ * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 final class Plugin extends AbstractPluginFunctionalityRoot {
 	// region TRAITS
@@ -78,7 +78,10 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	protected function get_di_container_children(): array {
 		return \array_merge(
 			parent::get_di_container_children(),
-			array()
+			array(
+				Order::class,
+				OrdersArchive::class,
+			)
 		);
 	}
 

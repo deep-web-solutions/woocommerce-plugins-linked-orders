@@ -53,6 +53,95 @@ module.exports = function( grunt ) {
 				}
 			},
 
+			clean: {
+				css: ['<%= dirs.assets %>/dist/css/**/*.css', '<%= dirs.assets %>/dist/css/**/*.map'],
+				js: ['<%= dirs.assets %>/dist/js/**/*.js', '<%= dirs.assets %>/dist/js/**/*.map']
+			},
+			watch: {
+				scripts: {
+					files: ['<%= dirs.assets %>/dev/**/*.ts'],
+					tasks: ['assets-typescript'],
+					options: {
+						interrupt: true,
+					}
+				},
+				styles: {
+					files: ['<%= dirs.assets %>/dev/**/*.scss'],
+					tasks: ['assets-scss'],
+					options: {
+						interrupt: true,
+					}
+				}
+			},
+
+			babel: {
+				options: {
+					sourceMap: true
+				},
+				dist: {
+					files: [{
+						expand: true,
+						cwd: '<%= dirs.assets %>/dev/ts/',
+						src: ['**/*.ts'],
+						dest: '<%= dirs.assets %>/dist/js/',
+						ext: '.js'
+					}]
+				}
+			},
+			sass: {
+				dist: {
+					files: [{
+						expand: true,
+						cwd: '<%= dirs.assets %>/dev/scss/',
+						src: ['**/*.scss'],
+						dest: '<%= dirs.assets %>/dist/css/',
+						ext: '.css'
+					}]
+				}
+			},
+
+			postcss: {
+				options: {
+					map: {
+						inline: false
+					},
+					processors: [
+						require('autoprefixer')({overrideBrowserslist: ['last 2 versions', '> 1%']}),
+						require('cssnano')()
+					]
+				},
+				dist: {
+					files: [{
+						expand: true,
+						cwd: '<%= dirs.assets %>/dist/css/',
+						src: ['**/*.css'],
+						dest: '<%= dirs.assets %>/dist/css/',
+						ext: '.min.css'
+					}]
+				}
+			},
+			uglify: {
+				options: {
+					mangle: {
+						reserved: ['jQuery']
+					},
+					output: {
+						comments: /\<\/?fs_premium_only\>/i,
+					},
+					extractComments: true,
+					sourceMap: true
+				},
+				dist: {
+					files: [{
+						expand: true,
+						cwd: '<%= dirs.assets %>/dist/',
+						src: ['**/*.js'],
+						dest: '<%= dirs.assets %>/dist/',
+						ext: '.min.js'
+					}]
+				}
+			},
+
 			replace: {
 				readme_txt: {
 					src: ['readme.txt'],
@@ -82,8 +171,10 @@ module.exports = function( grunt ) {
 		}
 	);
 
+	grunt.registerTask( 'assets-typescript', [ 'clean:js', 'babel', 'uglify' ] );
+	grunt.registerTask( 'assets-scss', [ 'clean:css', 'sass', 'postcss' ] );
 	grunt.registerTask( 'assets-translations', [ 'makepot', 'glotpress_download' ] );
 
 	grunt.registerTask( 'version_number', [ 'replace:readme_txt', 'replace:bootstrap_php' ] );
-	grunt.registerTask( 'build', [ 'assets-translations' ] );
+	grunt.registerTask( 'build', [ 'assets-typescript', 'assets-scss', 'assets-translations' ] );
 }
