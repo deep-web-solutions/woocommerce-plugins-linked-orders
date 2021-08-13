@@ -50,7 +50,7 @@ class GeneralSettings extends AbstractSettingsGroup {
 						'step' => 1,
 					),
 					'default'           => $this->get_default_value( 'general/max-depth' ),
-					'desc_tip'          => \__( 'If enabled, the plugin will remove all database data when removed and you will need to reconfigure everything if you install it again at a later time.', 'linked-orders-for-woocommerce' ),
+					'desc_tip'          => \__( 'The maximum number of linked orders levels. Root orders are considered level 0.', 'linked-orders-for-woocommerce' ),
 				),
 			)
 		);
@@ -71,7 +71,7 @@ class GeneralSettings extends AbstractSettingsGroup {
 
 		switch ( $field_id ) {
 			case 'max-depth':
-				$value = $this->validate( $value, "general/$field_id", ValidationTypesEnum::INTEGER );
+				$value = \absint( $this->validate( $value, "general/$field_id", ValidationTypesEnum::INTEGER ) );
 				break;
 		}
 
