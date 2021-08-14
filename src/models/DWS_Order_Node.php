@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
-class DWS_Linked_Order implements NodeInterface {
+class DWS_Order_Node implements NodeInterface {
 	// region TRAITS
 
 	use NodeTrait;
@@ -35,6 +35,17 @@ class DWS_Linked_Order implements NodeInterface {
 	 * @access  protected
 	 */
 	protected WC_Order $order;
+
+	/**
+	 * Whether the current object's metadata has been ready from the database yet or not.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @var     bool
+	 * @access  protected
+	 */
+	protected bool $is_read = false;
 
 	// endregion
 
@@ -60,7 +71,6 @@ class DWS_Linked_Order implements NodeInterface {
 		}
 
 		$this->order = $order;
-		$this->read();
 	}
 
 	/**
@@ -99,7 +109,31 @@ class DWS_Linked_Order implements NodeInterface {
 	// region METHODS
 
 	/**
-	 * Populates the objects' fields from the order's meta data.
+	 * Returns whether the object's metadata has been populated yet or not.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  bool
+	 */
+	public function is_read(): bool {
+		return $this->is_read;
+	}
+
+	/**
+	 * Populates the object's metadata from the database if not done already.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function maybe_read() {
+		if ( ! $this->is_read() ) {
+			$this->read();
+		}
+	}
+
+	/**
+	 * Forces repopulating the object's metadata from the database.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -107,22 +141,27 @@ class DWS_Linked_Order implements NodeInterface {
 	public function read() {
 		$this->depth = Integers::maybe_cast( $this->order->get_meta( '_dws_lo_depth' ), 0 );
 		if ( $this->depth > 0 ) {
-			$this->parent = new DWS_Linked_Order( $this->order->get_meta( '_dws_lo_parent' ) );
+			$this->parent = new DWS_Order_Node( $this->order->get_meta( '_dws_lo_parent' ) );
 		}
 
-		$this->children = $this->order->get_meta( '_dws_lo_children' ) ?: array();
+		$this->children = array_map(
+			fn( $child_id ) => new DWS_Order_Node( $child_id ),
+			$this->order->get_meta( '_dws_lo_children' ) ?: array()
+		);
+
+		$this->is_read = true;
 	}
 
 	/**
-	 * Saves the objects' fields to the order's meta data.
+	 * Saves the objects' fields to the order's metadata.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
 	public function save() {
-		$this->order->update_meta_data( '_dws_lo_parent', $this->parent->get_id() ?? null );
 		$this->order->update_meta_data( '_dws_lo_depth', $this->depth );
-		$this->order->update_meta_data( '_dws_lo_children', $this->children );
+		$this->order->update_meta_data( '_dws_lo_parent', $this->parent ? $this->parent->get_id() : null );
+		$this->order->update_meta_data( '_dws_lo_children', array_map( fn( $child ) => $child->get_id(), $this->children ) );
 
 		$this->order->save();
 	}

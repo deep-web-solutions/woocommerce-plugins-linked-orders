@@ -58,7 +58,7 @@ class LinkingManager extends AbstractPluginFunctionality {
 	 *
 	 * @param   int     $parent_order_id    The ID of the order that should be the parent of the new linked order.
 	 *
-	 * @return  \DWS_Linked_Order|\WP_Error
+	 * @return  \DWS_Order_Node|\WP_Error
 	 */
 	public function create_empty_linked_order( int $parent_order_id ) {
 		// Validate parent order.
@@ -91,8 +91,8 @@ class LinkingManager extends AbstractPluginFunctionality {
 		\do_action( $this->get_hook_tag( 'created_empty_linked_order' ), $linked_order, $parent_order );
 
 		// Link orders.
-		$dws_parent_order = new \DWS_Linked_Order( $parent_order );
-		$dws_child_order  = new \DWS_Linked_Order( $linked_order );
+		$dws_parent_order = dws_wc_lo_get_order_node( $parent_order );
+		$dws_child_order  = dws_wc_lo_get_order_node( $linked_order );
 
 		$dws_parent_order->add_child( $dws_child_order );
 		$dws_parent_order->save();
@@ -115,7 +115,7 @@ class LinkingManager extends AbstractPluginFunctionality {
 	 */
 	public function ajax_create_empty_linked_order() {
 		$parent_order_id  = Integers::maybe_cast_input( INPUT_GET, 'order_id', 0 );
-		$dws_parent_order = new \DWS_Linked_Order( $parent_order_id );
+		$dws_parent_order = new \DWS_Order_Node( $parent_order_id );
 
 		if ( ! \check_admin_referer( 'dws-lo-create-empty-linked-order' ) || ! $dws_parent_order->can_create_linked_order() ) {
 			$this->get_admin_notices_service()->add_notice(

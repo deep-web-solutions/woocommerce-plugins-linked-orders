@@ -5,6 +5,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LO_Deps\DI\Container;
 use DWS_LO_Deps\DI\ContainerBuilder;
 
@@ -151,18 +152,21 @@ function dws_wc_lo_get_validated_setting( string $field_id ) {
 // region MISC
 
 /**
- * Converts a WC Order reference to a DWS_Linked_Order object.
+ * Converts a WC Order reference to a DWS_Linked_Order object and reads its metadata from the database.
  *
  * @since   1.0.0
  * @version 1.0.0
  *
  * @param   WC_Order|int    $order  Order to retrieve.
  *
- * @return  DWS_Linked_Order|null
+ * @return  DWS_Order_Node|null
  */
-function dws_wc_lo_get_linked_order( $order ): ?DWS_Linked_Order {
+function dws_wc_lo_get_order_node( $order ): ?DWS_Order_Node {
 	try {
-		return new DWS_Linked_Order( $order );
+		$dws_order = new DWS_Order_Node( $order );
+		$dws_order->read();
+
+		return $dws_order;
 	} catch ( NotSupportedException $exception ) {
 		return null;
 	}
@@ -179,7 +183,7 @@ function dws_wc_lo_get_linked_order( $order ): ?DWS_Linked_Order {
  * @return  bool|null
  */
 function dws_wc_lo_is_root_order( $order ): ?bool {
-	$order = dws_wc_lo_get_linked_order( $order );
+	$order = dws_wc_lo_get_order_node( $order );
 	if ( is_null( $order ) ) {
 		return null;
 	}
@@ -199,7 +203,7 @@ function dws_wc_lo_is_root_order( $order ): ?bool {
  * @return bool|null
  */
 function dws_wc_lo_can_create_linked_order( $order, ?int $user_id = null ): ?bool {
-	$order = dws_wc_lo_get_linked_order( $order );
+	$order = dws_wc_lo_get_order_node( $order );
 	if ( is_null( $order ) ) {
 		return null;
 	}
