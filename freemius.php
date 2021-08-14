@@ -57,9 +57,9 @@ function dws_wc_lo_fs_init(): Freemius {
 
 	do_action( 'dws_wc_lo_fs_loaded' );
 
-	$freemius->add_filter( 'after_skip_url', 'dws_wc_lpm_fs_settings_url' );
-	$freemius->add_filter( 'after_connect_url', 'dws_wc_lpm_fs_settings_url' );
-	$freemius->add_filter( 'after_pending_connect_url', 'dws_wc_lpm_fs_settings_url' );
+	$freemius->add_filter( 'after_skip_url', 'dws_wc_lo_fs_settings_url' );
+	$freemius->add_filter( 'after_connect_url', 'dws_wc_lo_fs_settings_url' );
+	$freemius->add_filter( 'after_pending_connect_url', 'dws_wc_lo_fs_settings_url' );
 
 	return $freemius;
 }
