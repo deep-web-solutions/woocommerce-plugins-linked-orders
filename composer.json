@@ -84,6 +84,9 @@
       "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Settings\\": "dependencies/deep-web-solutions/wp-framework-settings/src/includes",
       "DWS_LO_Deps\\DeepWebSolutions\\Framework\\WooCommerce\\": "dependencies/deep-web-solutions/wp-framework-woocommerce/src/includes"
     },
+    "classmap": [
+      "src/models"
+    ],
     "files": [
       "dependencies/dependency-injection/opis/closure/functions.php",
       "dependencies/dependency-injection/php-di/php-di/src/functions.php",

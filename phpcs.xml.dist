@@ -29,6 +29,8 @@
     <rule ref="WordPress">
         <!-- Exclude as plugin adheres to the PSR-4 standard. -->
         <exclude name="WordPress.Files.FileName"/>
+        <!-- Allow the usage of short ternaries since they're useful. -->
+        <exclude name="WordPress.PHP.DisallowShortTernary"/>
     </rule>
 
     <!-- Check that the proper text domain(s) is used everywhere. -->

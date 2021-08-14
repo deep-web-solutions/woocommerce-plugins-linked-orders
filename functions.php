@@ -119,7 +119,6 @@ add_action( 'fs_after_uninstall_linked-orders-for-woocommerce', 'dws_wc_lo_plugi
  */
 function dws_wc_lo_get_raw_setting( string $field_id ) {
 	try {
-		/** @var Settings $settings Instance of the settings component. */
 		$settings = dws_wc_lo_di_container()->get( 'settings' );
 		return $settings->get_setting( $field_id );
 	} catch ( Exception $exception ) {
@@ -139,7 +138,6 @@ function dws_wc_lo_get_raw_setting( string $field_id ) {
  */
 function dws_wc_lo_get_validated_setting( string $field_id ) {
 	try {
-		/** @var Settings $settings Instance of the settings component. */
 		$settings = dws_wc_lo_di_container()->get( 'settings' );
 		return $settings->get_validated_setting( $field_id );
 	} catch ( Exception $exception ) {
