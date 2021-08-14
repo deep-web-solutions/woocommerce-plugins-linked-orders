@@ -25,30 +25,15 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Screens
  */
-class ShopOrder extends AbstractPluginFunctionality implements SettingsServiceAwareInterface {
+class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAwareInterface {
 	// region TRAITS
 
 	use InitializeSettingsServiceTrait;
-	use SetupHooksTrait;
 	use SetupSettingsTrait;
 
 	// endregion
 
 	// region INHERITED METHODS
-
-	/**
-	 * Registers hooks with the hooks service.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @param   HooksService    $hooks_service  Instance of the hooks service.
-	 */
-	public function register_hooks( HooksService $hooks_service ): void {
-		if ( Users::has_capabilities( array( LinkingPermissions::EDIT_LINKED_ORDERS ) ) ) {
-			$hooks_service->add_action( 'woocommerce_process_shop_order_meta', $this, 'save_linked_orders' );
-		}
-	}
 
 	/**
 	 * Registers the WC order meta-box.
@@ -69,7 +54,8 @@ class ShopOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 			array(),
 			array( 'shop_order' ),
 			array(
-				'priority' => 'high',
+				'priority' => 'default',
+				'context'  => 'side',
 				'callback' => array( $this, 'output_metabox' ),
 			),
 		);
@@ -91,27 +77,70 @@ class ShopOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 			return;
 		}
 
-		$linked_orders = $this->get_field( '_dws_wc_linked_orders', $order->get_id() );
-		if ( empty( $linked_orders ) ) {
-			echo \esc_html__( 'There are no linked orders', 'linked-orders-for-woocommerce' );
+		$dws_order = dws_wc_lo_get_order_node( $order );
+		if ( empty( $dws_order ) ) {
+			return;
 		}
-	}
 
-	// endregion
+		// Output parent order information.
+		if ( $dws_order->get_depth() > 0 ) {
+			$dws_order_parent = $dws_order->get_parent();
+			?>
 
-	// region HOOKS
+			<div class="dws-linked-orders__parent">
+				<?php \esc_html_e( 'Parent order: ', 'linked-orders-for-woocommerce' ); ?>
+				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_order_parent->get_id() ) ); ?>" target="_blank">
+					<?php echo \wp_kses_post( $this->format_order_name( $dws_order_parent ) ); ?>
+				</a>
+			</div>
 
-	/**
-	 * Saves the linked orders list.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @param   int     $order_id   The ID of the WC order being saved.
-	 */
-	public function save_linked_orders( int $order_id ): void {
-		$linked_orders = Arrays::maybe_cast_input( INPUT_POST, '_dws_wc_linked_orders', array() );
-		$this->update_field( '_dws_wc_linked_orders', $linked_orders, $order_id );
+			<hr/>
+
+			<?php
+		}
+
+		// Output children orders information.
+		if ( empty( $dws_order->get_children() ) ) {
+			?>
+
+			<div class="dws-linked-orders__no-children">
+				<?php \esc_html_e( 'There are no child orders attached.', 'linked-orders-for-woocommerce' ); ?>
+				<?php if ( ! $dws_order->can_create_linked_order() ) : ?>
+					<?php \esc_html_e( 'New child orders cannot be added to this order.', 'linked-orders-for-woocommerce' ); ?>
+				<?php endif; ?>
+			</div>
+
+			<?php
+		} else {
+			?>
+
+			<div class="dws-linked-orders__children">
+				<?php \esc_html_e( 'Child orders: ', 'linked-orders-for-woocommerce' ); ?>
+				<ul class="dws-linked-orders__children-list">
+					<?php foreach ( $dws_order->get_children() as $dws_child ) : ?>
+						<li id="linked-order-<?php echo \esc_attr( $dws_child->get_id() ); ?>" class="dws-linked-order">
+							<a href="<?php echo \esc_url( \get_edit_post_link( $dws_child->get_id() ) ); ?>" target="_blank">
+								<?php echo \wp_kses_post( $this->format_order_name( $dws_child ) ); ?>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+
+			<?php
+		}
+
+		// Maybe output button for creating a new child order.
+		if ( $dws_order->can_create_linked_order() ) {
+			$link = \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_wc_lo_create_empty_linked_order&order_id=' . $order->get_id() ), 'dws-lo-create-empty-linked-order' );
+			?>
+
+			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">
+				<?php \esc_html_e( 'Add new child order', 'linked-orders-for-woocommerce' ); ?>
+			</a>
+
+			<?php
+		}
 	}
 
 	// endregion
@@ -132,7 +161,25 @@ class ShopOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 			return null;
 		}
 
-		return \wc_get_order( $post_id ) ?: null; // phpcs:ignore
+		return \wc_get_order( $post_id ) ?: null;
+	}
+
+	/**
+	 * Returns a formatted name for the given order.
+	 *
+	 * @param   \DWS_Order_Node   $order      Order to format the name of.
+	 *
+	 * @return  string
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	protected function format_order_name( \DWS_Order_Node $order ): string {
+		return sprintf(
+			/* translators: 1. Order number; 2. Order status label. */
+			__( 'Order #%1$s - %2$s', 'linked-orders-for-woocommerce' ),
+			$order->get_order_number(),
+			wc_get_order_status_name( $order->get_status() )
+		);
 	}
 
 	// endregion

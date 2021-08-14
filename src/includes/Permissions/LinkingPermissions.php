@@ -28,17 +28,6 @@ class LinkingPermissions extends AbstractPermissions {
 	 */
 	public const CREATE_LINKED_ORDERS = 'create_dws_linked_orders';
 
-	/**
-	 * Permission required to be able to edit linked orders.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @access  public
-	 * @var     string
-	 */
-	public const EDIT_LINKED_ORDERS = 'edit_dws_linked_orders';
-
 	// endregion
 
 	// region INHERITED METHODS
