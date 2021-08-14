@@ -4,6 +4,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
 use DWS_LO_Deps\DI\Container;
 use DWS_LO_Deps\DI\ContainerBuilder;
 
@@ -143,6 +144,67 @@ function dws_wc_lo_get_validated_setting( string $field_id ) {
 	} catch ( Exception $exception ) {
 		return null;
 	}
+}
+
+// endregion
+
+// region MISC
+
+/**
+ * Converts a WC Order reference to a DWS_Linked_Order object.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   WC_Order|int    $order  Order to retrieve.
+ *
+ * @return  DWS_Linked_Order|null
+ */
+function dws_wc_lo_get_linked_order( $order ): ?DWS_Linked_Order {
+	try {
+		return new DWS_Linked_Order( $order );
+	} catch ( NotSupportedException $exception ) {
+		return null;
+	}
+}
+
+/**
+ * Determines whether a given order is a root order.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   WC_Order|int    $order  Order to retrieve.
+ *
+ * @return  bool|null
+ */
+function dws_wc_lo_is_root_order( $order ): ?bool {
+	$order = dws_wc_lo_get_linked_order( $order );
+	if ( is_null( $order ) ) {
+		return null;
+	}
+
+	return 0 === $order->get_depth();
+}
+
+/**
+ * Determines whether a given user can create linked orders for a given order.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   WC_Order|int    $order      Order to retrieve.
+ * @param   int|null        $user_id    The ID of the user to check for.
+ *
+ * @return bool|null
+ */
+function dws_wc_lo_can_create_linked_order( $order, ?int $user_id = null ): ?bool {
+	$order = dws_wc_lo_get_linked_order( $order );
+	if ( is_null( $order ) ) {
+		return null;
+	}
+
+	return $order->can_create_linked_order( $user_id );
 }
 
 // endregion
