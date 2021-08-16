@@ -1,6 +1,7 @@
 <?php
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\LinkingManager;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\OrdersArchive;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
@@ -57,6 +58,9 @@ return array_merge(
 		Plugin::class                         => autowire( Plugin::class )
 			->constructorParameter( 'plugin_file_path', dws_wc_lo_path() ),
 
+		ShopOrder::class                      => autowire( ShopOrder::class )
+			->constructorParameter( 'component_id', 'shop-order' )
+			->constructorParameter( 'component_name', 'Shop Order' ),
 		LinkingManager::class                 => autowire( LinkingManager::class )
 			->constructorParameter( 'component_id', 'linking-manager' )
 			->constructorParameter( 'component_name', 'Linking Manager' ),
@@ -95,6 +99,7 @@ return array_merge(
 	),
 	// Plugin aliases
 	array(
+		'shop-order'          => get( ShopOrder::class ),
 		'linking-manager'     => get( LinkingManager::class ),
 
 		'permissions'         => get( Permissions::class ),

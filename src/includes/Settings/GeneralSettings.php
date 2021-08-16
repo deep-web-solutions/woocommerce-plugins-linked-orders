@@ -83,7 +83,7 @@ class GeneralSettings extends AbstractSettingsGroup {
 				$value = \absint( $this->validate( $value, "general/$field_id", ValidationTypesEnum::INTEGER ) );
 				break;
 			case 'autocomplete-descendants':
-				$value = $this->validate( $value, "plugin/$field_id", ValidationTypesEnum::BOOLEAN );
+				$value = $this->validate( $value, "general/$field_id", ValidationTypesEnum::BOOLEAN );
 				break;
 		}
 
