@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: "
 "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders/"
 "issues\n"
-"POT-Creation-Date: 2021-08-13 12:13:36+00:00\n"
+"POT-Creation-Date: 2021-08-16 16:57:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -231,24 +231,119 @@ msgstr[1] ""
 msgid "%s or higher"
 msgstr ""
 
-#: src/includes/OrdersArchive.php:58
-msgid "Show all customer orders"
+#: src/includes/LinkingManager.php:67
+msgid "Invalid parent order ID"
 msgstr ""
 
-#: src/includes/Plugin.php:114
+#: src/includes/LinkingManager.php:83
+msgid "Cannot create new WC Order"
+msgstr ""
+
+#: src/includes/LinkingManager.php:122
+msgid "You are not authorized to create empty linked orders."
+msgstr ""
+
+#: src/includes/LinkingManager.php:133
+#. translators: error message contents
+msgid "Failed to create a new linked order. Error message: %s"
+msgstr ""
+
+#: src/includes/Plugin.php:113
+msgid "View settings"
+msgstr ""
+
+#: src/includes/Plugin.php:113
+msgid "Settings"
+msgstr ""
+
+#: src/includes/Plugin.php:141
 msgid "Visit community forums"
 msgstr ""
 
-#: src/includes/Plugin.php:114
+#: src/includes/Plugin.php:141
 msgid "Community support"
 msgstr ""
 
-#: src/includes/Plugin.php:115
+#: src/includes/Plugin.php:142
 msgid "Send us an inquiry"
 msgstr ""
 
-#: src/includes/Plugin.php:115
+#: src/includes/Plugin.php:142
 msgid "Contact us"
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:91
+msgid "Parent order: "
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:107
+msgid "There are no child orders attached."
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:109
+msgid "New child orders cannot be added to this order."
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:118
+msgid "Child orders: "
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:139
+msgid "Add new child order"
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:179
+#. translators: 1. Order number; 2. Order status label.
+msgid "Order #%1$s - %2$s"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:169
+msgid "All order depths"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:278
+#: src/includes/Screens/EditOrders.php:286
+msgid "View all customer orders"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:298
+msgid "View all linked orders"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:308
+msgid "Create new linked order"
+msgstr ""
+
+#: src/includes/Settings/GeneralSettings.php:29
+msgid "General Settings"
+msgstr ""
+
+#: src/includes/Settings/GeneralSettings.php:45
+msgid "Maximum linked orders depth"
+msgstr ""
+
+#: src/includes/Settings/GeneralSettings.php:53
+msgid ""
+"The maximum number of linked orders levels. Root orders are considered "
+"level 0."
+msgstr ""
+
+#: src/includes/Settings/PluginSettings.php:29
+msgid "Plugin Settings"
+msgstr ""
+
+#: src/includes/Settings/PluginSettings.php:45
+msgid "Remove all data on uninstallation?"
+msgstr ""
+
+#: src/includes/Settings/PluginSettings.php:50
+msgid ""
+"If enabled, the plugin will remove all database data when removed and you "
+"will need to reconfigure everything if you install it again at a later time."
+msgstr ""
+
+#: src/includes/Settings.php:121
+msgid "Failed to delete the plugin options from the database"
 msgstr ""
 
 #: src/templates/admin/composer-error.php:20
@@ -277,3 +372,40 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "https://www.deep-web-solutions.com"
 msgstr ""
+
+#: src/configs/settings.php:21
+msgctxt "settings"
+msgid "Yes"
+msgstr ""
+
+#: src/configs/settings.php:26
+msgctxt "settings"
+msgid "No"
+msgstr ""
+
+#: src/includes/Screens/EditOrder.php:53 src/includes/Settings.php:66
+msgctxt "settings"
+msgid "Linked Orders"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:102
+msgctxt "orders table"
+msgid "Depth"
+msgstr ""
+
+#: src/includes/Screens/EditOrders.php:123
+#: src/includes/Screens/EditOrders.php:172
+msgctxt "orders table"
+msgid "Root order"
+msgid_plural "Root orders"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/includes/Screens/EditOrders.php:126
+#: src/includes/Screens/EditOrders.php:180
+#. translators: numerical depth of the order
+msgctxt "orders table"
+msgid "Child order (level %d)"
+msgid_plural "Child orders (level %d)"
+msgstr[0] ""
+msgstr[1] ""
