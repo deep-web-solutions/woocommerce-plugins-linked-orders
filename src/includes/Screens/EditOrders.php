@@ -110,8 +110,8 @@ class EditOrders extends AbstractPluginFunctionality {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   string  $column
-	 * @param   int     $post_id
+	 * @param   string  $column     The column being populated.
+	 * @param   int     $post_id    The ID of the row post.
 	 */
 	public function populate_columns( string $column, int $post_id ): void {
 		switch ( $column ) {
