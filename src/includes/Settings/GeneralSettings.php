@@ -2,6 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Booleans;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationTypesEnum;
 
 \defined( 'ABSPATH' ) || exit;
@@ -41,7 +42,7 @@ class GeneralSettings extends AbstractSettingsGroup {
 		return \apply_filters(
 			$this->get_hook_tag( 'definition' ),
 			array(
-				'max-depth' => array(
+				'max-depth'                => array(
 					'title'             => \__( 'Maximum linked orders depth', 'linked-orders-for-woocommerce' ),
 					'type'              => 'number',
 					'custom_attributes' => array(
@@ -51,6 +52,14 @@ class GeneralSettings extends AbstractSettingsGroup {
 					),
 					'default'           => $this->get_default_value( 'general/max-depth' ),
 					'desc_tip'          => \__( 'The maximum number of linked orders levels. Root orders are considered level 0.', 'linked-orders-for-woocommerce' ),
+				),
+				'autocomplete-descendants' => array(
+					'title'    => \__( 'Autocomplete descendant orders?', 'linked-orders-for-woocommerce' ),
+					'type'     => 'select',
+					'class'    => 'wc-enhanced-select',
+					'default'  => $this->get_default_value( 'general/autocomplete-descendants' ),
+					'options'  => $this->get_supported_options( 'boolean' ),
+					'desc_tip' => \__( 'If enabled, all descendant orders will be set to completed automatically when the parent order is completed.', 'linked-orders-for-woocommerce' ),
 				),
 			)
 		);
@@ -72,6 +81,9 @@ class GeneralSettings extends AbstractSettingsGroup {
 		switch ( $field_id ) {
 			case 'max-depth':
 				$value = \absint( $this->validate( $value, "general/$field_id", ValidationTypesEnum::INTEGER ) );
+				break;
+			case 'autocomplete-descendants':
+				$value = $this->validate( $value, "plugin/$field_id", ValidationTypesEnum::BOOLEAN );
 				break;
 		}
 

@@ -8,7 +8,8 @@ $config = array(
 	'defaults' => array(
 		'null_value' => null,
 		'general'    => array(
-			'max-depth' => 1,
+			'max-depth'                => 1,
+			'autocomplete-descendants' => 'no',
 		),
 		'plugin'     => array(
 			'remove-data-uninstall' => 'no',
