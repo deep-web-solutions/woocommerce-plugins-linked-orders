@@ -48,7 +48,7 @@ class EditOrders extends AbstractPluginFunctionality {
 		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_table_filters', 20 );
 		$hooks_service->add_filter( 'request', $this, 'maybe_filter_request_query', 999 );
 
-		//$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_view_all_action', 999, 2 );
+		$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_table_actions', 999, 2 );
 	}
 
 	/**
@@ -151,6 +151,19 @@ class EditOrders extends AbstractPluginFunctionality {
 
 			?>
 
+			<!-- DWS Linked Orders filter for guest orders made with the same billing email. -->
+			<input type="hidden"
+					name="_guest_customer_user"
+					value="<?php echo \esc_attr( \wc_clean( Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user', '' ) ) ); ?>"
+			/>
+
+			<!-- DWS Linked Orders filter for storing the pivot order. -->
+			<input type="hidden"
+					name="_dws_linked_order_id"
+					value="<?php echo \esc_attr( \wc_clean( Strings::maybe_cast_input( INPUT_GET, '_dws_linked_order_id', '' ) ) ); ?>"
+			/>
+
+			<!-- DWS Linked Orders filter for linking depth. -->
 			<select name="_dws_lo_depth" id="dws_lo_depth_filter_dropdown">
 				<option value=""">
 					<?php \esc_html_e( 'All order depths', 'linked-orders-for-woocommerce' ); ?>
@@ -191,8 +204,22 @@ class EditOrders extends AbstractPluginFunctionality {
 		global $typenow;
 
 		if ( \in_array( $typenow, \wc_get_order_types( 'order-meta-boxes' ), true ) ) {
+			// Filter orders made by the same guest email address.
+			$guest_customer = \wc_clean( Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user' ) );
+			if ( ! empty( $guest_customer ) ) {
+				// @codingStandardsIgnoreStart.
+				$query_vars['meta_query']   = $query_vars['meta_query'] ?? array();
+				$query_vars['meta_query'][] = array(
+					'key'     => '_billing_email',
+					'value'   => $guest_customer,
+					'compare' => '=',
+				);
+				// @codingStandardsIgnoreEnd
+			}
+
+			// Filter orders based on their linking depth.
 			$order_depth = Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' );
-			if ( ! \is_null( $order_depth ) ) {
+			if ( ! \is_null( $order_depth ) && $order_depth >= 0 ) {
 				// @codingStandardsIgnoreStart.
 				$query_vars['meta_query'] = $query_vars['meta_query'] ?? array();
 				if ( 0 === $order_depth ) {
@@ -218,30 +245,19 @@ class EditOrders extends AbstractPluginFunctionality {
 				// @codingStandardsIgnoreEnd
 			}
 
-			/*
-			$guest_customer = Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user' );
-			if ( ! empty( $guest_customer ) ) {
-				// @codingStandardsIgnoreStart.
-				$query_vars['meta_query'] = array(
-					array(
-						'key'     => '_billing_email',
-						'value'   => $guest_customer,
-						'compare' => '=',
-					),
-				);
-				// @codingStandardsIgnoreEnd
+			// Filter orders based on the pivot order.
+			$pivot_order = Integers::maybe_cast_input( INPUT_GET, '_dws_linked_order_id' );
+			if ( ! empty( $pivot_order ) ) {
+				$root_order             = dws_wc_lo_get_root_order( $pivot_order );
+				$query_vars['post__in'] = dws_wc_lo_get_orders_tree( $root_order->get_id() );
 			}
-			*/
 		}
 
 		return $query_vars;
 	}
 
-
-
-
 	/**
-	 * Registers a new WC order action for viewing all of a customer's orders.
+	 * Registers new order-level actions in the list table.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -251,11 +267,12 @@ class EditOrders extends AbstractPluginFunctionality {
 	 *
 	 * @return  array
 	 */
-	public function register_view_all_action( array $actions, \WC_Order $order ): array {
+	public function register_table_actions( array $actions, \WC_Order $order ): array {
 		$new_actions = array();
 
+		// Action for viewing all of a customer's orders in one click.
 		if ( ! empty( $order->get_customer_id() ) ) {
-			if ( ! isset( $_GET['_customer_user'] ) ) { // phpcs:ignore
+			if ( empty( Strings::maybe_cast_input( INPUT_GET, '_customer_user' ) ) ) {
 				$new_actions['view_all_customer_orders'] = array(
 					'url'    => \admin_url( 'edit.php?post_type=shop_order&_customer_user=' . $order->get_customer_id() ),
 					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
@@ -263,7 +280,7 @@ class EditOrders extends AbstractPluginFunctionality {
 				);
 			}
 		} elseif ( ! empty( $order->get_billing_email() ) ) {
-			if ( ! isset( $_GET['_guest_customer_user'] ) ) { // phpcs:ignore
+			if ( empty( Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user' ) ) ) {
 				$new_actions['view_all_customer_orders'] = array(
 					'url'    => \admin_url( 'edit.php?post_type=shop_order&_guest_customer_user=' . \rawurldecode( $order->get_billing_email() ) ),
 					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
@@ -272,6 +289,19 @@ class EditOrders extends AbstractPluginFunctionality {
 			}
 		}
 
+		// Action for viewing all linked orders to a given one.
+		if ( empty( Strings::maybe_cast_input( INPUT_GET, '_dws_linked_order_id' ) ) ) {
+			$dws_order = dws_wc_lo_get_order_node( $order );
+			if ( $dws_order->has_parent() || $dws_order->has_children() ) {
+				$new_actions['view_all_linked_orders'] = array(
+					'url'    => \admin_url( 'edit.php?post_type=shop_order&_dws_linked_order_id=' . $order->get_id() ),
+					'name'   => \__( 'View all linked orders', 'linked-orders-for-woocommerce' ),
+					'action' => 'view-all-linked-orders',
+				);
+			}
+		}
+
+		// Action for creating a new linked order one level down from the current one.
 		if ( dws_wc_lo_can_create_linked_order( $order ) ) {
 			$new_actions['create_empty_linked_order'] = array(
 				'url'    => \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_wc_lo_create_empty_linked_order&order_id=' . $order->get_id() ), 'dws-lo-create-empty-linked-order' ),
@@ -282,8 +312,6 @@ class EditOrders extends AbstractPluginFunctionality {
 
 		return \array_merge( $new_actions, $actions );
 	}
-
-
 
 	// endregion
 }
