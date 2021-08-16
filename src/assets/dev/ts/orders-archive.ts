@@ -1,7 +1,7 @@
 import * as jQuery from 'jquery';
 
 jQuery( function( $ ) {
-    $( 'a.wc-action-button-view-all-customer-orders' ).each( function() {
+    $( 'a.view-all-customer-orders, a.view-all-linked-orders' ).each( function() {
         $(this).attr( 'target', '_blank' );
     } );
 } );
