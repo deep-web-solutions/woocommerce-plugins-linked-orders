@@ -1,0 +1,31 @@
+name: PHP Syntax Errors
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        php: [ 5.3, 5.4, 5.5, 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0 ]
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup proper PHP version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        
+    - name: Check all files for syntax errors
+      if: ${{ matrix.php >= 7.4 }}
+      run: find -L $GITHUB_WORKSPACE  -path $GITHUB_WORKSPACE/vendor -prune -o -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+      
+    - name: Check bootstrap files for syntax errors
+      if: ${{ matrix.php < 7.4 }}
+      run: find $GITHUB_WORKSPACE -maxdepth 1 -name 'bootstrap*.php' -print0 | xargs -0 -n 1 -P 4 php -l

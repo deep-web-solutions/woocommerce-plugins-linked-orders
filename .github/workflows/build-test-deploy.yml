@@ -1,0 +1,386 @@
+name: Build, Test, Deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    env:
+      BUILD_FOLDER: /tmp/build/
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --ignore-platform-reqs --prefer-dist --no-progress
+
+      - name: Beautify dependencies
+        run: |
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-bootstrapper/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-bootstrapper -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-helpers/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-helpers -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-foundations/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-foundations -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-utilities/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-utilities -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-core/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-core -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-settings/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-settings -v > /dev/null || true
+          ./vendor/bin/phpcbf --standard=./vendor/deep-web-solutions/wp-framework-woocommerce/phpcs.xml.dist ./dependencies/deep-web-solutions/wp-framework-woocommerce -v > /dev/null || true
+
+      - name: Copy relevant files to build directory
+        run: |
+          mkdir $BUILD_FOLDER
+          cp -r $GITHUB_WORKSPACE/src $BUILD_FOLDER
+          cp -r $GITHUB_WORKSPACE/dependencies $BUILD_FOLDER
+          cp LICENSE $BUILD_FOLDER
+          cp readme.txt $BUILD_FOLDER
+          cp bootstrap.php $BUILD_FOLDER/linked-orders-for-woocommerce.php
+          cp bootstrap-functions.php $BUILD_FOLDER/bootstrap-functions.php
+          cp config_prod.php $BUILD_FOLDER/config_prod.php
+          cp freemius.php $BUILD_FOLDER/freemius.php
+          cp functions.php $BUILD_FOLDER/functions.php
+          cp composer.json $BUILD_FOLDER/composer.json
+          cp composer.lock $BUILD_FOLDER/composer.lock
+
+      - name: Dump autoloader and remove Composer files
+        working-directory: ${{ env.BUILD_FOLDER }}
+        run: |
+          composer install --no-dev --ignore-platform-reqs --prefer-dist --no-progress
+          find . -name 'composer.lock' -delete
+          find . -name 'composer.json' -delete
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ${{ env.BUILD_FOLDER }}
+
+  deploy-freemius:
+    needs: build
+
+    env:
+      DEPLOY_FOLDER: /tmp/deploy-freemius/
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read package.json
+        uses: tyankatsu0105/read-package-version-actions@v1
+        id: package-json
+
+      - name: Prepare working folder
+        run: mkdir -p $DEPLOY_FOLDER/build/
+
+      - name: Download Build
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: ${{ env.DEPLOY_FOLDER }}/build/
+
+      - name: Create build ZIP
+        working-directory: ${{ env.DEPLOY_FOLDER }}/build
+        run: zip -r $GITHUB_WORKSPACE/freemius.zip *
+
+      - name: Get short SHA
+        id: short-sha
+        uses: benjlevesque/short-sha@v1.2
+        with:
+          length: 8
+
+      - name: Maybe set release mode to PENDING
+        if: ${{ github.event_name != 'release' }}
+        run: |
+          echo "RELEASE_MODE=pending" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${{ steps.package-json.outputs.version }}+${{ steps.short-sha.outputs.sha }}" >> $GITHUB_ENV
+
+      - name: Maybe set release mode to RELEASE
+        if: ${{ github.event_name == 'release' }}
+        run: |
+          echo "RELEASE_MODE=released" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${{ steps.package-json.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Deploy to Freemius
+        id: freemius
+        uses: buttonizer/freemius-deploy@v0.1.2
+        with:
+          file_name: freemius.zip
+          release_mode: ${{ env.RELEASE_MODE }}
+          version: ${{ env.RELEASE_VERSION }}
+        env:
+          PUBLIC_KEY: ${{ secrets.FREEMIUS_PUBLIC_KEY }}
+          DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
+          SECRET_KEY: ${{ secrets.FREEMIUS_SECRET_KEY }}
+          PLUGIN_SLUG: ${{ secrets.FREEMIUS_PLUGIN_SLUG }}
+          PLUGIN_ID: ${{ secrets.FREEMIUS_PLUGIN_ID }}
+
+      - name: Upload Pro Version
+        uses: actions/upload-artifact@v2
+        with:
+          name: pro
+          path: ${{ steps.freemius.outputs.pro_version }}
+
+      - name: Upload Free Version
+        uses: actions/upload-artifact@v2
+        with:
+          name: free
+          path: ${{ steps.freemius.outputs.free_version }}
+
+      - name: Maybe Upload Release Asset
+        if: ${{ github.event_name == 'release' }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.freemius.outputs.pro_version }}
+          asset_name: ${{ github.event.repository.name }}-freemius.zip
+          asset_content_type: application/zip
+
+  deploy-svn:
+    needs: deploy-freemius
+    if: ${{ github.event_name == 'release' }}
+
+    env:
+      DEPLOY_FOLDER: /tmp/deploy-svn/
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare working folder
+        run: mkdir -p $DEPLOY_FOLDER/build/
+
+      - name: Download Freemius free build
+        uses: actions/download-artifact@v2
+        with:
+          name: free
+          path: ${{ env.DEPLOY_FOLDER }}
+
+      - name: Unzip Freemius free build
+        working-directory: ${{ env.DEPLOY_FOLDER }}
+        run: unzip freemius__free.zip
+
+      - name: Copy free build
+        run: |
+          mkdir build_free
+          cp -r $DEPLOY_FOLDER/linked-orders-for-woocommerce/* ./build_free
+
+      - name: Beautify code before deploy
+        run: ./vendor/bin/phpcbf --standard=./phpcs.xml.dist . -v > /dev/null || true
+
+      - name: WordPress Plugin Deploy
+        id: wordpress
+        uses: nk-o/action-wordpress-plugin-deploy@master
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SOURCE_DIR: build_free/
+          SLUG: linked-orders-for-woocommerce
+
+  test:
+    needs: deploy-freemius
+    if: ${{ github.event_name != 'release' }}
+
+    env:
+      # Must match the env variables in .dist.env
+      WP_ROOT_FOLDER: /tmp/wordpress
+
+      # For acceptance and functional tests
+      TEST_SITE_DB_NAME: test_acceptance
+      TEST_SITE_DB_USER: root
+      TEST_SITE_DB_PASSWORD: root
+      TEST_SITE_TABLE_PREFIX: wp_
+      TEST_SITE_ADMIN_USERNAME: admin
+      TEST_SITE_ADMIN_PASSWORD: password
+      TEST_SITE_WP_ADMIN_PATH: /wp-admin
+      TEST_SITE_WP_URL: http://localhost:8888
+      TEST_SITE_WP_DOMAIN: localhost:8888
+      TEST_SITE_ADMIN_EMAIL: admin@localhost.test
+
+    strategy:
+      fail-fast: true
+      max-parallel: 2
+      matrix:
+        php: [ 7.4 ]
+        WP_VERSION: [ 5.5, latest, nightly ]
+        WC_VERSION: [ 4.5.2, latest ]
+        include:
+          - php: 8.0
+            WP_VERSION: latest
+            WC_VERSION: latest
+
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306
+        env:
+          MYSQL_DATABASE: test_acceptance
+          MYSQL_ROOT_PASSWORD: root
+          options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup proper PHP version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: output_buffering=off
+          extensions: mbstring, intl, pdo_mysql
+
+      - name: Set database connection env globals
+        env:
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: |
+          echo "TEST_SITE_DB_HOST=127.0.0.1:$DB_PORT" >> $GITHUB_ENV
+          echo "TEST_SITE_DB_DSN=mysql:host=127.0.0.1:$DB_PORT;dbname=$TEST_SITE_DB_NAME" >> $GITHUB_ENV
+
+      - name: Verify MariaDB connection and database list
+        env:
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"$DB_PORT" --silent; do
+          sleep 1
+          done
+          mysql -u $TEST_SITE_DB_USER -p"$TEST_SITE_DB_PASSWORD" -h"127.0.0.1" -P"$DB_PORT" -e "SHOW DATABASES;"
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install module dev dependencies
+        run: composer install --no-interaction --ignore-platform-reqs --prefer-dist --no-progress
+
+      - name: Setup WP CLI tools
+        run: |
+          mkdir -p $WP_ROOT_FOLDER
+          mkdir $GITHUB_WORKSPACE/tools
+          wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P $GITHUB_WORKSPACE/tools/
+          chmod +x $GITHUB_WORKSPACE/tools/wp-cli.phar && mv $GITHUB_WORKSPACE/tools/wp-cli.phar $GITHUB_WORKSPACE/tools/wp
+          echo "$GITHUB_WORKSPACE/tools/" >> $GITHUB_PATH
+
+      - name: Install WordPress
+        working-directory: ${{ env.WP_ROOT_FOLDER }}
+        run: |
+          wp core download --version=${{ matrix.WP_VERSION }}
+          wp config create --dbname="$TEST_SITE_DB_NAME" --dbuser="$TEST_SITE_DB_USER" --dbpass="$TEST_SITE_DB_PASSWORD" --dbhost="$TEST_SITE_DB_HOST" --dbprefix="$TEST_SITE_TABLE_PREFIX"
+          wp config set WP_DEBUG true --raw
+          wp config set WP_DEBUG_LOG true --raw
+          wp core install --url="$TEST_SITE_WP_URL" --title="Test" --admin_user="$TEST_SITE_ADMIN_USERNAME" --admin_password="$TEST_SITE_ADMIN_PASSWORD" --admin_email="$TEST_SITE_ADMIN_EMAIL" --skip-email
+          wp rewrite structure '/%postname%/' --hard
+          wp core update-db
+
+      - name: Uninstall default plugins
+        working-directory: ${{ env.WP_ROOT_FOLDER }}
+        run: wp plugin uninstall --all
+
+      - name: Install latest WooCommerce
+        if: ${{ matrix.WC_VERSION == 'latest' }}
+        working-directory: ${{ env.WP_ROOT_FOLDER }}
+        run: wp plugin install woocommerce --activate
+
+      - name: Install specific WooCommerce
+        if: ${{ matrix.WC_VERSION != 'latest' }}
+        working-directory: ${{ env.WP_ROOT_FOLDER }}
+        run: wp plugin install woocommerce --version=${{ matrix.WC_VERSION }} --activate
+
+      - name: Import WC dummy data
+        working-directory: ${{ env.WP_ROOT_FOLDER }}
+        run: |
+          wp wc tool run install_pages --user=$TEST_SITE_ADMIN_USERNAME
+          wp plugin install wordpress-importer --activate
+          wp import $WP_ROOT_FOLDER/wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=create
+          wp plugin deactivate wordpress-importer --uninstall
+          wp plugin deactivate woocommerce
+
+      - name: Download Freemius free build to the plugins directory
+        uses: actions/download-artifact@v2
+        with:
+          name: free
+          path: ${{ env.WP_ROOT_FOLDER }}/wp-content/plugins/
+
+      - name: Unzip Freemius builds
+        working-directory: ${{ env.WP_ROOT_FOLDER }}/wp-content/plugins/
+        run: |
+          unzip freemius__free.zip
+          chmod -R 777 $WP_ROOT_FOLDER
+
+      - name: Beautify free code like before deploy
+        run: ./vendor/bin/phpcbf --standard=./phpcs.xml.dist $WP_ROOT_FOLDER/wp-content/plugins/linked-orders-for-woocommerce/ -v > /dev/null || true
+
+      - name: Generate DB export
+        run: wp db export $GITHUB_WORKSPACE/tests/_data/dump.sql --path=$WP_ROOT_FOLDER
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Run Selenium
+        run: nohup java -jar $SELENIUM_JAR_PATH &
+
+      - name: Run chromedriver
+        run: nohup $CHROMEWEBDRIVER/chromedriver --url-base=/wd/hub /dev/null 2>&1 &
+
+      - name: Start a web server
+        run: php -S "$TEST_SITE_WP_DOMAIN" -t "$WP_ROOT_FOLDER" >/dev/null 2>&1 &
+
+      - name: Run Codeception functional tests
+        env:
+          FREEMIUS_LICENSE_KEY: ${{ secrets.FREEMIUS_LICENSE_KEY }}
+        run: composer run-script test:functional
+
+      - name: Run Codeception acceptance FREE tests
+        run: composer run-script test:acceptance
+
+      - name: Maybe Upload Tests Output
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests-output-${{ matrix.php }}-${{ matrix.WP_VERSION }}-${{ matrix.WC_VERSION }}
+          path: ./tests/_output/
+
+      - name: Maybe Upload Database Dump
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: database-dump-${{ matrix.php }}-${{ matrix.WP_VERSION }}-${{ matrix.WC_VERSION }}
+          path: ./tests/_data/
+
+      - name: Upload Debug Log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: debug-log-${{ matrix.php }}-${{ matrix.WP_VERSION }}-${{ matrix.WC_VERSION }}
+          path: ${{ env.WP_ROOT_FOLDER }}/wp-content/debug.log
