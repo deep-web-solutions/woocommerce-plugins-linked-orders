@@ -4,7 +4,7 @@
 
   "description": "A WooCommerce extension for creating logical links between orders.",
   "keywords": ["wordpress", "plugins", "Deep Web Solutions", "woocommerce", "orders", "link"],
-  "homepage": "https://www.deep-web-solutions.com",
+  "homepage": "https://www.deep-web-solutions.com/plugins/linked-orders-for-woocommerce/",
   "license": "GPL-3.0-or-later",
   "authors": [
     {
@@ -15,7 +15,7 @@
     },
     {
       "name": "Contributors",
-      "homepage": "https://github.com/deep-web-solutions/internal-comments/graphs/contributors"
+      "homepage": "https://github.com/deep-web-solutions/wordpress-plugins-internal-comments/graphs/contributors"
     }
   ],
 
@@ -35,8 +35,8 @@
   },
   "require-dev": {
     "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
-    "deep-web-solutions/wp-framework-helpers": "^1.4.0",
-    "deep-web-solutions/wp-framework-foundations": "^1.4.2",
+    "deep-web-solutions/wp-framework-helpers": "^1.4.5",
+    "deep-web-solutions/wp-framework-foundations": "^1.4.3",
     "deep-web-solutions/wp-framework-utilities": "master@dev",
     "deep-web-solutions/wp-framework-core": "master@dev",
     "deep-web-solutions/wp-framework-settings": "master@dev",
@@ -62,6 +62,8 @@
     "codeception/module-filesystem": "^1.0",
     "codeception/module-cli": "^1.1",
     "codeception/util-universalframework": "^1.0",
+    "hoa/console": "^3.17",
+    "vlucas/phpdotenv": "^5.3",
 
     "wpreadme2markdown/wp2md": "^3.1"
   },
