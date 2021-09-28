@@ -1,34 +1,32 @@
 <?php
 
-namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
+namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\LinkingPermissions;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\ScreensPermissions;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputFailureException;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputLocalTrait;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\OutputtableInterface;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\Actions\Initializable\InitializeSettingsServiceTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\Actions\Setupable\SetupSettingsTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsServiceAwareInterface;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 
 \defined( 'ABSPATH' ) || exit;
 
 /**
- * Handles customizations to the WC edit order page.
+ * Outputs the linked orders metabox on the edit order screen.
  *
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Screens
+ * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Output
  */
-class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAwareInterface {
+class MetaBox extends AbstractPluginFunctionality implements OutputtableInterface {
 	// region TRAITS
 
-	use InitializeSettingsServiceTrait;
+	use ActiveLocalTrait;
+	use OutputLocalTrait;
 	use SetupSettingsTrait;
 
 	// endregion
@@ -36,50 +34,52 @@ class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 	// region INHERITED METHODS
 
 	/**
-	 * Registers the WC order meta-box.
+	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
+	 */
+	public function is_active_local(): bool {
+		return Users::has_capabilities( array( OutputPermissions::SEE_METABOX ) ) ?? false;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 *
-	 * @param   SettingsService     $settings_service   Instance of the settings service.
+	 * @since   1.0.0
+	 * @version 1.0.0
 	 */
 	public function register_settings( SettingsService $settings_service ): void {
-		if ( ! Users::has_capabilities( array( 'edit_shop_orders', ScreensPermissions::SEE_METABOX ) ) ) {
-			return;
-		}
-
 		$settings_service->register_generic_group(
-			'dws-wc-linked-orders',
-			\_x( 'Linked Orders', 'settings', 'linked-orders-for-woocommerce' ),
+			'dws-linked-orders',
+			function() {
+				return \_x( 'Linked Orders', 'metabox heading', 'linked-orders-for-woocommerce' );
+			},
 			array(),
 			array( 'shop_order' ),
 			array(
 				'priority' => 'default',
 				'context'  => 'side',
-				'callback' => array( $this, 'output_metabox' ),
+				'callback' => array( $this, 'output' ),
 			),
 		);
 	}
 
 	// endregion
 
-	// region METHODS
+	// region OUTPUT
 
 	/**
-	 * Output a meta-box containing the unlocking settings.
+	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
-	public function output_metabox(): void {
-		$order = $this->get_current_order();
-		if ( empty( $order ) ) {
-			return;
-		}
-
-		$dws_order = dws_wc_lo_get_order_node( $order );
+	protected function output_local(): ?OutputFailureException {
+		$order_id  = \get_the_ID();
+		$dws_order = dws_wc_lo_get_order_node( $order_id );
 		if ( empty( $dws_order ) ) {
-			return;
+			return new OutputFailureException( 'Metabox is being outputted in an invalid context' );
 		}
 
 		// Output parent order information.
@@ -105,7 +105,7 @@ class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 
 			<div class="dws-linked-orders__no-children">
 				<?php \esc_html_e( 'There are no child orders attached.', 'linked-orders-for-woocommerce' ); ?>
-				<?php if ( ! $dws_order->can_create_linked_order() ) : ?>
+				<?php if ( true !== $dws_order->can_create_linked_order() ) : ?>
 					<?php \esc_html_e( 'New child orders cannot be added to this order.', 'linked-orders-for-woocommerce' ); ?>
 				<?php endif; ?>
 			</div>
@@ -131,8 +131,8 @@ class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 		}
 
 		// Maybe output button for creating a new child order.
-		if ( $dws_order->can_create_linked_order() ) {
-			$link = \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_wc_lo_create_empty_linked_order&order_id=' . $order->get_id() ), 'dws-lo-create-empty-linked-order' );
+		if ( true === $dws_order->can_create_linked_order() ) {
+			$link = \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_lowc_create_empty_linked_order&order_id=' . $order_id ), 'dws_create_empty_linked_order' );
 			?>
 
 			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">
@@ -141,6 +141,8 @@ class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 
 			<?php
 		}
+
+		return null;
 	}
 
 	// endregion
@@ -148,37 +150,21 @@ class EditOrder extends AbstractPluginFunctionality implements SettingsServiceAw
 	// region HELPERS
 
 	/**
-	 * Returns the WC order object of the order currently being edited.
+	 * Returns a formatted name for the given order.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
-	 *
-	 * @return  \WC_Order|null
-	 */
-	protected function get_current_order(): ?\WC_Order {
-		$post_id = Integers::maybe_cast_input( INPUT_GET, 'post', 0 );
-		if ( empty( $post_id ) || 'shop_order' !== \get_post_type( $post_id ) ) {
-			return null;
-		}
-
-		return \wc_get_order( $post_id ) ?: null;
-	}
-
-	/**
-	 * Returns a formatted name for the given order.
 	 *
 	 * @param   \DWS_Order_Node   $order      Order to format the name of.
 	 *
 	 * @return  string
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 */
 	protected function format_order_name( \DWS_Order_Node $order ): string {
-		return sprintf(
+		return \sprintf(
 			/* translators: 1. Order number; 2. Order status label. */
-			__( 'Order #%1$s - %2$s', 'linked-orders-for-woocommerce' ),
+			\__( 'Order #%1$s - %2$s', 'linked-orders-for-woocommerce' ),
 			$order->get_order_number(),
-			wc_get_order_status_name( $order->get_status() )
+			\wc_get_order_status_name( $order->get_status() )
 		);
 	}
 

@@ -62,6 +62,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 				ShopOrder::class,
 				LinkingManager::class,
 				Screens::class,*/
+				Output::class,
 				Permissions::class,
 				Settings::class,
 			)

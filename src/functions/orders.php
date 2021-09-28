@@ -1,5 +1,7 @@
 <?php
 
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
+
 defined( 'ABSPATH' ) || exit;
 
 /**

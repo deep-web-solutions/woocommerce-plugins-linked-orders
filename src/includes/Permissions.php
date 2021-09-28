@@ -28,20 +28,19 @@ class Permissions extends AbstractPermissionsFunctionality {
 	 */
 	public const CREATE_LINKED_ORDERS = 'create_dws_linked_orders';
 
-	/**
-	 * Permission required to be able to see the linked orders metabox.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @access  public
-	 * @var     string
-	 */
-	public const SEE_METABOX = 'see_dws_linked_orders_metabox';
-
 	// endregion
 
 	// region INHERITED METHODS
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	protected function get_di_container_children(): array {
+		return array( Permissions\OutputPermissions::class );
+	}
 
 	/**
 	 * {@inheritDoc}

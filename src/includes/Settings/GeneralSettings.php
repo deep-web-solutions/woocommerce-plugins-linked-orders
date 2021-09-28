@@ -67,7 +67,7 @@ class GeneralSettings extends WC_AbstractValidatedOptionsGroupFunctionality {
 	protected function validate_option_value_helper( $value, string $field_id ) {
 		switch ( $field_id ) {
 			case 'max-depth':
-				$value = \max( $this->validate( $value, $field_id, ValidationTypesEnum::INTEGER ), 1 );
+				$value = \max( $this->validate_value( $value, $field_id, ValidationTypesEnum::INTEGER ), 1 );
 				break;
 			case 'autocomplete-descendants':
 				$value = $this->validate_value( $value, $field_id, ValidationTypesEnum::BOOLEAN );

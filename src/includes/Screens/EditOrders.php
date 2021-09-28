@@ -147,7 +147,7 @@ class EditOrders extends AbstractPluginFunctionality {
 		global $typenow;
 
 		if ( 'shop_order' === $typenow ) {
-			$max_depth = dws_wc_lo_get_validated_setting( 'general_max-depth' );
+			$max_depth = dws_lowc_get_validated_setting( 'max-depth', 'general' );
 
 			?>
 

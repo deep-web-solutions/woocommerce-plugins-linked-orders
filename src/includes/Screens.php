@@ -2,7 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens\EditOrder;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens\MetaBox;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens\EditOrders;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 
@@ -28,7 +28,7 @@ class Screens extends AbstractPluginFunctionality {
 	 * @return  string[]
 	 */
 	protected function get_di_container_children(): array {
-		return array( EditOrders::class, EditOrder::class );
+		return array( EditOrders::class, MetaBox::class );
 	}
 
 	// endregion

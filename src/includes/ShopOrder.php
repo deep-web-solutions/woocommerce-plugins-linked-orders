@@ -57,7 +57,7 @@ class ShopOrder extends AbstractPluginFunctionality {
 	 * @param   int     $order_id   The ID of the order that was just completed.
 	 */
 	public function maybe_autocomplete_descendants( int $order_id ) {
-		$should_autocomplete = dws_wc_lo_get_validated_setting( 'general_autocomplete-descendants' );
+		$should_autocomplete = dws_lowc_get_validated_setting( 'autocomplete-descendants', 'general' );
 		if ( true === $should_autocomplete ) {
 			$descendants = dws_wc_lo_get_orders_tree( $order_id );
 			foreach ( $descendants as $descendant_id ) {
