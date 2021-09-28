@@ -58,10 +58,11 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 		return \array_merge(
 			parent::get_di_container_children(),
 			array(
+				/*
 				ShopOrder::class,
 				LinkingManager::class,
+				Screens::class,*/
 				Permissions::class,
-				Screens::class,
 				Settings::class,
 			)
 		);

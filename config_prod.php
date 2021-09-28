@@ -2,7 +2,6 @@
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\LinkingManager;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\OrdersArchive;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
@@ -10,7 +9,6 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Plugin\PluginInterface;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Request;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\Handlers\WordPress_Handler;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\Handlers\ContainerValidationHandler;
@@ -73,63 +71,63 @@ return array_merge(
 	),
 	// Plugin
 	array(
-		Plugin::class                         => autowire( Plugin::class )
+		Plugin::class                   => autowire( Plugin::class )
 			->constructorParameter( 'plugin_file_path', dws_lowc_path() ),
 
-		ShopOrder::class                      => autowire( ShopOrder::class )
-			->constructorParameter( 'component_id', 'shop-order' )
-			->constructorParameter( 'component_name', 'Shop Order' ),
-		LinkingManager::class                 => autowire( LinkingManager::class )
-			->constructorParameter( 'component_id', 'linking-manager' )
-			->constructorParameter( 'component_name', 'Linking Manager' ),
-
-		Permissions::class                    => autowire( Permissions::class )
+		Permissions::class              => autowire( Permissions::class )
 			->constructorParameter( 'component_id', 'permissions' )
 			->constructorParameter( 'component_name', 'Permissions' ),
-		Permissions\LinkingPermissions::class => autowire( Permissions\LinkingPermissions::class )
-			->constructorParameter( 'component_id', 'linking-permissions' )
-			->constructorParameter( 'component_name', 'Linking Permissions' ),
-		Permissions\ScreensPermissions::class => autowire( Permissions\ScreensPermissions::class )
-			->constructorParameter( 'component_id', 'screens-permissions' )
-			->constructorParameter( 'component_name', 'Screens Permissions' ),
 
-		Settings::class                       => autowire( Settings::class )
+		Settings::class                 => autowire( Settings::class )
 			->constructorParameter( 'component_id', 'settings' )
 			->constructorParameter( 'component_name', 'Settings' ),
-		Settings\GeneralSettings::class       => autowire( Settings\GeneralSettings::class )
+		Settings\GeneralSettings::class => autowire( Settings\GeneralSettings::class )
 			->constructorParameter( 'component_id', 'general-settings' )
 			->constructorParameter( 'component_name', 'General Settings' ),
-		Settings\PluginSettings::class        => autowire( Settings\PluginSettings::class )
+		Settings\PluginSettings::class  => autowire( Settings\PluginSettings::class )
 			->constructorParameter( 'component_id', 'plugin-settings' )
 			->constructorParameter( 'component_name', 'Plugin Settings' ),
 
-		Screens::class                        => autowire( Screens::class )
+
+
+
+		ShopOrder::class                => autowire( ShopOrder::class )
+			->constructorParameter( 'component_id', 'shop-order' )
+			->constructorParameter( 'component_name', 'Shop Order' ),
+		LinkingManager::class           => autowire( LinkingManager::class )
+			->constructorParameter( 'component_id', 'linking-manager' )
+			->constructorParameter( 'component_name', 'Linking Manager' ),
+
+
+
+		Screens::class                  => autowire( Screens::class )
 			->constructorParameter( 'component_id', 'screens' )
 			->constructorParameter( 'component_name', 'Screens' ),
 
-		Screens\EditOrder::class              => autowire( Screens\EditOrder::class )
+		Screens\EditOrder::class        => autowire( Screens\EditOrder::class )
 			->constructorParameter( 'component_id', 'edit-order-screen' )
 			->constructorParameter( 'component_name', 'Edit Order Screen' ),
 
-		Screens\EditOrders::class             => autowire( Screens\EditOrders::class )
+		Screens\EditOrders::class       => autowire( Screens\EditOrders::class )
 			->constructorParameter( 'component_id', 'edit-orders-screen' )
 			->constructorParameter( 'component_name', 'Edit Orders Screen' ),
 	),
 	// Plugin aliases
 	array(
-		'shop-order'          => get( ShopOrder::class ),
-		'linking-manager'     => get( LinkingManager::class ),
+		'permissions'        => get( Permissions::class ),
 
-		'permissions'         => get( Permissions::class ),
-		'linking-permissions' => get( Permissions\LinkingPermissions::class ),
-		'screens-permissions' => get( Permissions\ScreensPermissions::class ),
+		'settings'           => get( Settings::class ),
+		'general-settings'   => get( Settings\GeneralSettings::class ),
+		'plugin-settings'    => get( Settings\PluginSettings::class ),
 
-		'settings'            => get( Settings::class ),
-		'general-settings'    => get( Settings\GeneralSettings::class ),
-		'plugin-settings'     => get( Settings\PluginSettings::class ),
 
-		'screens'             => get( Screens::class ),
-		'edit-order-screen'   => get( Screens\EditOrder::class ),
-		'edit-orders-screen'  => get( Screens\EditOrders::class ),
+
+
+		'shop-order'         => get( ShopOrder::class ),
+		'linking-manager'    => get( LinkingManager::class ),
+
+		'screens'            => get( Screens::class ),
+		'edit-order-screen'  => get( Screens\EditOrder::class ),
+		'edit-orders-screen' => get( Screens\EditOrders::class ),
 	)
 );

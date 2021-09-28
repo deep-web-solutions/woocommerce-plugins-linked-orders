@@ -1,5 +1,6 @@
 <?php
 
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeInterface;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeTrait;
@@ -177,7 +178,7 @@ class DWS_Order_Node implements NodeInterface {
 	 * @return  bool
 	 */
 	public function can_create_linked_order( ?int $user_id = null ): bool {
-		$permission = Users::has_capabilities( array( 'create_dws_linked_order', 'edit_shop_orders' ), array( $this->order->get_id() ), $user_id ) ?? false;
+		$permission = Users::has_capabilities( array( Permissions::CREATE_LINKED_ORDERS, 'edit_shop_orders' ), array( $this->order->get_id() ), $user_id ) ?? false;
 		$max_depth  = dws_wc_lo_get_validated_setting( 'general_max-depth' ) > $this->get_depth();
 
 		return apply_filters( dws_lowc_instance()->get_hook_tag( 'can_create_linked_order' ), $permission && $max_depth, $this->order, $this );
