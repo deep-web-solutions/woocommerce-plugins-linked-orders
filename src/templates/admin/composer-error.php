@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 			wp_sprintf(
 				/* translators: %s: Plugin Name */
 				__( 'It seems like <strong>%s</strong> is corrupted. Please reinstall!', 'linked-orders-for-woocommerce' ),
-				dws_wc_lo_name()
+				dws_lowc_name()
 			),
 			array(
 				'strong' => array(),

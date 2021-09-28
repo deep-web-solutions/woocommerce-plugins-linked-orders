@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90dfd4ad8d28f9034f96655b077100ee",
+    "content-hash": "c16e7f890575811b67b4a181826901ac",
     "packages": [
         {
             "name": "freemius/wordpress-sdk",
@@ -3030,7 +3030,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -3084,7 +3084,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -3132,7 +3132,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -3178,16 +3178,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "b0a21c41163381dd9a5abbd68fe85ed7b4247d30"
+                "reference": "3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/b0a21c41163381dd9a5abbd68fe85ed7b4247d30",
-                "reference": "b0a21c41163381dd9a5abbd68fe85ed7b4247d30",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c",
+                "reference": "3c5fe0dc1bf1ffae91356492e674de9a4fe33c4c",
                 "shasum": ""
             },
             "require": {
@@ -3206,8 +3206,8 @@
             },
             "suggest": {
                 "illuminate/filesystem": "Required to use the composer class (^8.0).",
-                "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^1.3|^2.0).",
-                "ramsey/uuid": "Required to use Str::uuid() (^4.0).",
+                "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^1.3|^2.0.2).",
+                "ramsey/uuid": "Required to use Str::uuid() (^4.2.2).",
                 "symfony/process": "Required to use the composer class (^5.1.4).",
                 "symfony/var-dumper": "Required to use the dd function (^5.1.4).",
                 "vlucas/phpdotenv": "Required to use the Env class and env helper (^5.2)."
@@ -3242,7 +3242,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-09-13T18:43:43+00:00"
+            "time": "2021-09-27T14:57:59+00:00"
         },
         {
             "name": "jetbrains/phpstorm-stubs",
@@ -5668,16 +5668,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.11.54",
+            "version": "0.11.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "8a7156a2a10295de718757d38d4dc901398f0bbf"
+                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/8a7156a2a10295de718757d38d4dc901398f0bbf",
-                "reference": "8a7156a2a10295de718757d38d4dc901398f0bbf",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/fe8c0e8c986661e21f0724d01532c8a0a9506840",
+                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840",
                 "shasum": ""
             },
             "require": {
@@ -5715,7 +5715,7 @@
             "description": "Prefixed and PHP 7.1 downgraded version of rector/rector",
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.11.54"
+                "source": "https://github.com/rectorphp/rector/tree/0.11.55"
             },
             "funding": [
                 {
@@ -5723,7 +5723,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-09-27T12:35:26+00:00"
+            "time": "2021-09-27T16:07:45+00:00"
         },
         {
             "name": "rmccue/requests",
@@ -7114,16 +7114,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.3.7",
+            "version": "v5.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "a665946279f566d94ed5eb98999cfa65c6fa5a78"
+                "reference": "e39c344e06a3ceab531ebeb6c077e6652c4a0829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/a665946279f566d94ed5eb98999cfa65c6fa5a78",
-                "reference": "a665946279f566d94ed5eb98999cfa65c6fa5a78",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e39c344e06a3ceab531ebeb6c077e6652c4a0829",
+                "reference": "e39c344e06a3ceab531ebeb6c077e6652c4a0829",
                 "shasum": ""
             },
             "require": {
@@ -7182,7 +7182,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.3.7"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.3.8"
             },
             "funding": [
                 {
@@ -7198,7 +7198,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-02T16:16:27+00:00"
+            "time": "2021-09-21T20:52:44+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -8173,16 +8173,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v5.3.7",
+            "version": "v5.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6"
+                "reference": "6e69f3551c1a3356cf6ea8d019bf039a0f8b6886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6",
-                "reference": "4d595a6d15fd3a2c67f6f31d14d15d3b7356d7a6",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/6e69f3551c1a3356cf6ea8d019bf039a0f8b6886",
+                "reference": "6e69f3551c1a3356cf6ea8d019bf039a0f8b6886",
                 "shasum": ""
             },
             "require": {
@@ -8248,7 +8248,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v5.3.7"
+                "source": "https://github.com/symfony/translation/tree/v5.3.9"
             },
             "funding": [
                 {

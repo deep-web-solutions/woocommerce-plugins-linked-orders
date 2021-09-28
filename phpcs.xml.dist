@@ -11,6 +11,13 @@
         <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
     </rule>
 
+    <!-- Ignore missing parameter comments if @inheritDoc is present. -->
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <properties>
+            <property name="skipIfInheritdoc" value="true" />
+        </properties>
+    </rule>
+
     <!-- Ignore end char rule since it conflicts with PhpStorm's code folding regions. -->
     <rule ref="Squiz.Commenting.InlineComment">
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>

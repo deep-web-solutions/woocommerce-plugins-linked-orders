@@ -20,9 +20,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return  string
  */
-function dws_wc_lo_name() {
-	return defined( 'DWS_WC_LO_NAME' )
-		? DWS_WC_LO_NAME : 'Linked Orders for WooCommerce';
+function dws_lowc_name() {
+	return defined( 'DWS_LOWC_NAME' )
+		? DWS_LOWC_NAME : 'Linked Orders for WooCommerce';
 }
 
 /**
@@ -33,9 +33,9 @@ function dws_wc_lo_name() {
  *
  * @return  string|null
  */
-function dws_wc_lo_version() {
-	return defined( 'DWS_WC_LO_VERSION' )
-		? DWS_WC_LO_VERSION : null;
+function dws_lowc_version() {
+	return defined( 'DWS_LOWC_VERSION' )
+		? DWS_LOWC_VERSION : null;
 }
 
 /**
@@ -46,9 +46,9 @@ function dws_wc_lo_version() {
  *
  * @return  string|null
  */
-function dws_wc_lo_path() {
-	return defined( 'DWS_WC_LO_PATH' )
-		? DWS_WC_LO_PATH : null;
+function dws_lowc_path() {
+	return defined( 'DWS_LOWC_PATH' )
+		? DWS_LOWC_PATH : null;
 }
 
 /**
@@ -59,9 +59,9 @@ function dws_wc_lo_path() {
  *
  * @return  string|null
  */
-function dws_wc_lo_min_php() {
-	return defined( 'DWS_WC_LO_MIN_PHP' )
-		? DWS_WC_LO_MIN_PHP : null;
+function dws_lowc_min_php() {
+	return defined( 'DWS_LOWC_MIN_PHP' )
+		? DWS_LOWC_MIN_PHP : null;
 }
 
 /**
@@ -72,7 +72,7 @@ function dws_wc_lo_min_php() {
  *
  * @return  string|null
  */
-function dws_wc_lo_min_wp() {
-	return defined( 'DWS_WC_LO_MIN_WP' )
-		? DWS_WC_LO_MIN_WP : null;
+function dws_lowc_min_wp() {
+	return defined( 'DWS_LOWC_MIN_WP' )
+		? DWS_LOWC_MIN_WP : null;
 }

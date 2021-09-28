@@ -165,6 +165,7 @@
   },
 
   "extra": {
+    "text-domain": "linked-orders-for-woocommerce",
     "installer-paths": {
       "vendor/wpackagist-plugin/{$name}/": [
         "type:wordpress-plugin"

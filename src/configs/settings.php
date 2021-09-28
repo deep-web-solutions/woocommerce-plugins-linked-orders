@@ -4,14 +4,13 @@ use function DWS_LO_Deps\DI\factory;
 
 defined( 'ABSPATH' ) || exit;
 
-$config = array(
+return array(
 	'defaults' => array(
-		'null_value' => null,
-		'general'    => array(
+		'general' => array(
 			'max-depth'                => 1,
 			'autocomplete-descendants' => 'no',
 		),
-		'plugin'     => array(
+		'plugin'  => array(
 			'remove-data-uninstall' => 'no',
 		),
 	),
@@ -30,5 +29,3 @@ $config = array(
 		),
 	),
 );
-
-return $config;

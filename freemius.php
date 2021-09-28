@@ -12,10 +12,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return  Freemius
  */
-function dws_wc_lo_fs(): Freemius {
-	global $dws_wc_lo_fs;
+function dws_lowc_fs(): Freemius {
+	global $dws_lowc_fs;
 
-	if ( ! isset( $dws_wc_lo_fs ) ) {
+	if ( ! isset( $dws_lowc_fs ) ) {
 		// Activate multisite network integration.
 		if ( ! defined( 'WP_FS__PRODUCT_8072_MULTISITE' ) ) {
 			define( 'WP_FS__PRODUCT_8072_MULTISITE', true );
@@ -25,7 +25,7 @@ function dws_wc_lo_fs(): Freemius {
 		require_once dirname( __FILE__ ) . '/vendor/freemius/wordpress-sdk/start.php';
 
 		/* @noinspection PhpUnhandledExceptionInspection */
-		$dws_wc_lo_fs = fs_dynamic_init(
+		$dws_lowc_fs = fs_dynamic_init(
 			array(
 				'id'             => '8072',
 				'slug'           => 'linked-orders-for-woocommerce',
@@ -41,7 +41,7 @@ function dws_wc_lo_fs(): Freemius {
 		);
 	}
 
-	return $dws_wc_lo_fs;
+	return $dws_lowc_fs;
 }
 
 /**
@@ -52,14 +52,14 @@ function dws_wc_lo_fs(): Freemius {
  *
  * @return  Freemius
  */
-function dws_wc_lo_fs_init(): Freemius {
-	$freemius = dws_wc_lo_fs();
+function dws_lowc_fs_init(): Freemius {
+	$freemius = dws_lowc_fs();
 
-	do_action( 'dws_wc_lo_fs_loaded' );
+	do_action( 'dws_lowc_fs_loaded' );
 
-	$freemius->add_filter( 'after_skip_url', 'dws_wc_lo_fs_settings_url' );
-	$freemius->add_filter( 'after_connect_url', 'dws_wc_lo_fs_settings_url' );
-	$freemius->add_filter( 'after_pending_connect_url', 'dws_wc_lo_fs_settings_url' );
+	$freemius->add_filter( 'after_skip_url', 'dws_lowc_fs_settings_url' );
+	$freemius->add_filter( 'after_connect_url', 'dws_lowc_fs_settings_url' );
+	$freemius->add_filter( 'after_pending_connect_url', 'dws_lowc_fs_settings_url' );
 
 	return $freemius;
 }
@@ -72,8 +72,8 @@ function dws_wc_lo_fs_init(): Freemius {
  *
  * @return  string
  */
-function dws_wc_lo_fs_settings_url(): string {
-	return dws_wc_lo_instance()->is_active()
+function dws_lowc_fs_settings_url(): string {
+	return dws_lowc_instance()->is_active()
 		? admin_url( 'admin.php?page=wc-settings&tab=advanced&section=dws-linked-orders' )
 		: admin_url( 'plugins.php' );
 }

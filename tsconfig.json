@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "noEmit": false,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es5",
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true
+    "target": "esnext", // Target latest version of ECMAScript.
+    "moduleResolution": "node", // Search under node_modules for non-relative imports.
+    "allowJs": true, // Process & infer types from .js files.
+    "noEmit": true, // Don't emit; allow Babel to transform files.
+    "strict": true, // Enable the strictest settings like strictNullChecks & noImplicitAny.
+    "isolatedModules": true, // Disallow features that require cross-file information for emit.
+    "esModuleInterop": true, // Import non-ES modules as default imports.
+    "sourceMap": true, // Enable the generation of sourcemap files.
+    "allowSyntheticDefaultImports": true, // https://www.typescriptlang.org/tsconfig#Interop_Constraints_6252
   },
   "include": [
     "./assets/dev/**/*.d.ts",

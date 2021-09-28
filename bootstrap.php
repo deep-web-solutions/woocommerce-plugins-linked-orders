@@ -25,6 +25,8 @@
  * License URI:             http://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:             linked-orders-for-woocommerce
  * Domain Path:             /src/languages
+ * WC requires at least:    4.5.2
+ * WC tested up to:         5.7.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -47,24 +49,24 @@ if ( ! function_exists( '\DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framewor
 }
 
 // Define plugin constants.
-define( 'DWS_WC_LO_NAME', DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_whitelabel_name() . ': Linked Orders for WooCommerce' );
-define( 'DWS_WC_LO_VERSION', '1.0.0' );
-define( 'DWS_WC_LO_PATH', __FILE__ );
+define( 'DWS_LOWC_NAME', DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_whitelabel_name() . ': Linked Orders for WooCommerce' );
+define( 'DWS_LOWC_VERSION', '1.0.0' );
+define( 'DWS_LOWC_PATH', __FILE__ );
 
 // Define minimum environment requirements.
-define( 'DWS_WC_LO_MIN_PHP', '7.4' );
-define( 'DWS_WC_LO_MIN_WP', '5.5' );
+define( 'DWS_LOWC_MIN_PHP', '7.4' );
+define( 'DWS_LOWC_MIN_WP', '5.5' );
 
 // Start plugin initialization if system requirements check out.
-if ( DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requirements_met( dws_wc_lo_min_php(), dws_wc_lo_min_wp() ) ) {
-	if ( ! function_exists( 'dws_wc_lo_fs' ) ) {
+if ( DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requirements_met( dws_lowc_min_php(), dws_lowc_min_wp() ) ) {
+	if ( ! function_exists( 'dws_lowc_fs' ) ) {
 		include __DIR__ . '/freemius.php';
-		dws_wc_lo_fs_init();
+		dws_lowc_fs_init();
 	}
 
 	include __DIR__ . '/functions.php';
-	add_action( 'plugins_loaded', 'dws_wc_lo_instance_initialize' );
-	register_activation_hook( __FILE__, 'dws_wc_lo_plugin_activate' );
+	add_action( 'plugins_loaded', 'dws_lowc_instance_initialize' );
+	register_activation_hook( __FILE__, 'dws_lowc_plugin_activate' );
 } else {
-	DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_output_requirements_error( dws_wc_lo_name(), dws_wc_lo_version(), dws_wc_lo_min_php(), dws_wc_lo_min_wp() );
+	DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_output_requirements_error( dws_lowc_name(), dws_lowc_version(), dws_lowc_min_php(), dws_lowc_min_wp() );
 }

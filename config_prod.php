@@ -9,13 +9,14 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Plugin\PluginInterface;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Request;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\Handlers\WordPress_Handler;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\Handlers\DefaultHooksHandler;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\Handlers\ContainerValidationHandler;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\WC_Handler;
+use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Utilities\WC_LoggingHandler;
 use DWS_LO_Deps\DI\ContainerBuilder;
 use function DWS_LO_Deps\DI\autowire;
 use function DWS_LO_Deps\DI\factory;
@@ -30,11 +31,28 @@ return array_merge(
 	),
 	// Utilities
 	array(
-		HooksService::class => factory(
-			function( Plugin $plugin, LoggingService $logging_service, DefaultHooksHandler $handler ) {
-				$hooks_service = new HooksService( $plugin, $logging_service, $handler );
+		HooksService::class   => factory(
+			function( Plugin $plugin, LoggingService $logging_service ) {
+				$hooks_service = new HooksService( $plugin, $logging_service );
 				$plugin->register_runnable_on_setup( $hooks_service );
 				return $hooks_service;
+			}
+		),
+		LoggingService::class => factory(
+			function( PluginInterface $plugin ) {
+				$logging_handlers = array();
+
+				if ( class_exists( 'WC_Log_Levels' ) ) { // in case the WC plugin is not active
+					$min_log_level  = Request::has_debug() ? WC_Log_Levels::DEBUG : WC_Log_Levels::ERROR;
+					$wc_log_handler = new WC_Log_Handler_File();
+
+					$logging_handlers = array(
+						new WC_LoggingHandler( 'framework', array( $wc_log_handler ), $min_log_level ),
+						new WC_LoggingHandler( 'plugin', array( $wc_log_handler ), $min_log_level ),
+					);
+				}
+
+				return new LoggingService( $plugin, $logging_handlers, Request::has_debug() );
 			}
 		),
 	),
@@ -42,7 +60,7 @@ return array_merge(
 	array(
 		SettingsService::class   => factory(
 			function( Plugin $plugin, LoggingService $logging_service, HooksService $hooks_service ) {
-				return new SettingsService( $plugin, $logging_service, $hooks_service, array( new WordPress_Handler(), new WC_Handler() ) );
+				return new SettingsService( $plugin, $logging_service, $hooks_service, array( new WC_Handler() ) );
 			}
 		),
 		ValidationService::class => factory(
@@ -56,7 +74,7 @@ return array_merge(
 	// Plugin
 	array(
 		Plugin::class                         => autowire( Plugin::class )
-			->constructorParameter( 'plugin_file_path', dws_wc_lo_path() ),
+			->constructorParameter( 'plugin_file_path', dws_lowc_path() ),
 
 		ShopOrder::class                      => autowire( ShopOrder::class )
 			->constructorParameter( 'component_id', 'shop-order' )
