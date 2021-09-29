@@ -56,7 +56,7 @@ class Settings extends WC_AbstractValidatedOptionsSectionFunctionality {
 	 * @version 1.0.0
 	 */
 	public function get_page_title(): string {
-		return \_x( 'Linked Orders', 'settings', 'linked-order-for-woocommerce' );
+		return \_x( 'Linked Orders', 'settings', 'linked-orders-for-woocommerce' );
 	}
 
 	/**

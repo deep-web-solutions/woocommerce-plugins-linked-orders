@@ -6,8 +6,6 @@
  * @version             1.0.0
  * @package             DeepWebSolutions\WC-Plugins\LinkedOrders
  * @author              Deep Web Solutions
- * @copyright           2021 Deep Web Solutions
- * @license             GPL-3.0-or-later
  *
  * @noinspection        ALL
  * @fs_ignore           /dependencies, /vendor
