@@ -3,7 +3,6 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
@@ -59,8 +58,8 @@ class ListTable extends AbstractPluginFunctionality {
 			$hooks_service->add_action( "manage_{$order_type}_posts_custom_column", $this, 'output_column', 10, 2 );
 		}
 
-		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_table_filters', 20 );
-		$hooks_service->add_filter( 'request', $this, 'maybe_filter_request_query', 999 );
+		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_filters', 20 );
+		$hooks_service->add_filter( 'request', $this, 'filter_request_query', 999 );
 
 		$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_table_actions', 999, 2 );
 	}
@@ -77,7 +76,7 @@ class ListTable extends AbstractPluginFunctionality {
 	public function register_scripts_and_styles( ScriptsHandler $scripts_handler, StylesHandler $styles_handler ): void {
 		$scripts_handler->enqueue_admin_script(
 			$this->get_asset_handle(),
-			Plugin::get_plugin_assets_base_relative_url() . 'dist/js/orders-archive.js',
+			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/js/orders-list-table.js',
 			$this->get_plugin()->get_plugin_version(),
 			array( 'jquery' ),
 			true,
@@ -86,7 +85,7 @@ class ListTable extends AbstractPluginFunctionality {
 
 		$styles_handler->enqueue_admin_style(
 			$this->get_asset_handle(),
-			Plugin::get_plugin_assets_base_relative_url() . 'dist/css/orders-archive.css',
+			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/css/orders-list-table.css',
 			$this->get_plugin()->get_plugin_version(),
 			array( 'woocommerce_admin_styles' ),
 			'all',
@@ -109,11 +108,13 @@ class ListTable extends AbstractPluginFunctionality {
 	 * @return  array
 	 */
 	public function register_column( array $columns ): array {
+		$insert_after = \apply_filters( $this->get_hook_tag( 'column', array( 'insert_after' ) ), 'order_total', \get_post_type(), $columns );
+
 		return Arrays::insert_after(
 			$columns,
-			'order_total',
+			$insert_after,
 			array(
-				'dws_lo_depth' => \_x( 'Depth', 'orders table', 'linked-orders-for-woocommerce' ),
+				'dws_lo_depth' => \_x( 'Depth', 'list table heading', 'linked-orders-for-woocommerce' ),
 			)
 		);
 	}
@@ -130,21 +131,26 @@ class ListTable extends AbstractPluginFunctionality {
 	public function output_column( string $column, int $post_id ): void {
 		switch ( $column ) {
 			case 'dws_lo_depth':
-				$dws_order = dws_lowc_get_order_node( $post_id );
-				$depth     = $dws_order->get_depth();
+				$post_type_object = \get_post_type_object( \get_post_type( $post_id ) );
+				$dws_order        = dws_lowc_get_order_node( $post_id );
+				$depth            = $dws_order->get_depth();
 
 				if ( 0 === $depth ) {
-					$depth_label = \_nx( 'Root order', 'Root orders', 1, 'orders table', 'linked-orders-for-woocommerce' );
+					$depth_label = \sprintf(
+						/* translators: %s: order type singular name */
+						\_x( 'Root %s', 'list table content', 'linked-orders-for-woocommerce' ),
+						\strtolower( $post_type_object->labels->singular_name )
+					);
 				} else {
-					/* translators: numerical depth of the order */
-					$depth_label = \_nx( 'Child order (level %d)', 'Child orders (level %d)', 1, 'orders table', 'linked-orders-for-woocommerce' );
+					$depth_label = \sprintf(
+						/* translators: %s: order type singular name; %d: numerical depth of the order */
+						\_x( 'Child %1$s (level %2$d)', 'list table content', 'linked-orders-for-woocommerce' ),
+						\strtolower( $post_type_object->labels->singular_name ),
+						$depth + 1 // +1 adjustment for non-programmers
+					);
 				}
 
-				$depth_label = \apply_filters( $this->get_hook_tag( 'depth_label' ), $depth_label, $dws_order );
-				if ( false !== \strpos( $depth_label, '%d' ) ) {
-					$depth_label = \sprintf( $depth_label, $depth + 1 ); // +1 adjustment for non-programmers
-				}
-
+				$depth_label = \apply_filters( $this->get_hook_tag( 'column', array( 'content' ) ), $depth_label, $dws_order );
 				echo \esc_html( $depth_label );
 
 				break;
@@ -157,11 +163,12 @@ class ListTable extends AbstractPluginFunctionality {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
-	public function output_table_filters() {
+	public function output_filters() {
 		global $typenow;
 
-		if ( 'shop_order' === $typenow ) {
-			$max_depth = dws_lowc_get_validated_setting( 'max-depth', 'general' );
+		if ( \in_array( $typenow, dws_lowc_get_supported_order_types(), true ) ) {
+			$post_type_object = \get_post_type_object( $typenow );
+			$max_depth        = $this->get_max_depth();
 
 			?>
 
@@ -180,18 +187,35 @@ class ListTable extends AbstractPluginFunctionality {
 			<!-- DWS Linked Orders filter for linking depth. -->
 			<select name="_dws_lo_depth" id="dws_lo_depth_filter_dropdown">
 				<option value=""">
-					<?php \esc_html_e( 'All order depths', 'linked-orders-for-woocommerce' ); ?>
+					<?php
+						echo \esc_html(
+							\sprintf(
+								/* translators: %s: order type singular name */
+								\__( 'All %s depths', 'linked-orders-for-woocommerce' ),
+								\strtolower( $post_type_object->labels->singular_name )
+							)
+						);
+					?>
 				</option>
 				<option value="0" <?php selected( 0, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
-					<?php echo \esc_html( \_nx( 'Root order', 'Root orders', PHP_INT_MAX, 'orders table', 'linked-orders-for-woocommerce' ) ); ?>
+					<?php
+						echo \esc_html(
+							\sprintf(
+								/* translators: %s: order type plural name */
+								\_x( 'Root %s', 'list table filter', 'linked-orders-for-woocommerce' ),
+								\strtolower( $post_type_object->label )
+							)
+						);
+					?>
 				</option>
 				<?php for ( $i = 1; $i <= $max_depth; $i++ ) : ?>
 					<option value="<?php echo \esc_attr( $i ); ?>" <?php selected( $i, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
 						<?php
 							echo \esc_html(
 								\sprintf(
-									/* translators: numerical depth of the order */
-									\_nx( 'Child order (level %d)', 'Child orders (level %d)', PHP_INT_MAX, 'orders table', 'linked-orders-for-woocommerce' ),
+									/* translators: %s: order type plural name; %d: numerical depth of the order */
+									\_x( 'Child %1$s (level %2$d)', 'list table filter', 'linked-orders-for-woocommerce' ),
+									\strtolower( $post_type_object->label ),
 									$i + 1 // +1 for non-programmers
 								)
 							);
@@ -214,10 +238,10 @@ class ListTable extends AbstractPluginFunctionality {
 	 *
 	 * @return  array
 	 */
-	public function maybe_filter_request_query( array $query_vars ) {
+	public function filter_request_query( array $query_vars ) {
 		global $typenow;
 
-		if ( \in_array( $typenow, \wc_get_order_types( 'order-meta-boxes' ), true ) ) {
+		if ( \in_array( $typenow, dws_lowc_get_supported_order_types(), true ) ) {
 			// Filter orders made by the same guest email address.
 			$guest_customer = \wc_clean( Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user' ) );
 			if ( ! empty( $guest_customer ) ) {
@@ -325,6 +349,33 @@ class ListTable extends AbstractPluginFunctionality {
 		}
 
 		return \array_merge( $new_actions, $actions );
+	}
+
+	// endregion
+
+	// region HELPERS
+
+	/**
+	 * In order to ensure that it's always possible to filter existing orders, we need to ensure that we get the maximum
+     * used order depth. That can be different from the settings if the maximum allowed depth was lowered after already
+     * creating deeper children.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  int
+	 */
+	protected function get_max_depth(): int {
+		global $wpdb;
+
+		$max_database = $wpdb->get_var( // phpcs:ignore WordPress.DB
+			"SELECT MAX( meta_value ) FROM $wpdb->postmeta WHERE meta_key = '_dws_lo_depth'"
+		);
+		$max_database = Integers::maybe_cast( $max_database, 0 );
+
+		$max_settings = dws_lowc_get_validated_setting( 'max-depth', 'general' );
+
+		return \max( $max_settings, $max_database );
 	}
 
 	// endregion

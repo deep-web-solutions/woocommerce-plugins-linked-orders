@@ -23,10 +23,9 @@ class Permissions extends AbstractPermissionsFunctionality {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @access  public
 	 * @var     string
 	 */
-	public const CREATE_LINKED_ORDERS = 'create_dws_linked_orders';
+	public const CREATE_LINKED_CHILDREN = 'create_dws_linked_children';
 
 	// endregion
 

@@ -81,21 +81,26 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 	 * @version 1.0.0
 	 */
 	protected function output_local(): ?OutputFailureException {
-		$order_id  = \get_the_ID();
-		$dws_order = dws_lowc_get_order_node( $order_id );
-		if ( empty( $dws_order ) ) {
-			return new OutputFailureException( 'Metabox is being outputted in an invalid context' );
-		}
+		$order_id = \get_the_ID();
+		$dws_node = dws_lowc_get_order_node( $order_id );
 
 		// Output parent order information.
-		if ( $dws_order->get_depth() > 0 ) {
-			$dws_order_parent = $dws_order->get_parent();
+		if ( $dws_node->get_depth() > 0 ) {
+			$dws_node_parent = $dws_node->get_parent();
 			?>
 
 			<div class="dws-linked-orders__parent">
-				<?php \esc_html_e( 'Parent order: ', 'linked-orders-for-woocommerce' ); ?>
-				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_order_parent->get_id() ) ); ?>" target="_blank">
-					<?php echo \wp_kses_post( $this->format_order_name( $dws_order_parent ) ); ?>
+				<?php
+					echo \esc_html(
+						\sprintf(
+							/* translators: parent post type singular name */
+							\_x( 'Parent %s:', 'metabox', 'linked-orders-for-woocommerce' ),
+							\strtolower( $dws_node_parent->get_post_type()->labels->singular_name )
+						)
+					);
+				?>
+				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_node_parent->get_id() ) ); ?>" target="_blank">
+					<?php echo \wp_kses_post( $dws_node_parent->get_formatted_name() ); ?>
 				</a>
 			</div>
 
@@ -105,13 +110,29 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 		}
 
 		// Output children orders information.
-		if ( empty( $dws_order->get_children() ) ) {
+		if ( empty( $dws_node->get_children() ) ) {
 			?>
 
 			<div class="dws-linked-orders__no-children">
-				<?php \esc_html_e( 'There are no child orders attached.', 'linked-orders-for-woocommerce' ); ?>
-				<?php if ( true !== $dws_order->can_create_linked_order() ) : ?>
-					<?php \esc_html_e( 'New child orders cannot be added to this order.', 'linked-orders-for-woocommerce' ); ?>
+				<?php
+					echo \esc_html(
+						\sprintf(
+							/* translators: node post type plural name */
+							\_x( 'There are no child %s attached.', 'metabox', 'linked-orders-for-woocommerce' ),
+							\strtolower( $dws_node->get_post_type()->label )
+						)
+					);
+				?>
+				<?php if ( true !== $dws_node->can_create_child() ) : ?>
+					<?php
+						echo \esc_html(
+							\sprintf(
+								/* translators: node post type singular name */
+								\_x( 'New children cannot be added to this %s.', 'metabox', 'linked-orders-for-woocommerce' ),
+								\strtolower( $dws_node->get_post_type()->labels->singular_name )
+							)
+						);
+					?>
 				<?php endif; ?>
 			</div>
 
@@ -120,12 +141,12 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			?>
 
 			<div class="dws-linked-orders__children">
-				<?php \esc_html_e( 'Child orders: ', 'linked-orders-for-woocommerce' ); ?>
+				<?php \esc_html_e( 'Attached children: ', 'linked-orders-for-woocommerce' ); ?>
 				<ul class="dws-linked-orders__children-list">
-					<?php foreach ( $dws_order->get_children() as $dws_child ) : ?>
+					<?php foreach ( $dws_node->get_children() as $dws_child ) : ?>
 						<li id="linked-order-<?php echo \esc_attr( $dws_child->get_id() ); ?>" class="dws-linked-order">
 							<a href="<?php echo \esc_url( \get_edit_post_link( $dws_child->get_id() ) ); ?>" target="_blank">
-								<?php echo \wp_kses_post( $this->format_order_name( $dws_child ) ); ?>
+								<?php echo \wp_kses_post( $dws_child->get_formatted_name() ); ?>
 							</a>
 						</li>
 					<?php endforeach; ?>
@@ -136,41 +157,26 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 		}
 
 		// Maybe output button for creating a new child order.
-		if ( true === $dws_order->can_create_linked_order() ) {
+		if ( true === $dws_node->can_create_child() ) {
 			$link = \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_lowc_create_empty_linked_order&order_id=' . $order_id ), 'dws_create_empty_linked_order' );
 			?>
 
 			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">
-				<?php \esc_html_e( 'Add new child order', 'linked-orders-for-woocommerce' ); ?>
+				<?php
+					echo \esc_html(
+						\sprintf(
+							/* translators: post type singular name */
+							\_x( 'Add new child %s', 'metabox', 'linked-orders-for-woocommerce' ),
+							\strtolower( $dws_node->get_post_type()->labels->singular_name )
+						)
+					);
+				?>
 			</a>
 
 			<?php
 		}
 
 		return null;
-	}
-
-	// endregion
-
-	// region HELPERS
-
-	/**
-	 * Returns a formatted name for the given order.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @param   \DWS_Order_Node   $order      Order to format the name of.
-	 *
-	 * @return  string
-	 */
-	protected function format_order_name( \DWS_Order_Node $order ): string {
-		return \sprintf(
-			/* translators: 1. Order number; 2. Order status label. */
-			\__( 'Order #%1$s - %2$s', 'linked-orders-for-woocommerce' ),
-			$order->get_order_number(),
-			\wc_get_order_status_name( $order->get_status() )
-		);
 	}
 
 	// endregion

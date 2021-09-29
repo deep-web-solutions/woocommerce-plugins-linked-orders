@@ -4,6 +4,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeInterface;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeTrait;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
 
@@ -33,9 +34,18 @@ class DWS_Order_Node implements NodeInterface {
 	 * @version 1.0.0
 	 *
 	 * @var     WC_Order
-	 * @access  protected
 	 */
 	protected WC_Order $order;
+
+	/**
+	 * The WordPress post type object for the current order (@see dws_lowc_get_supported_order_types()).
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @var     WP_Post_Type
+	 */
+	protected WP_Post_Type $post_type;
 
 	/**
 	 * Whether the current object's metadata has been ready from the database yet or not.
@@ -44,7 +54,6 @@ class DWS_Order_Node implements NodeInterface {
 	 * @version 1.0.0
 	 *
 	 * @var     bool
-	 * @access  protected
 	 */
 	protected bool $is_read = false;
 
@@ -63,15 +72,13 @@ class DWS_Order_Node implements NodeInterface {
 	 * @throws  NotSupportedException   Thrown if the order passed on is not proper.
 	 */
 	public function __construct( $order ) {
-		if ( ! is_object( $order ) ) {
-			$order = wc_get_order( absint( $order ) );
+		$order = wc_get_order( $order );
+		if ( true !== dws_lowc_is_supported_order( $order ) ) {
+			throw new NotSupportedException( 'Order type is not supported' );
 		}
 
-		if ( ! is_a( $order, WC_Order::class ) ) {
-			throw new NotSupportedException( 'Order is not supported' );
-		}
-
-		$this->order = $order;
+		$this->order     = $order;
+		$this->post_type = get_post_type_object( $order->get_type() );
 	}
 
 	/**
@@ -107,50 +114,120 @@ class DWS_Order_Node implements NodeInterface {
 
 	// endregion
 
+	// region INHERITED METHODS
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function get_depth(): int {
+		$this->maybe_read();
+		return $this->depth;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function get_parent(): ?DWS_Order_Node {
+		$this->maybe_read();
+
+		/* @noinspection PhpIncompatibleReturnTypeInspection */
+		return $this->parent;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  DWS_Order_Node[]
+	 */
+	public function get_children(): array {
+		$this->maybe_read();
+		return $this->children;
+	}
+
+	// endregion
+
+	// region GETTERS
+
+	/**
+	 * Returns the internal order object.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  WC_Order
+	 */
+	public function get_order(): WC_Order {
+		return $this->order;
+	}
+
+	/**
+	 * Returns the order object's post type object.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  WP_Post_Type
+	 */
+	public function get_post_type(): WP_Post_Type {
+		return $this->post_type;
+	}
+
+	// endregion
+
 	// region METHODS
 
 	/**
-	 * Returns whether the object's metadata has been populated yet or not.
+	 * Returns the formatted name for the node's order.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @return  bool
+	 * @return  string
 	 */
-	public function is_read(): bool {
-		return $this->is_read;
-	}
-
-	/**
-	 * Populates the object's metadata from the database if not done already.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 */
-	public function maybe_read() {
-		if ( ! $this->is_read() ) {
-			$this->read();
-		}
-	}
-
-	/**
-	 * Forces repopulating the object's metadata from the database.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 */
-	public function read() {
-		$this->depth = Integers::maybe_cast( $this->order->get_meta( '_dws_lo_depth' ), 0 );
-		if ( $this->depth > 0 ) {
-			$this->parent = new DWS_Order_Node( $this->order->get_meta( '_dws_lo_parent' ) );
-		}
-
-		$this->children = array_map(
-			fn( $child_id ) => new DWS_Order_Node( $child_id ),
-			$this->order->get_meta( '_dws_lo_children' ) ?: array()
+	public function get_formatted_name(): string {
+		$status_name = apply_filters(
+			dws_lowc_get_hook_tag( 'node', array( 'status_name' ) ),
+			wc_get_order_status_name( $this->order->get_status() ),
+			$this->post_type,
+			$this->order,
+			$this
+		);
+		$node_name   = \sprintf(
+			/* translators: 1. Post type name. 2. Order number; 3. Order status label. */
+			\__( '%1$s #%2$s - %3$s', 'linked-orders-for-woocommerce' ),
+			$this->post_type->labels->singular_name,
+			$this->order->get_order_number(),
+			$status_name
 		);
 
-		$this->is_read = true;
+		return apply_filters( dws_lowc_get_hook_tag( 'node', array( 'get_formatted_name' ) ), $node_name, $this );
+	}
+
+	/**
+	 * Checks whether a given user is allowed to create a linked child for the current order object or not.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @param   int|null    $user_id    The ID of the user that the checks are being performed for.
+	 *
+	 * @return bool
+	 */
+	public function can_create_child( ?int $user_id = null ): bool {
+		$permission = Users::has_capabilities( array( Permissions::CREATE_LINKED_CHILDREN, 'edit_shop_orders' ), array( $this->order->get_id() ), $user_id ) ?? false;
+		$max_depth  = dws_lowc_get_validated_setting( 'max-depth', 'general' ) > $this->get_depth();
+		$statuses   = in_array( $this->order->get_status(), dws_lowc_get_valid_statuses_for_new_child( $this->post_type->name, $this->order ), true );
+
+		return apply_filters( dws_lowc_get_hook_tag( 'node', array() ), $permission && $max_depth && $statuses, $this->order, $this );
 	}
 
 	/**
@@ -167,21 +244,32 @@ class DWS_Order_Node implements NodeInterface {
 		$this->order->save();
 	}
 
+	// endregion
+
+	// region HELPERS
+
 	/**
-	 * Checks whether a given user can create new linked orders for the current order or not.
+	 * The linking metadata is read lazily. This is to avoid infinite loops and to minimize database reads.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
-	 *
-	 * @param   int|null    $user_id    The ID of the user that the checks are being performed for.
-	 *
-	 * @return  bool
 	 */
-	public function can_create_linked_order( ?int $user_id = null ): bool {
-		$permission = Users::has_capabilities( array( Permissions::CREATE_LINKED_ORDERS, 'edit_shop_orders' ), array( $this->order->get_id() ), $user_id ) ?? false;
-		$max_depth  = dws_lowc_get_validated_setting( 'max-depth', 'general' ) > $this->get_depth();
+	protected function maybe_read(): void {
+		if ( true === $this->is_read ) {
+			return;
+		}
 
-		return apply_filters( dws_lowc_instance()->get_hook_tag( 'can_create_linked_order' ), $permission && $max_depth, $this->order, $this );
+		$this->depth = Integers::maybe_cast( $this->order->get_meta( '_dws_lo_depth' ), 0 );
+		if ( $this->depth > 0 ) {
+			$this->parent = new DWS_Order_Node( $this->order->get_meta( '_dws_lo_parent' ) );
+		}
+
+		$this->children = array_map(
+			fn( $child_id ) => new DWS_Order_Node( $child_id ),
+			Arrays::validate( $this->order->get_meta( '_dws_lo_children' ), array() )
+		);
+
+		$this->is_read = true;
 	}
 
 	// endregion

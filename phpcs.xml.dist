@@ -55,6 +55,12 @@
         <exclude name="WordPress.NamingConventions.ValidHookName"/>
     </rule>
 
+    <!-- WooCommerce coding standards. -->
+    <rule ref="WooCommerce">
+        <!-- Allow the usage of @author tags. -->
+        <exclude name="WooCommerce.Commenting.CommentTags.AuthorTag"/>
+    </rule>
+
     <!-- Define some special rules for the Codeception tests. -->
     <rule ref="PSR2.Methods.MethodDeclaration">
         <exclude-pattern>*/tests/*</exclude-pattern>

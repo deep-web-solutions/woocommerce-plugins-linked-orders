@@ -5,21 +5,18 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedEx
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Converts a WC Order reference to a DWS_Linked_Order object and reads its metadata from the database.
+ * Converts a WC Order reference to a DWS_Order_Node object.
  *
  * @since   1.0.0
  * @version 1.0.0
  *
- * @param   WC_Order|int    $order  Order to retrieve.
+ * @param   WC_Order|int    $order      Order reference.
  *
  * @return  DWS_Order_Node|null
  */
 function dws_lowc_get_order_node( $order ): ?DWS_Order_Node {
 	try {
-		$dws_order = new DWS_Order_Node( $order );
-		$dws_order->read();
-
-		return $dws_order;
+		return new DWS_Order_Node( $order );
 	} catch ( NotSupportedException $exception ) {
 		return null;
 	}
@@ -31,11 +28,11 @@ function dws_lowc_get_order_node( $order ): ?DWS_Order_Node {
  * @since   1.0.0
  * @version 1.0.0
  *
- * @param   WC_Order|int    $order  Order to retrieve.
+ * @param   WC_Order|int    $order      Order reference.
  *
  * @return  bool|null
  */
-function dws_wc_lo_is_root_order( $order ): ?bool {
+function dws_lowc_is_root_order( $order ): ?bool {
 	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
