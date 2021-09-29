@@ -53,6 +53,7 @@
     "phpcompatibility/php-compatibility": "*",
     "phpcompatibility/phpcompatibility-wp": "*",
     "wp-coding-standards/wpcs": "*",
+    "woocommerce/woocommerce-sniffs": "*",
 
     "lucatume/wp-browser": "3.*",
     "codeception/module-asserts": "^1.3",

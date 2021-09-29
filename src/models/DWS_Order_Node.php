@@ -4,6 +4,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeInterface;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeTrait;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\ParentInterface;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
@@ -21,7 +22,11 @@ defined( 'ABSPATH' ) || exit;
 class DWS_Order_Node implements NodeInterface {
 	// region TRAITS
 
-	use NodeTrait;
+	use NodeTrait {
+		set_parent as protected set_parent_trait;
+		set_children as protected set_children_trait;
+		add_child as protected add_child_trait;
+	}
 
 	// endregion
 
@@ -133,11 +138,33 @@ class DWS_Order_Node implements NodeInterface {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
+	public function set_depth( int $depth ) {
+		$this->maybe_read();
+		$this->depth = $depth;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
 	public function get_parent(): ?DWS_Order_Node {
 		$this->maybe_read();
 
 		/* @noinspection PhpIncompatibleReturnTypeInspection */
 		return $this->parent;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function set_parent( ParentInterface $parent ) {
+		$this->maybe_read();
+		$this->set_parent_trait( $parent );
 	}
 
 	/**
@@ -151,6 +178,28 @@ class DWS_Order_Node implements NodeInterface {
 	public function get_children(): array {
 		$this->maybe_read();
 		return $this->children;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function set_children( array $children ) {
+		$this->maybe_read();
+		$this->set_children_trait( $children );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function add_child( $child ): bool {
+		$this->maybe_read();
+		return $this->add_child_trait( $child );
 	}
 
 	// endregion
@@ -237,9 +286,9 @@ class DWS_Order_Node implements NodeInterface {
 	 * @version 1.0.0
 	 */
 	public function save() {
-		$this->order->update_meta_data( '_dws_lo_depth', $this->depth );
-		$this->order->update_meta_data( '_dws_lo_parent', $this->parent ? $this->parent->get_id() : null );
-		$this->order->update_meta_data( '_dws_lo_children', array_map( fn( $child ) => $child->get_id(), $this->children ) );
+		$this->order->update_meta_data( '_dws_lo_depth', $this->get_depth() );
+		$this->order->update_meta_data( '_dws_lo_parent', $this->get_parent() ? $this->get_parent()->get_id() : null );
+		$this->order->update_meta_data( '_dws_lo_children', array_map( fn( $child ) => $child->get_id(), $this->get_children() ) );
 
 		$this->order->save();
 	}

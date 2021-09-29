@@ -171,6 +171,6 @@ function dws_lowc_get_component_hook_tag( string $component_id, string $name, ar
 
 require plugin_dir_path( __FILE__ ) . 'src/functions/settings.php';
 require plugin_dir_path( __FILE__ ) . 'src/functions/post-type.php';
-require plugin_dir_path( __FILE__ ) . 'src/functions/orders.php';
+require plugin_dir_path( __FILE__ ) . 'src/functions/linking.php';
 
 // endregion

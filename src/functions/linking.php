@@ -42,6 +42,34 @@ function dws_lowc_is_root_order( $order ): ?bool {
 }
 
 /**
+ * Links two orders in a parent-child relation.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   int     $parent_id      The ID of the parent order.
+ * @param   int     $child_id       The ID of the child order.
+ *
+ * @return  bool|null
+ */
+function dws_lowc_link_orders( int $parent_id, int $child_id ): ?bool {
+	$dws_parent_node = dws_lowc_get_order_node( $parent_id );
+	$dws_child_node  = dws_lowc_get_order_node( $child_id );
+	if ( empty( $dws_parent_node ) || empty( $dws_child_node ) ) {
+		return null;
+	}
+
+	if ( true !== $dws_parent_node->add_child( $dws_child_node ) ) {
+		return false;
+	}
+
+	$dws_parent_node->save();
+	$dws_child_node->save();
+
+	return true;
+}
+
+/**
  * Goes up a linking tree and retrieves the root order.
  *
  * @since   1.0.0
