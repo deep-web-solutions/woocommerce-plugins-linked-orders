@@ -5,7 +5,6 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Plugin\PluginInterface;
@@ -81,6 +80,9 @@ return array_merge(
 		Output\MetaBox::class                => autowire( Output\MetaBox::class )
 			->constructorParameter( 'component_id', 'metabox-output' )
 			->constructorParameter( 'component_name', 'MetaBox Output' ),
+		Output\ListTable::class              => autowire( Output\ListTable::class )
+			->constructorParameter( 'component_id', 'list-table-output' )
+			->constructorParameter( 'component_name', 'List Table Output' ),
 
 		Permissions::class                   => autowire( Permissions::class )
 			->constructorParameter( 'component_id', 'permissions' )
@@ -108,20 +110,12 @@ return array_merge(
 		LinkingManager::class                => autowire( LinkingManager::class )
 			->constructorParameter( 'component_id', 'linking-manager' )
 			->constructorParameter( 'component_name', 'Linking Manager' ),
-
-
-
-		Screens::class                       => autowire( Screens::class )
-			->constructorParameter( 'component_id', 'screens' )
-			->constructorParameter( 'component_name', 'Screens' ),
-		Screens\EditOrders::class            => autowire( Screens\EditOrders::class )
-			->constructorParameter( 'component_id', 'edit-orders-screen' )
-			->constructorParameter( 'component_name', 'Edit Orders Screen' ),
 	),
 	// Plugin aliases
 	array(
 		'output'             => get( Output::class ),
 		'metabox-output'     => get( Output\MetaBox::class ),
+		'list-table-output'  => get( Output\ListTable::class ),
 
 		'permissions'        => get( Permissions::class ),
 		'output-permissions' => get( Permissions\OutputPermissions::class ),
@@ -135,8 +129,5 @@ return array_merge(
 
 		'shop-order'         => get( ShopOrder::class ),
 		'linking-manager'    => get( LinkingManager::class ),
-
-		'screens'            => get( Screens::class ),
-		'edit-orders-screen' => get( Screens\EditOrders::class ),
 	)
 );

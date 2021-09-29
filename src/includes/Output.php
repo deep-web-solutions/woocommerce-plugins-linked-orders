@@ -43,7 +43,7 @@ class Output extends AbstractPluginFunctionality {
 	 * @version 1.0.0
 	 */
 	protected function get_di_container_children(): array {
-		return array( Output\MetaBox::class );
+		return array( Output\MetaBox::class, Output\ListTable::class );
 	}
 
 	// endregion

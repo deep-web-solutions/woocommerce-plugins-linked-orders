@@ -53,10 +53,15 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 		$settings_service->register_generic_group(
 			'dws-linked-orders',
 			function() {
-				return \_x( 'Linked Orders', 'metabox heading', 'linked-orders-for-woocommerce' );
+				$post_object = \get_post_type_object( \get_post_type() );
+				return \sprintf(
+					/* translators: %s: post type label */
+					\_x( 'Linked %s', 'metabox heading', 'linked-orders-for-woocommerce' ),
+					$post_object->label
+				);
 			},
 			array(),
-			array( 'shop_order' ),
+			dws_lowc_get_supported_order_types(),
 			array(
 				'priority' => 'default',
 				'context'  => 'side',
@@ -77,7 +82,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 	 */
 	protected function output_local(): ?OutputFailureException {
 		$order_id  = \get_the_ID();
-		$dws_order = dws_wc_lo_get_order_node( $order_id );
+		$dws_order = dws_lowc_get_order_node( $order_id );
 		if ( empty( $dws_order ) ) {
 			return new OutputFailureException( 'Metabox is being outputted in an invalid context' );
 		}

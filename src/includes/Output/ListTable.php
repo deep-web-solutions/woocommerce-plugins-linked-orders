@@ -1,12 +1,15 @@
 <?php
 
-namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Screens;
+namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupScriptsStylesTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Assets\Handlers\ScriptsHandler;
@@ -16,16 +19,17 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 \defined( 'ABSPATH' ) || exit;
 
 /**
- * Handles customizations to the WC orders archive page.
+ * Outputs a new column, filters, and actions on the orders archive page.
  *
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Screens
+ * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Output
  */
-class EditOrders extends AbstractPluginFunctionality {
+class ListTable extends AbstractPluginFunctionality {
 	// region TRAITS
 
+	use ActiveLocalTrait;
 	use SetupHooksTrait;
 	use SetupScriptsStylesTrait;
 
@@ -34,16 +38,26 @@ class EditOrders extends AbstractPluginFunctionality {
 	// region INHERITED METHODS
 
 	/**
-	 * Registers actions and filters with the hooks service.
+	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
+	 */
+	public function is_active_local(): bool {
+		return Users::has_capabilities( array( OutputPermissions::SEE_TABLE_COLUMN ) ) ?? false;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 *
-	 * @param   HooksService    $hooks_service  Instance of the hooks service.
+	 * @since   1.0.0
+	 * @version 1.0.0
 	 */
 	public function register_hooks( HooksService $hooks_service ): void {
-		$hooks_service->add_filter( 'manage_edit-shop_order_columns', $this, 'register_table_columns' );
-		$hooks_service->add_action( 'manage_shop_order_posts_custom_column', $this, 'populate_columns', 10, 2 );
+		foreach ( dws_lowc_get_supported_order_types() as $order_type ) {
+			$hooks_service->add_filter( "manage_edit-{$order_type}_columns", $this, 'register_column' );
+			$hooks_service->add_action( "manage_{$order_type}_posts_custom_column", $this, 'output_column', 10, 2 );
+		}
 
 		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_table_filters', 20 );
 		$hooks_service->add_filter( 'request', $this, 'maybe_filter_request_query', 999 );
@@ -94,7 +108,7 @@ class EditOrders extends AbstractPluginFunctionality {
 	 *
 	 * @return  array
 	 */
-	public function register_table_columns( array $columns ): array {
+	public function register_column( array $columns ): array {
 		return Arrays::insert_after(
 			$columns,
 			'order_total',
@@ -113,10 +127,10 @@ class EditOrders extends AbstractPluginFunctionality {
 	 * @param   string  $column     The column being populated.
 	 * @param   int     $post_id    The ID of the row post.
 	 */
-	public function populate_columns( string $column, int $post_id ): void {
+	public function output_column( string $column, int $post_id ): void {
 		switch ( $column ) {
 			case 'dws_lo_depth':
-				$dws_order = dws_wc_lo_get_order_node( $post_id );
+				$dws_order = dws_lowc_get_order_node( $post_id );
 				$depth     = $dws_order->get_depth();
 
 				if ( 0 === $depth ) {
@@ -291,7 +305,7 @@ class EditOrders extends AbstractPluginFunctionality {
 
 		// Action for viewing all linked orders to a given one.
 		if ( empty( Strings::maybe_cast_input( INPUT_GET, '_dws_linked_order_id' ) ) ) {
-			$dws_order = dws_wc_lo_get_order_node( $order );
+			$dws_order = dws_lowc_get_order_node( $order );
 			if ( $dws_order->has_parent() || $dws_order->has_children() ) {
 				$new_actions['view_all_linked_orders'] = array(
 					'url'    => \admin_url( 'edit.php?post_type=shop_order&_dws_linked_order_id=' . $order->get_id() ),

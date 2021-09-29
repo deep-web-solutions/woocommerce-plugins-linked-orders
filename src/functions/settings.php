@@ -35,3 +35,18 @@ function dws_lowc_get_validated_setting( string $field_id, ?string $group = null
 	$group = is_null( $group ) ? 'settings' : Strings::maybe_suffix( $group, '-settings' );
 	return dws_lowc_component( $group )->get_validated_option_value( $field_id );
 }
+
+/**
+ * Returns the order types that support linking. They must all be compatible with @see WC_Order.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @return  array
+ */
+function dws_lowc_get_supported_order_types(): array {
+	return apply_filters(
+		dws_lowc_get_hook_tag( 'supported_order_types' ),
+		array( 'shop_order' )
+	);
+}

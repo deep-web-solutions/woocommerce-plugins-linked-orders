@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return  DWS_Order_Node|null
  */
-function dws_wc_lo_get_order_node( $order ): ?DWS_Order_Node {
+function dws_lowc_get_order_node( $order ): ?DWS_Order_Node {
 	try {
 		$dws_order = new DWS_Order_Node( $order );
 		$dws_order->read();
@@ -36,7 +36,7 @@ function dws_wc_lo_get_order_node( $order ): ?DWS_Order_Node {
  * @return  bool|null
  */
 function dws_wc_lo_is_root_order( $order ): ?bool {
-	$dws_order = dws_wc_lo_get_order_node( $order );
+	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
 	}
@@ -55,7 +55,7 @@ function dws_wc_lo_is_root_order( $order ): ?bool {
  * @return  DWS_Order_Node|null
  */
 function dws_wc_lo_get_root_order( $order ): ?DWS_Order_Node {
-	$dws_order = dws_wc_lo_get_order_node( $order );
+	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
 	}
@@ -76,7 +76,7 @@ function dws_wc_lo_get_root_order( $order ): ?DWS_Order_Node {
  * @return  DWS_Order_Node[]|null
  */
 function dws_wc_lo_get_orders_tree( $order ): ?array {
-	$dws_order = dws_wc_lo_get_order_node( $order );
+	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
 	}
@@ -101,7 +101,7 @@ function dws_wc_lo_get_orders_tree( $order ): ?array {
  * @return bool|null
  */
 function dws_wc_lo_can_create_linked_order( $order, ?int $user_id = null ): ?bool {
-	$order = dws_wc_lo_get_order_node( $order );
+	$order = dws_lowc_get_order_node( $order );
 	if ( is_null( $order ) ) {
 		return null;
 	}

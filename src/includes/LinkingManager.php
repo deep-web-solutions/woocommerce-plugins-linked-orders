@@ -91,8 +91,8 @@ class LinkingManager extends AbstractPluginFunctionality {
 		\do_action( $this->get_hook_tag( 'created_empty_linked_order' ), $linked_order, $parent_order );
 
 		// Link orders.
-		$dws_parent_order = dws_wc_lo_get_order_node( $parent_order );
-		$dws_child_order  = dws_wc_lo_get_order_node( $linked_order );
+		$dws_parent_order = dws_lowc_get_order_node( $parent_order );
+		$dws_child_order  = dws_lowc_get_order_node( $linked_order );
 
 		$dws_parent_order->add_child( $dws_child_order );
 		$dws_parent_order->save();
