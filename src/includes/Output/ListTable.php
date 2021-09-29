@@ -61,7 +61,7 @@ class ListTable extends AbstractPluginFunctionality {
 		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_filters', 20 );
 		$hooks_service->add_filter( 'request', $this, 'filter_request_query', 999 );
 
-		$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_table_actions', 999, 2 );
+		$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_actions', 999, 2 );
 	}
 
 	/**
@@ -74,22 +74,24 @@ class ListTable extends AbstractPluginFunctionality {
 	 * @param   StylesHandler   $styles_handler     Instance of the styles handler.
 	 */
 	public function register_scripts_and_styles( ScriptsHandler $scripts_handler, StylesHandler $styles_handler ): void {
-		$scripts_handler->enqueue_admin_script(
-			$this->get_asset_handle(),
-			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/js/orders-list-table.js',
-			$this->get_plugin()->get_plugin_version(),
-			array( 'jquery' ),
-			true,
-			array( 'edit.php' )
-		);
-
 		$styles_handler->enqueue_admin_style(
 			$this->get_asset_handle(),
 			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/css/orders-list-table.css',
 			$this->get_plugin()->get_plugin_version(),
 			array( 'woocommerce_admin_styles' ),
 			'all',
-			array( 'edit.php' )
+			array( 'edit.php' ),
+			fn() => \in_array( $GLOBALS['typenow'] ?? '', dws_lowc_get_supported_order_types(), true )
+		);
+
+		$scripts_handler->enqueue_admin_script(
+			$this->get_asset_handle(),
+			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/js/orders-list-table.js',
+			$this->get_plugin()->get_plugin_version(),
+			array( 'jquery' ),
+			true,
+			array( 'edit.php' ),
+			fn() => \in_array( $GLOBALS['typenow'] ?? '', dws_lowc_get_supported_order_types(), true )
 		);
 	}
 
@@ -131,26 +133,25 @@ class ListTable extends AbstractPluginFunctionality {
 	public function output_column( string $column, int $post_id ): void {
 		switch ( $column ) {
 			case 'dws_lo_depth':
-				$post_type_object = \get_post_type_object( \get_post_type( $post_id ) );
-				$dws_order        = dws_lowc_get_order_node( $post_id );
-				$depth            = $dws_order->get_depth();
+				$dws_node = dws_lowc_get_order_node( $post_id );
+				$depth    = $dws_node->get_depth();
 
 				if ( 0 === $depth ) {
 					$depth_label = \sprintf(
 						/* translators: %s: order type singular name */
 						\_x( 'Root %s', 'list table content', 'linked-orders-for-woocommerce' ),
-						\strtolower( $post_type_object->labels->singular_name )
+						\strtolower( $dws_node->get_post_type()->labels->singular_name )
 					);
 				} else {
 					$depth_label = \sprintf(
 						/* translators: %s: order type singular name; %d: numerical depth of the order */
 						\_x( 'Child %1$s (level %2$d)', 'list table content', 'linked-orders-for-woocommerce' ),
-						\strtolower( $post_type_object->labels->singular_name ),
+						\strtolower( $dws_node->get_post_type()->labels->singular_name ),
 						$depth + 1 // +1 adjustment for non-programmers
 					);
 				}
 
-				$depth_label = \apply_filters( $this->get_hook_tag( 'column', array( 'content' ) ), $depth_label, $dws_order );
+				$depth_label = \apply_filters( $this->get_hook_tag( 'column', array( 'content' ) ), $depth_label, $dws_node );
 				echo \esc_html( $depth_label );
 
 				break;
@@ -238,7 +239,7 @@ class ListTable extends AbstractPluginFunctionality {
 	 *
 	 * @return  array
 	 */
-	public function filter_request_query( array $query_vars ) {
+	public function filter_request_query( array $query_vars ): array {
 		global $typenow;
 
 		if ( \in_array( $typenow, dws_lowc_get_supported_order_types(), true ) ) {
@@ -286,8 +287,8 @@ class ListTable extends AbstractPluginFunctionality {
 			// Filter orders based on the pivot order.
 			$pivot_order = Integers::maybe_cast_input( INPUT_GET, '_dws_linked_order_id' );
 			if ( ! empty( $pivot_order ) ) {
-				$root_order             = dws_wc_lo_get_root_order( $pivot_order );
-				$query_vars['post__in'] = dws_wc_lo_get_orders_tree( $root_order->get_id() );
+				$root_order             = dws_lowc_get_root_order( $pivot_order );
+				$query_vars['post__in'] = dws_lowc_get_orders_tree( $root_order->get_id() );
 			}
 		}
 
@@ -300,28 +301,55 @@ class ListTable extends AbstractPluginFunctionality {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 *
 	 * @param   array       $actions    WC order actions.
 	 * @param   \WC_Order   $order      WC order the actions belong to.
 	 *
 	 * @return  array
 	 */
-	public function register_table_actions( array $actions, \WC_Order $order ): array {
+	public function register_actions( array $actions, \WC_Order $order ): array {
+		$dws_node = dws_lowc_get_order_node( $order );
+		if ( \is_null( $dws_node ) ) {
+			return $actions;
+		}
+
 		$new_actions = array();
 
 		// Action for viewing all of a customer's orders in one click.
 		if ( ! empty( $order->get_customer_id() ) ) {
 			if ( empty( Strings::maybe_cast_input( INPUT_GET, '_customer_user' ) ) ) {
 				$new_actions['view_all_customer_orders'] = array(
-					'url'    => \admin_url( 'edit.php?post_type=shop_order&_customer_user=' . $order->get_customer_id() ),
-					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
+					'url'    => \add_query_arg(
+						array(
+							'post_type'      => $dws_node->get_post_type()->name,
+							'_customer_user' => $order->get_customer_id(),
+						),
+						\admin_url( 'edit.php' )
+					),
+					'name'   => \sprintf(
+						/* translators: %s: the post type label, e.g. orders */
+						\__( 'View all customer %s', 'linked-orders-for-woocommerce' ),
+						\strtolower( $dws_node->get_post_type()->label )
+					),
 					'action' => 'view-all-customer-orders',
 				);
 			}
 		} elseif ( ! empty( $order->get_billing_email() ) ) {
 			if ( empty( Strings::maybe_cast_input( INPUT_GET, '_guest_customer_user' ) ) ) {
 				$new_actions['view_all_customer_orders'] = array(
-					'url'    => \admin_url( 'edit.php?post_type=shop_order&_guest_customer_user=' . \rawurldecode( $order->get_billing_email() ) ),
-					'name'   => \__( 'View all customer orders', 'linked-orders-for-woocommerce' ),
+					'url'    => \add_query_arg(
+						array(
+							'post_type'            => $dws_node->get_post_type()->name,
+							'_guest_customer_user' => \rawurlencode( $order->get_billing_email() ),
+						),
+						\admin_url( 'edit.php' )
+					),
+					'name'   => \sprintf(
+						/* translators: %s: the post type label, e.g. orders */
+						\__( 'View all customer %s', 'linked-orders-for-woocommerce' ),
+						\strtolower( $dws_node->get_post_type()->label )
+					),
 					'action' => 'view-all-customer-orders',
 				);
 			}
@@ -329,21 +357,43 @@ class ListTable extends AbstractPluginFunctionality {
 
 		// Action for viewing all linked orders to a given one.
 		if ( empty( Strings::maybe_cast_input( INPUT_GET, '_dws_linked_order_id' ) ) ) {
-			$dws_order = dws_lowc_get_order_node( $order );
-			if ( $dws_order->has_parent() || $dws_order->has_children() ) {
+			if ( $dws_node->has_parent() || $dws_node->has_children() ) {
 				$new_actions['view_all_linked_orders'] = array(
-					'url'    => \admin_url( 'edit.php?post_type=shop_order&_dws_linked_order_id=' . $order->get_id() ),
-					'name'   => \__( 'View all linked orders', 'linked-orders-for-woocommerce' ),
+					'url'    => \add_query_arg(
+						array(
+							'post_type'            => $dws_node->get_post_type()->name,
+							'_dws_linked_order_id' => $order->get_id(),
+						),
+						\admin_url( 'edit.php' )
+					),
+					'name'   => \sprintf(
+						/* translators: %s: the post type label, e.g. orders */
+						\__( 'View all linked %s', 'linked-orders-for-woocommerce' ),
+						\strtolower( $dws_node->get_post_type()->label )
+					),
 					'action' => 'view-all-linked-orders',
 				);
 			}
 		}
 
 		// Action for creating a new linked order one level down from the current one.
-		if ( dws_wc_lo_can_create_linked_order( $order ) ) {
+		if ( true === $dws_node->can_create_child() ) {
 			$new_actions['create_empty_linked_order'] = array(
-				'url'    => \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_wc_lo_create_empty_linked_order&order_id=' . $order->get_id() ), 'dws-lo-create-empty-linked-order' ),
-				'name'   => \__( 'Create new linked order', 'linked-orders-for-woocommerce' ),
+				'url'    => \wp_nonce_url(
+					\add_query_arg(
+						array(
+							'action'   => 'dws_lowc_create_empty_linked_order',
+							'order_id' => $order->get_id(),
+						),
+						\admin_url( 'admin-ajax.php' )
+					),
+					'dws_create_empty_linked_order'
+				),
+				'name'   => \sprintf(
+					/* translators: %s: the post type singular label, e.g. order */
+					\__( 'Create and attach empty linked %s', 'linked-orders-for-woocommerce' ),
+					\strtolower( $dws_node->get_post_type()->labels->singular_name )
+				),
 				'action' => 'create-empty-linked-order',
 			);
 		}
@@ -357,8 +407,8 @@ class ListTable extends AbstractPluginFunctionality {
 
 	/**
 	 * In order to ensure that it's always possible to filter existing orders, we need to ensure that we get the maximum
-     * used order depth. That can be different from the settings if the maximum allowed depth was lowered after already
-     * creating deeper children.
+	 * used order depth. That can be different from the settings if the maximum allowed depth was lowered after already
+	 * creating deeper children.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0

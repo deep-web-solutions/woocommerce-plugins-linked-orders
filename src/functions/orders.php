@@ -51,7 +51,7 @@ function dws_lowc_is_root_order( $order ): ?bool {
  *
  * @return  DWS_Order_Node|null
  */
-function dws_wc_lo_get_root_order( $order ): ?DWS_Order_Node {
+function dws_lowc_get_root_order( $order ): ?DWS_Order_Node {
 	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
@@ -59,7 +59,7 @@ function dws_wc_lo_get_root_order( $order ): ?DWS_Order_Node {
 
 	return 0 === $dws_order->get_depth()
 		? $dws_order
-		: dws_wc_lo_get_root_order( $dws_order->get_parent()->get_id() );
+		: dws_lowc_get_root_order( $dws_order->get_parent()->get_id() );
 }
 
 /**
@@ -72,7 +72,7 @@ function dws_wc_lo_get_root_order( $order ): ?DWS_Order_Node {
  *
  * @return  DWS_Order_Node[]|null
  */
-function dws_wc_lo_get_orders_tree( $order ): ?array {
+function dws_lowc_get_orders_tree( $order ): ?array {
 	$dws_order = dws_lowc_get_order_node( $order );
 	if ( is_null( $dws_order ) ) {
 		return null;
@@ -80,28 +80,8 @@ function dws_wc_lo_get_orders_tree( $order ): ?array {
 
 	$descendants = array();
 	foreach ( $dws_order->get_children() as $child ) {
-		$descendants = array_merge( $descendants, dws_wc_lo_get_orders_tree( $child->get_id() ) );
+		$descendants = array_merge( $descendants, dws_lowc_get_orders_tree( $child->get_id() ) );
 	}
 
 	return array_merge( array( $dws_order->get_id() ), $descendants );
-}
-
-/**
- * Determines whether a given user can create linked orders for a given order.
- *
- * @since   1.0.0
- * @version 1.0.0
- *
- * @param   WC_Order|int    $order      Order to retrieve.
- * @param   int|null        $user_id    The ID of the user to check for.
- *
- * @return bool|null
- */
-function dws_wc_lo_can_create_linked_order( $order, ?int $user_id = null ): ?bool {
-	$order = dws_lowc_get_order_node( $order );
-	if ( is_null( $order ) ) {
-		return null;
-	}
-
-	return $order->can_create_linked_order( $user_id );
 }

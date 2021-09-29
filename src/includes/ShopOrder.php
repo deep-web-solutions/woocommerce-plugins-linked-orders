@@ -59,7 +59,7 @@ class ShopOrder extends AbstractPluginFunctionality {
 	public function maybe_autocomplete_descendants( int $order_id ) {
 		$should_autocomplete = dws_lowc_get_validated_setting( 'autocomplete-descendants', 'general' );
 		if ( true === $should_autocomplete ) {
-			$descendants = dws_wc_lo_get_orders_tree( $order_id );
+			$descendants = dws_lowc_get_orders_tree( $order_id );
 			foreach ( $descendants as $descendant_id ) {
 				$descendant_order = wc_get_order( $descendant_id );
 				if ( \is_a( $descendant_order, \WC_Order::class ) ) {

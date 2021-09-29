@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c16e7f890575811b67b4a181826901ac",
+    "content-hash": "6dd205599f1cf9c26bd978f78d854301",
     "packages": [
         {
             "name": "freemius/wordpress-sdk",
@@ -1421,21 +1421,21 @@
         },
         {
             "name": "deep-web-solutions/wp-framework-foundations",
-            "version": "v1.4.3",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deep-web-solutions/wordpress-framework-foundations.git",
-                "reference": "0e5f7153402770494543d3dad298445ed9f6693e"
+                "reference": "4c57edbb2c71214f43a34fa01dd7fa5fca7dc2cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deep-web-solutions/wordpress-framework-foundations/zipball/0e5f7153402770494543d3dad298445ed9f6693e",
-                "reference": "0e5f7153402770494543d3dad298445ed9f6693e",
+                "url": "https://api.github.com/repos/deep-web-solutions/wordpress-framework-foundations/zipball/4c57edbb2c71214f43a34fa01dd7fa5fca7dc2cf",
+                "reference": "4c57edbb2c71214f43a34fa01dd7fa5fca7dc2cf",
                 "shasum": ""
             },
             "require": {
                 "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
-                "deep-web-solutions/wp-framework-helpers": "^1.4.1",
+                "deep-web-solutions/wp-framework-helpers": "^1.4.5",
                 "php": ">=7.4",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.0"
@@ -1492,9 +1492,9 @@
             ],
             "support": {
                 "issues": "https://github.com/deep-web-solutions/wordpress-framework-foundations/issues",
-                "source": "https://github.com/deep-web-solutions/wordpress-framework-foundations/tree/v1.4.3"
+                "source": "https://github.com/deep-web-solutions/wordpress-framework-foundations/tree/v1.4.4"
             },
-            "time": "2021-08-19T20:29:54+00:00"
+            "time": "2021-09-29T13:24:56+00:00"
         },
         {
             "name": "deep-web-solutions/wp-framework-helpers",
@@ -5668,16 +5668,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.11.55",
+            "version": "0.11.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840"
+                "reference": "9f601b77550dbfa6e096028f8aaecf7021c1bc46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/fe8c0e8c986661e21f0724d01532c8a0a9506840",
-                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/9f601b77550dbfa6e096028f8aaecf7021c1bc46",
+                "reference": "9f601b77550dbfa6e096028f8aaecf7021c1bc46",
                 "shasum": ""
             },
             "require": {
@@ -5715,7 +5715,7 @@
             "description": "Prefixed and PHP 7.1 downgraded version of rector/rector",
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.11.55"
+                "source": "https://github.com/rectorphp/rector/tree/0.11.56"
             },
             "funding": [
                 {
@@ -5723,7 +5723,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-09-27T16:07:45+00:00"
+            "time": "2021-09-28T19:06:03+00:00"
         },
         {
             "name": "rmccue/requests",

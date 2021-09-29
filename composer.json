@@ -36,7 +36,7 @@
   "require-dev": {
     "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
     "deep-web-solutions/wp-framework-helpers": "^1.4.5",
-    "deep-web-solutions/wp-framework-foundations": "^1.4.3",
+    "deep-web-solutions/wp-framework-foundations": "^1.4.4",
     "deep-web-solutions/wp-framework-utilities": "master@dev",
     "deep-web-solutions/wp-framework-core": "master@dev",
     "deep-web-solutions/wp-framework-settings": "master@dev",
