@@ -57,17 +57,23 @@ class ShopOrder extends AbstractPluginFunctionality {
 	 * @param   int     $order_id   The ID of the order that was just completed.
 	 */
 	public function maybe_autocomplete_descendants( int $order_id ) {
+		if ( true !== dws_lowc_is_supported_order( $order_id ) ) {
+			return;
+		}
+
 		$should_autocomplete = dws_lowc_get_validated_setting( 'autocomplete-descendants', 'general' );
-		if ( true === $should_autocomplete ) {
-			$descendants = dws_lowc_get_orders_tree( $order_id );
-			foreach ( $descendants as $descendant_id ) {
+		if ( true !== $should_autocomplete ) {
+			return;
+		}
+
+		$descendants = dws_lowc_get_orders_tree( $order_id );
+		foreach ( $descendants as $descendant_id ) {
+			if ( true === dws_lowc_is_supported_order( $descendant_id ) && true === \apply_filters( $this->get_hook_tag( 'should_autocomplete' ), true, $descendant_id ) ) {
 				$descendant_order = wc_get_order( $descendant_id );
-				if ( \is_a( $descendant_order, \WC_Order::class ) ) {
-					$descendant_order->update_status(
-						'completed',
-						\__( 'Child order autocompleted.', 'linked-orders-for-woocommerce' )
-					);
-				}
+				$descendant_order->update_status(
+					'completed',
+					\__( 'Child order autocompleted.', 'linked-orders-for-woocommerce' )
+				);
 			}
 		}
 	}

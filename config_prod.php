@@ -1,6 +1,6 @@
 <?php
 
-use DeepWebSolutions\WC_Plugins\LinkedOrders\LinkingManager;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Actions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
@@ -73,6 +73,9 @@ return array_merge(
 	array(
 		Plugin::class                        => autowire( Plugin::class )
 			->constructorParameter( 'plugin_file_path', dws_lowc_path() ),
+		Actions::class                       => autowire( Actions::class )
+			->constructorParameter( 'component_id', 'actions' )
+			->constructorParameter( 'component_name', 'Actions' ),
 
 		Output::class                        => autowire( Output::class )
 			->constructorParameter( 'component_id', 'output' )
@@ -101,18 +104,14 @@ return array_merge(
 			->constructorParameter( 'component_id', 'plugin-settings' )
 			->constructorParameter( 'component_name', 'Plugin Settings' ),
 
-
-
-
 		ShopOrder::class                     => autowire( ShopOrder::class )
 			->constructorParameter( 'component_id', 'shop-order' )
 			->constructorParameter( 'component_name', 'Shop Order' ),
-		LinkingManager::class                => autowire( LinkingManager::class )
-			->constructorParameter( 'component_id', 'linking-manager' )
-			->constructorParameter( 'component_name', 'Linking Manager' ),
 	),
 	// Plugin aliases
 	array(
+		'actions'            => get( Actions::class ),
+
 		'output'             => get( Output::class ),
 		'metabox-output'     => get( Output\MetaBox::class ),
 		'list-table-output'  => get( Output\ListTable::class ),
@@ -124,10 +123,6 @@ return array_merge(
 		'general-settings'   => get( Settings\GeneralSettings::class ),
 		'plugin-settings'    => get( Settings\PluginSettings::class ),
 
-
-
-
 		'shop-order'         => get( ShopOrder::class ),
-		'linking-manager'    => get( LinkingManager::class ),
 	)
 );

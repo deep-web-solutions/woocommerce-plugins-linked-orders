@@ -382,12 +382,12 @@ class ListTable extends AbstractPluginFunctionality {
 				'url'    => \wp_nonce_url(
 					\add_query_arg(
 						array(
-							'action'   => 'dws_lowc_create_empty_linked_order',
+							'action'   => 'dws_lowc_create_linked_order',
 							'order_id' => $order->get_id(),
 						),
-						\admin_url( 'admin-ajax.php' )
+						\admin_url( 'admin-post.php' )
 					),
-					'dws_create_empty_linked_order'
+					'dws_create_linked_order'
 				),
 				'name'   => \sprintf(
 					/* translators: %s: the post type singular label, e.g. order */

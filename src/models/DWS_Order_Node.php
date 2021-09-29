@@ -276,7 +276,7 @@ class DWS_Order_Node implements NodeInterface {
 		$max_depth  = dws_lowc_get_validated_setting( 'max-depth', 'general' ) > $this->get_depth();
 		$statuses   = $this->order->has_status( dws_lowc_get_valid_statuses_for_new_child( $this->post_type->name, $this->order ) );
 
-		return apply_filters( dws_lowc_get_hook_tag( 'node', array() ), $permission && $max_depth && $statuses, $user_id, $this->order, $this );
+		return apply_filters( dws_lowc_get_hook_tag( 'node', array( 'can_create_child' ) ), $permission && $max_depth && $statuses, $user_id, $this->order, $this );
 	}
 
 	/**

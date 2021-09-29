@@ -142,7 +142,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 
 		// Maybe output button for creating a new child order.
 		if ( true === $dws_node->can_create_child() ) {
-			$link = \wp_nonce_url( \admin_url( 'admin-ajax.php?action=dws_lowc_create_empty_linked_order&order_id=' . $order_id ), 'dws_create_empty_linked_order' );
+			$link = \wp_nonce_url( \admin_url( 'admin-post.php?action=dws_lowc_create_linked_order&order_id=' . $order_id ), 'dws_create_linked_order' );
 			?>
 
 			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">

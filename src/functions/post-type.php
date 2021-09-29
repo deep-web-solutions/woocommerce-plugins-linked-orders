@@ -108,7 +108,7 @@ function dws_lowc_create_linked_order( int $parent_order_id, array $args = array
 
 	$linked_order = call_user_func( $args['create_function'], $args );
 	if ( is_wp_error( $linked_order ) ) {
-		dws_lowc_instance()->log_event_and_finalize( "Failed to create linked order. Error: {$linked_order->get_error_message()}", array(), LogLevel::ERROR );
+		dws_lowc_instance()->log_event_and_finalize( "Failed to create linked order. Error: {$linked_order->get_error_message()}", array( $args ), LogLevel::ERROR );
 		return $linked_order;
 	} elseif ( true !== dws_lowc_is_supported_order( $linked_order ) ) {
 		dws_lowc_instance()->log_event( "Value returned by {$args['create_function']} is not supported" )
