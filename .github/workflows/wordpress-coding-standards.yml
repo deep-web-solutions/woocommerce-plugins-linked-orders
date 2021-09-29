@@ -34,12 +34,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Set composer authentication credentials
-      env:
-          SATISPRESS_USERNAME: ${{ secrets.SATISPRESS_USERNAME }}
-          SATISPRESS_PASSWORD: ${{ secrets.SATISPRESS_PASSWORD }}
-      run: composer config -a http-basic.packages.deep-web-solutions.com "$SATISPRESS_USERNAME" "$SATISPRESS_PASSWORD"
-      
     - name: Install dependencies
       run: composer install --no-interaction --ignore-platform-reqs --prefer-dist --no-progress
 

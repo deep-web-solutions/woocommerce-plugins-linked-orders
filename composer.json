@@ -105,8 +105,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "DeepWebSolutions\\Plugins\\InternalComments\\Tests\\Acceptance\\": "tests/acceptance",
-      "DeepWebSolutions\\Plugins\\InternalComments\\Tests\\Functional\\": "tests/functional"
+      "DeepWebSolutions\\WC_Plugins\\LinkedOrders\\Tests\\Acceptance\\": "tests/acceptance",
+      "DeepWebSolutions\\WC_Plugins\\LinkedOrders\\Tests\\Functional\\": "tests/functional"
     }
   },
 

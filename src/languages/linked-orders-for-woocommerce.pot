@@ -2,11 +2,11 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Internal Comments 1.0.0\n"
+"Project-Id-Version: Linked Orders for WooCommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders/"
 "issues\n"
-"POT-Creation-Date: 2021-08-16 17:39:18+00:00\n"
+"POT-Creation-Date: 2021-09-29 18:39:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,27 +49,27 @@ msgid ""
 "target=\"_blank\">the Codex</a>."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/AbstractPermissions.php:84
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/AbstractPermissionsFunctionality.php:72
 msgid "Failed to update permissions"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/Installation.php:158
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:152
 msgid "Please wait..."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/Installation.php:175
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/Installation.php:223
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:169
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:217
 #. translators: 1. Installation node name, 2. Error message.
 msgid ""
 "<strong>%1$s</strong> failed to complete the installation routine. The "
 "error is: %2$s"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/Installation.php:231
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:225
 msgid "<strong>%1$s</strong> was successfully updated."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/Installation.php:231
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:225
 msgid "<strong>%1$s</strong> was successfully installed."
 msgstr ""
 
@@ -109,6 +109,10 @@ msgstr ""
 #: dependencies/deep-web-solutions/wp-framework-core/src/templates/installation/required-update.php:38
 #. translators: Name of the update button
 msgid "Update"
+msgstr ""
+
+#: dependencies/deep-web-solutions/wp-framework-settings/src/includes/PluginComponents/AbstractOptionsPageFunctionality.php:141
+msgid "Failed to delete the plugin options from the database"
 msgstr ""
 
 #: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/CronEvents/CronIntervalsEnum.php:139
@@ -231,133 +235,116 @@ msgstr[1] ""
 msgid "%s or higher"
 msgstr ""
 
-#: src/includes/LinkingManager.php:67
-msgid "Invalid parent order ID"
+#: src/includes/Actions.php:66
+msgid "Invalid parent ID."
 msgstr ""
 
-#: src/includes/LinkingManager.php:83
-msgid "Cannot create new WC Order"
+#: src/includes/Actions.php:71
+msgid "You are not authorized to create linked orders."
 msgstr ""
 
-#: src/includes/LinkingManager.php:122
-msgid "You are not authorized to create empty linked orders."
-msgstr ""
-
-#: src/includes/LinkingManager.php:133
+#: src/includes/Actions.php:81
 #. translators: error message contents
 msgid "Failed to create a new linked order. Error message: %s"
 msgstr ""
 
-#: src/includes/Plugin.php:114
+#: src/includes/Output/ListTable.php:195
+#. translators: %s: order type singular name
+msgid "All %s depths"
+msgstr ""
+
+#: src/includes/Output/ListTable.php:332 src/includes/Output/ListTable.php:350
+#. translators: %s: the post type label, e.g. orders
+msgid "View all customer %s"
+msgstr ""
+
+#: src/includes/Output/ListTable.php:371
+#. translators: %s: the post type label, e.g. orders
+msgid "View all linked %s"
+msgstr ""
+
+#: src/includes/Output/ListTable.php:394
+#. translators: %s: the post type singular label, e.g. order
+msgid "Create and attach empty linked %s"
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:109
+msgid "There are no attached children."
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:128
+msgid "Attached children: "
+msgstr ""
+
+#: src/includes/Plugin.php:98
 msgid "View settings"
 msgstr ""
 
-#: src/includes/Plugin.php:114
+#: src/includes/Plugin.php:98
 msgid "Settings"
 msgstr ""
 
-#: src/includes/Plugin.php:142
+#: src/includes/Plugin.php:116
 msgid "Visit community forums"
 msgstr ""
 
-#: src/includes/Plugin.php:142
+#: src/includes/Plugin.php:116
 msgid "Community support"
 msgstr ""
 
-#: src/includes/Plugin.php:143
+#: src/includes/Plugin.php:117
 msgid "Send us an inquiry"
 msgstr ""
 
-#: src/includes/Plugin.php:143
+#: src/includes/Plugin.php:117
 msgid "Contact us"
 msgstr ""
 
-#: src/includes/Screens/EditOrder.php:91
-msgid "Parent order: "
-msgstr ""
-
-#: src/includes/Screens/EditOrder.php:107
-msgid "There are no child orders attached."
-msgstr ""
-
-#: src/includes/Screens/EditOrder.php:109
-msgid "New child orders cannot be added to this order."
-msgstr ""
-
-#: src/includes/Screens/EditOrder.php:118
-msgid "Child orders: "
-msgstr ""
-
-#: src/includes/Screens/EditOrder.php:139
-msgid "Add new child order"
-msgstr ""
-
-#: src/includes/Screens/EditOrder.php:179
-#. translators: 1. Order number; 2. Order status label.
-msgid "Order #%1$s - %2$s"
-msgstr ""
-
-#: src/includes/Screens/EditOrders.php:169
-msgid "All order depths"
-msgstr ""
-
-#: src/includes/Screens/EditOrders.php:278
-#: src/includes/Screens/EditOrders.php:286
-msgid "View all customer orders"
-msgstr ""
-
-#: src/includes/Screens/EditOrders.php:298
-msgid "View all linked orders"
-msgstr ""
-
-#: src/includes/Screens/EditOrders.php:308
-msgid "Create new linked order"
-msgstr ""
-
-#: src/includes/Settings/GeneralSettings.php:30
+#: src/includes/Settings/GeneralSettings.php:28
 msgid "General Settings"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:46
+#: src/includes/Settings/GeneralSettings.php:40
 msgid "Maximum linked orders depth"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:54
+#: src/includes/Settings/GeneralSettings.php:48
 msgid ""
 "The maximum number of linked orders levels. Root orders are considered "
 "level 0."
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:57
+#: src/includes/Settings/GeneralSettings.php:51
 msgid "Autocomplete descendant orders?"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:62
+#: src/includes/Settings/GeneralSettings.php:56
 msgid ""
 "If enabled, all descendant orders will be set to completed automatically "
 "when the parent order is completed."
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:29
+#: src/includes/Settings/PluginSettings.php:28
 msgid "Plugin Settings"
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:45
+#: src/includes/Settings/PluginSettings.php:40
 msgid "Remove all data on uninstallation?"
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:50
+#: src/includes/Settings/PluginSettings.php:45
 msgid ""
 "If enabled, the plugin will remove all database data when removed and you "
 "will need to reconfigure everything if you install it again at a later time."
 msgstr ""
 
-#: src/includes/Settings.php:121
-msgid "Failed to delete the plugin options from the database"
+#: src/includes/ShopOrder.php:75
+msgid "Child order autocompleted."
 msgstr ""
 
-#: src/includes/ShopOrder.php:68
-msgid "Child order autocompleted."
+#: src/models/DWS_Order_Node.php:255
+#. translators: 1. Post type name. 2. Order number; 3. Order status label.
+msgid "%1$s #%2$s - %3$s"
 msgstr ""
 
 #: src/templates/admin/composer-error.php:20
@@ -387,39 +374,69 @@ msgstr ""
 msgid "https://www.deep-web-solutions.com"
 msgstr ""
 
-#: src/configs/settings.php:22
+#: src/configs/settings.php:21
 msgctxt "settings"
 msgid "Yes"
 msgstr ""
 
-#: src/configs/settings.php:27
+#: src/configs/settings.php:26
 msgctxt "settings"
 msgid "No"
 msgstr ""
 
-#: src/includes/Screens/EditOrder.php:53 src/includes/Settings.php:66
+#: src/includes/Settings.php:59
 msgctxt "settings"
 msgid "Linked Orders"
 msgstr ""
 
-#: src/includes/Screens/EditOrders.php:102
-msgctxt "orders table"
+#: src/includes/Output/ListTable.php:119
+msgctxt "list table heading"
 msgid "Depth"
 msgstr ""
 
-#: src/includes/Screens/EditOrders.php:123
-#: src/includes/Screens/EditOrders.php:172
-msgctxt "orders table"
-msgid "Root order"
-msgid_plural "Root orders"
-msgstr[0] ""
-msgstr[1] ""
+#: src/includes/Output/ListTable.php:142
+#. translators: %s: order type singular name
+msgctxt "list table content"
+msgid "Root %s"
+msgstr ""
 
-#: src/includes/Screens/EditOrders.php:126
-#: src/includes/Screens/EditOrders.php:180
-#. translators: numerical depth of the order
-msgctxt "orders table"
-msgid "Child order (level %d)"
-msgid_plural "Child orders (level %d)"
-msgstr[0] ""
-msgstr[1] ""
+#: src/includes/Output/ListTable.php:148
+#. translators: %s: order type singular name; %d: numerical depth of the order
+msgctxt "list table content"
+msgid "Child %1$s (level %2$d)"
+msgstr ""
+
+#: src/includes/Output/ListTable.php:206
+#. translators: %s: order type plural name
+msgctxt "list table filter"
+msgid "Root %s"
+msgstr ""
+
+#: src/includes/Output/ListTable.php:218
+#. translators: %s: order type plural name; %d: numerical depth of the order
+msgctxt "list table filter"
+msgid "Child %1$s (level %2$d)"
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:59
+#. translators: %s: post type label
+msgctxt "metabox heading"
+msgid "Linked %s"
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:93
+msgctxt "metabox"
+msgid "Parent"
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:115
+#. translators: node post type singular name
+msgctxt "metabox"
+msgid "New children cannot be added to this %s."
+msgstr ""
+
+#: src/includes/Output/MetaBox.php:153
+#. translators: post type singular name
+msgctxt "metabox"
+msgid "Add new child %s"
+msgstr ""

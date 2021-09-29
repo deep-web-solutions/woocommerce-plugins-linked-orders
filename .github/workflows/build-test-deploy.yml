@@ -31,7 +31,10 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        run: composer install --ignore-platform-reqs --prefer-dist --no-progress
+        run: |
+          composer install --ignore-platform-reqs --prefer-dist --no-progress
+          npm ci
+          npm run build
 
       - name: Beautify dependencies
         run: |
@@ -218,12 +221,15 @@ jobs:
 
     strategy:
       fail-fast: true
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         php: [ 7.4 ]
-        WP_VERSION: [ 5.5, latest, nightly ]
-        WC_VERSION: [ 4.5.2, latest ]
+        WP_VERSION: [ latest, nightly ]
+        WC_VERSION: [ latest ]
         include:
+          - php: 7.4
+            WP_VERSION: 5.5
+            WC_VERSION: 4.5.2
           - php: 8.0
             WP_VERSION: latest
             WC_VERSION: latest
