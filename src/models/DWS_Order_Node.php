@@ -225,9 +225,9 @@ class DWS_Order_Node implements NodeInterface {
 	public function can_create_child( ?int $user_id = null ): bool {
 		$permission = Users::has_capabilities( array( Permissions::CREATE_LINKED_CHILDREN, 'edit_shop_orders' ), array( $this->order->get_id() ), $user_id ) ?? false;
 		$max_depth  = dws_lowc_get_validated_setting( 'max-depth', 'general' ) > $this->get_depth();
-		$statuses   = in_array( $this->order->get_status(), dws_lowc_get_valid_statuses_for_new_child( $this->post_type->name, $this->order ), true );
+		$statuses   = $this->order->has_status( dws_lowc_get_valid_statuses_for_new_child( $this->post_type->name, $this->order ) );
 
-		return apply_filters( dws_lowc_get_hook_tag( 'node', array() ), $permission && $max_depth && $statuses, $this->order, $this );
+		return apply_filters( dws_lowc_get_hook_tag( 'node', array() ), $permission && $max_depth && $statuses, $user_id, $this->order, $this );
 	}
 
 	/**

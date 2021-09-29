@@ -1,5 +1,7 @@
 <?php
 
+use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -53,7 +55,10 @@ function dws_lowc_is_supported_order( $order ): ?bool {
 function dws_lowc_get_valid_statuses_for_new_child( string $order_type = 'shop_order', ?WC_Order $order = null ): array {
 	return apply_filters(
 		dws_lowc_get_hook_tag( 'post_type', array( 'valid_statuses_for_new_child' ) ),
-		array_keys( wc_get_order_statuses() ),
+		array_map(
+			fn( string $status_key ) => Strings::maybe_unprefix( $status_key, 'wc-' ),
+			array_keys( wc_get_order_statuses() )
+		),
 		$order_type,
 		$order
 	);

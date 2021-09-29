@@ -90,15 +90,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			?>
 
 			<div class="dws-linked-orders__parent">
-				<?php
-					echo \esc_html(
-						\sprintf(
-							/* translators: parent post type singular name */
-							\_x( 'Parent %s:', 'metabox', 'linked-orders-for-woocommerce' ),
-							\strtolower( $dws_node_parent->get_post_type()->labels->singular_name )
-						)
-					);
-				?>
+				<?php echo \esc_html_x( 'Parent', 'metabox', 'linked-orders-for-woocommerce' ) . ':'; ?>
 				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_node_parent->get_id() ) ); ?>" target="_blank">
 					<?php echo \wp_kses_post( $dws_node_parent->get_formatted_name() ); ?>
 				</a>
@@ -110,19 +102,11 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 		}
 
 		// Output children orders information.
-		if ( empty( $dws_node->get_children() ) ) {
+		if ( true !== $dws_node->has_children() ) {
 			?>
 
 			<div class="dws-linked-orders__no-children">
-				<?php
-					echo \esc_html(
-						\sprintf(
-							/* translators: node post type plural name */
-							\_x( 'There are no child %s attached.', 'metabox', 'linked-orders-for-woocommerce' ),
-							\strtolower( $dws_node->get_post_type()->label )
-						)
-					);
-				?>
+				<?php \esc_html_e( 'There are no attached children.', 'linked-orders-for-woocommerce' ); ?>
 				<?php if ( true !== $dws_node->can_create_child() ) : ?>
 					<?php
 						echo \esc_html(
