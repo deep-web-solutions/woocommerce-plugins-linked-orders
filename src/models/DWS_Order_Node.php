@@ -310,12 +310,14 @@ class DWS_Order_Node implements NodeInterface {
 
 		$this->depth = Integers::maybe_cast( $this->order->get_meta( '_dws_lo_depth' ), 0 );
 		if ( $this->depth > 0 ) {
-			$this->parent = new DWS_Order_Node( $this->order->get_meta( '_dws_lo_parent' ) );
+			$this->parent = dws_lowc_get_order_node( $this->order->get_meta( '_dws_lo_parent' ) );
 		}
 
-		$this->children = array_map(
-			fn( $child_id ) => new DWS_Order_Node( $child_id ),
-			Arrays::validate( $this->order->get_meta( '_dws_lo_children' ), array() )
+		$this->children = array_filter(
+			array_map(
+				fn( $child_id ) => dws_lowc_get_order_node( $child_id ),
+				Arrays::validate( $this->order->get_meta( '_dws_lo_children' ), array() )
+			)
 		);
 
 		$this->is_read = true;

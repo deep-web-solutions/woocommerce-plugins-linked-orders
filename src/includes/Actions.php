@@ -45,7 +45,7 @@ class Actions extends AbstractPluginFunctionality {
 
 	// endregion
 
-	// region AJAX
+	// region HOOKS
 
 	/**
 	 * Trigger the creation of a new linked order.
