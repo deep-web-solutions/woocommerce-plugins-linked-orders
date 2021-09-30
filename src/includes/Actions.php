@@ -10,7 +10,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\AdminNoticeTyp
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Helpers\AdminNoticesHelpersTrait;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Notices\DismissibleNotice;
 use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
-use DWS_LO_Deps\Psr\Log\LogLevel;
 
 \defined( 'ABSPATH' ) || exit;
 

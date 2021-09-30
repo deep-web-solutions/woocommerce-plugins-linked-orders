@@ -128,9 +128,9 @@ jobs:
           release_mode: ${{ env.RELEASE_MODE }}
           version: ${{ env.RELEASE_VERSION }}
         env:
-          PUBLIC_KEY: ${{ secrets.FREEMIUS_PUBLIC_KEY }}
           DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
-          SECRET_KEY: ${{ secrets.FREEMIUS_SECRET_KEY }}
+          PUBLIC_KEY: ${{ secrets.FREEMIUS_DEV_PUBLIC_KEY }}
+          SECRET_KEY: ${{ secrets.FREEMIUS_DEV_SECRET_KEY }}
           PLUGIN_SLUG: ${{ secrets.FREEMIUS_PLUGIN_SLUG }}
           PLUGIN_ID: ${{ secrets.FREEMIUS_PLUGIN_ID }}
 
