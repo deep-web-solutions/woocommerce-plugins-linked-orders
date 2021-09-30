@@ -8,7 +8,7 @@
  * @author              Deep Web Solutions
  *
  * @noinspection        ALL
- * @fs_ignore           /dependencies, /vendor
+ * @fs_ignore           /dependencies, /vendor, /src
  *
  * @wordpress-plugin
  * Plugin Name:             Linked Orders for WooCommerce
