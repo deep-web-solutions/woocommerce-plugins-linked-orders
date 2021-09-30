@@ -20,7 +20,37 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-    /**
-     * Define custom actions here
-     */
+	/**
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function setTestCookie() {
+		$this->amOnPage( '/' );
+		$this->setCookie( 'TEST_REQUEST', 'true' );
+	}
+
+	/**
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @param   bool    $grant_access
+	 * @param   bool    $is_wc_active
+	 *
+	 * @throws  Exception
+	 */
+	public function activate_lowc_free( bool $grant_access = true, bool $is_wc_active = false ) {
+		$this->click( array( 'id' => 'activate-linked-orders-for-woocommerce' ) ); // doing it like this will trigger the Freemius redirect
+
+		$this->see( 'Never miss an important update', '.fs-content' );
+		$this->click( $grant_access ? 'Allow & Continue' : 'Skip' );
+
+		if ( false === $is_wc_active ) {
+			$this->waitForElement( array( 'class' => 'wp-heading-inline' ), 15 );
+			$this->seeInCurrentUrl( 'plugins.php' );
+			$this->seePluginActivated( 'linked-orders-for-woocommerce' );
+		} else {
+			$this->waitForElement( array( 'class' => 'woocommerce-layout__header' ), 15 );
+			$this->seeInCurrentUrl( 'admin.php?page=wc-settings&tab=advanced&section=dws-linked-orders' );
+		}
+	}
 }
