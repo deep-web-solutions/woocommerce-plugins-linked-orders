@@ -74,7 +74,14 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	 * @version 1.0.0
 	 */
 	public function uninstall(): ?UninstallFailureException {
+		global $wpdb;
+
 		if ( true === dws_lowc_get_validated_setting( 'remove-data-uninstall', 'plugin' ) ) {
+			$result = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key LIKE '_dws_lo_%'" ); // phpcs:ignore WordPress.DB
+			if ( false === $result ) {
+				return new UninstallFailureException( \__( 'Failed to delete the orders links from the database', 'linked-orders-for-woocommerce' ) );
+			}
+
 			return parent::uninstall();
 		}
 
