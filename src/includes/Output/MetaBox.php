@@ -113,7 +113,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 							\sprintf(
 								/* translators: node post type singular name */
 								\_x( 'New children cannot be added to this %s.', 'metabox', 'linked-orders-for-woocommerce' ),
-								\strtolower( $dws_node->get_post_type()->labels->singular_name )
+								$dws_node->get_post_type()->labels->singular_name
 							)
 						);
 					?>
@@ -125,7 +125,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			?>
 
 			<div class="dws-linked-orders__children">
-				<?php \esc_html_e( 'Attached children: ', 'linked-orders-for-woocommerce' ); ?>
+				<?php \esc_html_e( 'Attached children', 'linked-orders-for-woocommerce' ); ?>:
 				<ul class="dws-linked-orders__children-list">
 					<?php foreach ( $dws_node->get_children() as $dws_child ) : ?>
 						<li id="linked-order-<?php echo \esc_attr( $dws_child->get_id() ); ?>" class="dws-linked-order">
@@ -151,7 +151,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 						\sprintf(
 							/* translators: post type singular name */
 							\_x( 'Add new child %s', 'metabox', 'linked-orders-for-woocommerce' ),
-							\strtolower( $dws_node->get_post_type()->labels->singular_name )
+							$dws_node->get_post_type()->labels->singular_name
 						)
 					);
 				?>

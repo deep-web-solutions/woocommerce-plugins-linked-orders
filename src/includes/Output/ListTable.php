@@ -140,13 +140,13 @@ class ListTable extends AbstractPluginFunctionality {
 					$depth_label = \sprintf(
 						/* translators: %s: order type singular name */
 						\_x( 'Root %s', 'list table content', 'linked-orders-for-woocommerce' ),
-						\strtolower( $dws_node->get_post_type()->labels->singular_name )
+						$dws_node->get_post_type()->labels->singular_name
 					);
 				} else {
 					$depth_label = \sprintf(
 						/* translators: %s: order type singular name; %d: numerical depth of the order */
 						\_x( 'Child %1$s (level %2$d)', 'list table content', 'linked-orders-for-woocommerce' ),
-						\strtolower( $dws_node->get_post_type()->labels->singular_name ),
+						$dws_node->get_post_type()->labels->singular_name,
 						$depth + 1 // +1 adjustment for non-programmers
 					);
 				}
@@ -193,30 +193,30 @@ class ListTable extends AbstractPluginFunctionality {
 							\sprintf(
 								/* translators: %s: order type singular name */
 								\__( 'All %s depths', 'linked-orders-for-woocommerce' ),
-								\strtolower( $post_type_object->labels->singular_name )
+								$post_type_object->labels->singular_name
 							)
 						);
 					?>
 				</option>
-				<option value="0" <?php selected( 0, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
+				<option value="0" <?php \selected( 0, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
 					<?php
 						echo \esc_html(
 							\sprintf(
 								/* translators: %s: order type plural name */
 								\_x( 'Root %s', 'list table filter', 'linked-orders-for-woocommerce' ),
-								\strtolower( $post_type_object->label )
+								$post_type_object->label
 							)
 						);
 					?>
 				</option>
 				<?php for ( $i = 1; $i <= $max_depth; $i++ ) : ?>
-					<option value="<?php echo \esc_attr( $i ); ?>" <?php selected( $i, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
+					<option value="<?php echo \esc_attr( $i ); ?>" <?php \selected( $i, Integers::maybe_cast_input( INPUT_GET, '_dws_lo_depth' ) ); ?>>
 						<?php
 							echo \esc_html(
 								\sprintf(
 									/* translators: %s: order type plural name; %d: numerical depth of the order */
 									\_x( 'Child %1$s (level %2$d)', 'list table filter', 'linked-orders-for-woocommerce' ),
-									\strtolower( $post_type_object->label ),
+									$post_type_object->label,
 									$i + 1 // +1 for non-programmers
 								)
 							);
@@ -330,7 +330,7 @@ class ListTable extends AbstractPluginFunctionality {
 					'name'   => \sprintf(
 						/* translators: %s: the post type label, e.g. orders */
 						\__( 'View all customer %s', 'linked-orders-for-woocommerce' ),
-						\strtolower( $dws_node->get_post_type()->label )
+						$dws_node->get_post_type()->label
 					),
 					'action' => 'view-all-customer-orders',
 				);
@@ -348,7 +348,7 @@ class ListTable extends AbstractPluginFunctionality {
 					'name'   => \sprintf(
 						/* translators: %s: the post type label, e.g. orders */
 						\__( 'View all customer %s', 'linked-orders-for-woocommerce' ),
-						\strtolower( $dws_node->get_post_type()->label )
+						$dws_node->get_post_type()->label
 					),
 					'action' => 'view-all-customer-orders',
 				);
@@ -369,7 +369,7 @@ class ListTable extends AbstractPluginFunctionality {
 					'name'   => \sprintf(
 						/* translators: %s: the post type label, e.g. orders */
 						\__( 'View all linked %s', 'linked-orders-for-woocommerce' ),
-						\strtolower( $dws_node->get_post_type()->label )
+						$dws_node->get_post_type()->label
 					),
 					'action' => 'view-all-linked-orders',
 				);
@@ -391,8 +391,8 @@ class ListTable extends AbstractPluginFunctionality {
 				),
 				'name'   => \sprintf(
 					/* translators: %s: the post type singular label, e.g. order */
-					\__( 'Create and attach empty linked %s', 'linked-orders-for-woocommerce' ),
-					\strtolower( $dws_node->get_post_type()->labels->singular_name )
+					\__( 'Create empty linked %s', 'linked-orders-for-woocommerce' ),
+					$dws_node->get_post_type()->labels->singular_name
 				),
 				'action' => 'create-empty-linked-order',
 			);
