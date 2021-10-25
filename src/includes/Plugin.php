@@ -16,7 +16,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\SetupD
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 final class Plugin extends AbstractPluginFunctionalityRoot {
 	// region TRAITS

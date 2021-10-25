@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 class DWS_Order_Node implements NodeInterface {
 	// region TRAITS

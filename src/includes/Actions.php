@@ -19,7 +19,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 class Actions extends AbstractPluginFunctionality {
 	// region TRAITS

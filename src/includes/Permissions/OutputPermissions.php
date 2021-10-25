@@ -10,7 +10,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Core\PluginComponents\AbstractPermiss
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Permissions
  */
 class OutputPermissions extends AbstractPermissionsChildFunctionality {
 	// region PERMISSION CONSTANTS

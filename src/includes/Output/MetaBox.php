@@ -20,7 +20,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Output
  */
 class MetaBox extends AbstractPluginFunctionality implements OutputtableInterface {
 	// region TRAITS

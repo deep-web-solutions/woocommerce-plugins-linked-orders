@@ -15,7 +15,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
  * @since   1.0.0
  * @version 1.1.1
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 class Output extends AbstractPluginFunctionality {
 	// region TRAITS

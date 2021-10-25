@@ -13,7 +13,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\PluginComponents
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders\Settings
  */
 class GeneralSettings extends WC_AbstractValidatedOptionsGroupFunctionality {
 	// region INHERITED METHODS

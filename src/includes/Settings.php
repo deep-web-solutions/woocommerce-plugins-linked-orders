@@ -14,7 +14,6 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\PluginComponents
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
- * @package DeepWebSolutions\WC-Plugins\LinkedOrders
  */
 class Settings extends WC_AbstractValidatedOptionsSectionFunctionality {
 	// region INHERITED METHODS

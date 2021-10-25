@@ -24,7 +24,7 @@
  * Text Domain:             linked-orders-for-woocommerce
  * Domain Path:             /src/languages
  * WC requires at least:    4.5.2
- * WC tested up to:         5.7.1
+ * WC tested up to:         5.8
  */
 
 defined( 'ABSPATH' ) || exit;

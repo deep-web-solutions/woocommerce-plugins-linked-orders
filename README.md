@@ -77,6 +77,6 @@ There is a chance that your question might be answered [in our knowledge base](h
 
 ## Changelog
 
-### 1.0.0 (TBD)
+### 1.0.0 (October 25th, 2021)
 
 * First official release.
