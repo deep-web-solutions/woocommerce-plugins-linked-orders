@@ -4,6 +4,7 @@
  *
  * @since   1.0.0
  * @version 1.0.0
+ * @package DeepWebSolutions\WC-Plugins\LinkedOrders\templates
  */
 
 defined( 'ABSPATH' ) || exit;
