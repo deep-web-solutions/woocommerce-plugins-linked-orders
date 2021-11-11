@@ -2,7 +2,7 @@
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Actions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
+use DeepWebSolutions\WC_Plugins\LinkedOrders\Autocompletion;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
@@ -94,9 +94,9 @@ return array_merge(
 			->constructorParameter( 'component_id', 'plugin-settings' )
 			->constructorParameter( 'component_name', 'Plugin Settings' ),
 
-		ShopOrder::class                     => autowire( ShopOrder::class )
-			->constructorParameter( 'component_id', 'shop-order' )
-			->constructorParameter( 'component_name', 'Shop Order' ),
+		Autocompletion::class                => autowire( Autocompletion::class )
+			->constructorParameter( 'component_id', 'autocompletion' )
+			->constructorParameter( 'component_name', 'Autocompletion' ),
 	),
 	// Plugin aliases
 	array(
@@ -113,6 +113,6 @@ return array_merge(
 		'general-settings'   => get( Settings\GeneralSettings::class ),
 		'plugin-settings'    => get( Settings\PluginSettings::class ),
 
-		'shop-order'         => get( ShopOrder::class ),
+		'autocompletion'     => get( Autocompletion::class ),
 	)
 );

@@ -5,7 +5,7 @@
 **Requires at least:** 5.5 \
 **Tested up to:** 5.8 \
 **Requires PHP:** 7.4 \
-**Stable tag:** 1.0.0 \
+**Stable tag:** 1.1.0   \
 **License:** GPLv3 or later \
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -76,6 +76,13 @@ There is a chance that your question might be answered [in our knowledge base](h
 
 
 ## Changelog
+
+### 1.1.0 (November 11th, 2021)
+
+* Changed order actions icons for less overlap with other plugins.
+* Tweaked error messages for better end-user clarity.
+* Dev: renamed some variables to better express 'shop_order' agnosticism.
+* Dev: updated DWS framework.
 
 ### 1.0.0 (October 25th, 2021)
 

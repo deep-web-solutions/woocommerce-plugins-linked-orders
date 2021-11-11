@@ -45,7 +45,7 @@ function dws_lowc_is_root_order( $order ): ?bool {
  * Links two orders in a parent-child relation.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  *
  * @param   int     $parent_id      The ID of the parent order.
  * @param   int     $child_id       The ID of the child order.
@@ -55,7 +55,7 @@ function dws_lowc_is_root_order( $order ): ?bool {
 function dws_lowc_link_orders( int $parent_id, int $child_id ): ?bool {
 	$dws_parent_node = dws_lowc_get_order_node( $parent_id );
 	$dws_child_node  = dws_lowc_get_order_node( $child_id );
-	if ( empty( $dws_parent_node ) || empty( $dws_child_node ) ) {
+	if ( is_null( $dws_parent_node ) || is_null( $dws_child_node ) ) {
 		return null;
 	}
 

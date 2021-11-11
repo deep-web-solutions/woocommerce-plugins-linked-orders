@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * Models the functions needed to interact with a linked order.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class DWS_Order_Node implements NodeInterface {
@@ -237,34 +237,34 @@ class DWS_Order_Node implements NodeInterface {
 	 * Returns the formatted name for the node's order.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 *
 	 * @return  string
 	 */
 	public function get_formatted_name(): string {
 		$status_name = apply_filters(
-			dws_lowc_get_hook_tag( 'node', array( 'status_name' ) ),
+			dws_lowc_get_hook_tag( 'node', 'status_name' ),
 			wc_get_order_status_name( $this->order->get_status() ),
 			$this->post_type,
 			$this->order,
 			$this
 		);
-		$node_name   = \sprintf(
+		$node_name   = sprintf(
 			/* translators: 1. Post type name. 2. Order number; 3. Order status label. */
-			\__( '%1$s #%2$s - %3$s', 'linked-orders-for-woocommerce' ),
+			__( '%1$s #%2$s - %3$s', 'linked-orders-for-woocommerce' ),
 			$this->post_type->labels->singular_name,
 			$this->order->get_order_number(),
 			$status_name
 		);
 
-		return apply_filters( dws_lowc_get_hook_tag( 'node', array( 'get_formatted_name' ) ), $node_name, $this );
+		return apply_filters( dws_lowc_get_hook_tag( 'node', 'get_formatted_name' ), $node_name, $this );
 	}
 
 	/**
 	 * Checks whether a given user is allowed to create a linked child for the current order object or not.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 *
 	 * @param   int|null    $user_id    The ID of the user that the checks are being performed for.
 	 *
@@ -275,7 +275,7 @@ class DWS_Order_Node implements NodeInterface {
 		$max_depth  = dws_lowc_get_validated_setting( 'max-depth', 'general' ) > $this->get_depth();
 		$statuses   = $this->order->has_status( dws_lowc_get_valid_statuses_for_new_child( $this->post_type->name, $this->order ) );
 
-		return apply_filters( dws_lowc_get_hook_tag( 'node', array( 'can_create_child' ) ), $permission && $max_depth && $statuses, $user_id, $this->order, $this );
+		return apply_filters( dws_lowc_get_hook_tag( 'node', 'can_create_child' ), $permission && $max_depth && $statuses, $user_id, $this->order, $this );
 	}
 
 	/**

@@ -298,7 +298,7 @@ class ListTable extends AbstractPluginFunctionality {
 	 * Registers new order-level actions in the list table.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 *
@@ -377,23 +377,23 @@ class ListTable extends AbstractPluginFunctionality {
 
 		// Action for creating a new linked order one level down from the current one.
 		if ( true === $dws_node->can_create_child() ) {
-			$new_actions['create_empty_linked_order'] = array(
+			$new_actions['create_empty_linked_child'] = array(
 				'url'    => \wp_nonce_url(
 					\add_query_arg(
 						array(
-							'action'   => 'dws_lowc_create_linked_order',
-							'order_id' => $order->get_id(),
+							'action'    => 'dws_lowc_create_linked_child',
+							'parent_id' => $order->get_id(),
 						),
 						\admin_url( 'admin-post.php' )
 					),
-					'dws_create_linked_order'
+					'dws_create_linked_child'
 				),
 				'name'   => \sprintf(
 					/* translators: %s: the post type singular label, e.g. order */
 					\__( 'Create empty linked %s', 'linked-orders-for-woocommerce' ),
 					$dws_node->get_post_type()->labels->singular_name
 				),
-				'action' => 'create-empty-linked-order',
+				'action' => 'create-empty-linked-child',
 			);
 		}
 

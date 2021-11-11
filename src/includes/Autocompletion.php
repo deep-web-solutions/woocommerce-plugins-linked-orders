@@ -3,26 +3,38 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\Actions\SetupHooksTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 
 \defined( 'ABSPATH' ) || exit;
 
 /**
- * Handles changes to the lifecylce of WC orders.
+ * Handles the automatic completion of descendants.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
-class ShopOrder extends AbstractPluginFunctionality {
+class Autocompletion extends AbstractPluginFunctionality {
 	// region TRAITS
 
+	use ActiveLocalTrait;
 	use SetupHooksTrait;
 
 	// endregion
 
 	// region INHERITED METHODS
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.1.0
+	 * @version 1.1.0
+	 */
+	public function is_active_local(): bool {
+		return dws_lowc_get_validated_setting( 'autocomplete-descendants', 'general' );
+	}
 
 	/**
 	 * Registers actions and filters with the hooks service.
@@ -50,11 +62,6 @@ class ShopOrder extends AbstractPluginFunctionality {
 	 */
 	public function maybe_autocomplete_descendants( int $order_id ) {
 		if ( true !== dws_lowc_is_supported_order( $order_id ) ) {
-			return;
-		}
-
-		$should_autocomplete = dws_lowc_get_validated_setting( 'autocomplete-descendants', 'general' );
-		if ( true !== $should_autocomplete ) {
 			return;
 		}
 

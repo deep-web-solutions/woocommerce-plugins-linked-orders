@@ -77,7 +77,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 */
 	protected function output_local(): ?OutputFailureException {
 		$order_id = \get_the_ID();
@@ -89,7 +89,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			?>
 
 			<div class="dws-linked-orders__parent">
-				<?php echo \esc_html_x( 'Parent', 'metabox', 'linked-orders-for-woocommerce' ) . ':'; ?>
+				<?php echo \esc_html_x( 'Parent', 'metabox', 'linked-orders-for-woocommerce' ); ?>:
 				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_node_parent->get_id() ) ); ?>" target="_blank">
 					<?php echo \wp_kses_post( $dws_node_parent->get_formatted_name() ); ?>
 				</a>
@@ -141,7 +141,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 
 		// Maybe output button for creating a new child order.
 		if ( true === $dws_node->can_create_child() ) {
-			$link = \wp_nonce_url( \admin_url( 'admin-post.php?action=dws_lowc_create_linked_order&order_id=' . $order_id ), 'dws_create_linked_order' );
+			$link = \wp_nonce_url( \admin_url( 'admin-post.php?action=dws_lowc_create_linked_child&parent_id=' . $order_id ), 'dws_create_linked_child' );
 			?>
 
 			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">

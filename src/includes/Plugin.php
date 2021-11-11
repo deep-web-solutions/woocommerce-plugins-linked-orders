@@ -58,7 +58,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 				Output::class,
 				Permissions::class,
 				Settings::class,
-				ShopOrder::class,
+				Autocompletion::class,
 			)
 		);
 	}
