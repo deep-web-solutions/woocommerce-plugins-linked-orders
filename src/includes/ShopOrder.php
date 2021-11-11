@@ -2,9 +2,9 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\Actions\SetupHooksTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 
 \defined( 'ABSPATH' ) || exit;
 

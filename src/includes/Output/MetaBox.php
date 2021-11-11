@@ -3,14 +3,14 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputFailureException;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputLocalTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\OutputtableInterface;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\Actions\Setupable\SetupSettingsTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputFailureException;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Actions\Outputtable\OutputLocalTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Actions\OutputtableInterface;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Users;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Settings\Actions\SetupSettingsTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +18,7 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
  * Outputs the linked orders metabox on the edit order screen.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class MetaBox extends AbstractPluginFunctionality implements OutputtableInterface {
@@ -36,10 +36,10 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 */
 	public function is_active_local(): bool {
-		return Users::has_capabilities( array( OutputPermissions::SEE_METABOX ) ) ?? false;
+		return Users::has_capabilities( OutputPermissions::SEE_METABOX ) ?? false;
 	}
 
 	/**

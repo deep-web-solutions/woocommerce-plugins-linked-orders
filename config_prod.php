@@ -6,19 +6,18 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\ShopOrder;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Plugin\PluginInterface;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Request;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\Handlers\ContainerValidationHandler;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationService;
-use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\WC_Handler;
-use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Utilities\WC_LoggingHandler;
-use DWS_LO_Deps\DI\ContainerBuilder;
-use function DWS_LO_Deps\DI\autowire;
-use function DWS_LO_Deps\DI\factory;
-use function DWS_LO_Deps\DI\get;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Logging\LoggingService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\PluginInterface;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Request;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Settings\SettingsService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Validation\Handlers\ContainerValidationHandler;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\Logging\WC_LoggingHandler;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\WC_SettingsHandler;
+use DWS_LOWC_Deps\DI\ContainerBuilder;
+use function DWS_LOWC_Deps\DI\autowire;
+use function DWS_LOWC_Deps\DI\factory;
+use function DWS_LOWC_Deps\DI\get;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,48 +25,39 @@ return array_merge(
 	// Foundations
 	array(
 		PluginInterface::class => get( Plugin::class ),
-	),
-	// Utilities
-	array(
-		HooksService::class   => factory(
-			function( Plugin $plugin, LoggingService $logging_service ) {
-				$hooks_service = new HooksService( $plugin, $logging_service );
-				$plugin->register_runnable_on_setup( $hooks_service );
-				return $hooks_service;
-			}
-		),
-		LoggingService::class => factory(
+		LoggingService::class  => factory(
 			function( PluginInterface $plugin ) {
 				$logging_handlers = array();
+				$is_debug_active  = Request::has_debug( 'DWS_LOWC_DEBUG' );
 
 				if ( class_exists( 'WC_Log_Levels' ) ) { // in case the WC plugin is not active
-					$min_log_level  = Request::has_debug() ? WC_Log_Levels::DEBUG : WC_Log_Levels::ERROR;
-					$wc_log_handler = new WC_Log_Handler_File();
+					$min_log_level  = $is_debug_active ? WC_Log_Levels::DEBUG : WC_Log_Levels::ERROR;
 
 					$logging_handlers = array(
-						new WC_LoggingHandler( 'framework', array( $wc_log_handler ), $min_log_level ),
-						new WC_LoggingHandler( 'plugin', array( $wc_log_handler ), $min_log_level ),
+						new WC_LoggingHandler( 'framework', null, $min_log_level ),
+						new WC_LoggingHandler( 'plugin', null, $min_log_level ),
 					);
 				}
 
-				return new LoggingService( $plugin, $logging_handlers, Request::has_debug() );
+				return new LoggingService( $plugin, $logging_handlers, $is_debug_active );
 			}
 		),
 	),
 	// Settings
 	array(
-		SettingsService::class   => factory(
-			function( Plugin $plugin, LoggingService $logging_service, HooksService $hooks_service ) {
-				return new SettingsService( $plugin, $logging_service, $hooks_service, array( new WC_Handler() ) );
+		'settings-validation-handler' => factory(
+			function() {
+				$config    = require_once __DIR__ . '/src/configs/settings.php';
+				$container = ( new ContainerBuilder() )->addDefinitions( $config )->build();
+
+				return new ContainerValidationHandler( 'settings', $container );
 			}
 		),
-		ValidationService::class => factory(
-			function( Plugin $plugin, LoggingService $logging_service ) {
-				$container         = ( new ContainerBuilder() )->addDefinitions( __DIR__ . '/src/configs/settings.php' )->build();
-				$container_handler = new ContainerValidationHandler( 'default', $container );
-				return new ValidationService( $plugin, $logging_service, array( $container_handler ) );
-			}
-		),
+
+		SettingsService::class        => autowire( SettingsService::class )
+			->method( 'register_handler', new WC_SettingsHandler() ),
+		ValidationService::class      => autowire( ValidationService::class )
+			->method( 'register_handler', get( 'settings-validation-handler' ) ),
 	),
 	// Plugin
 	array(

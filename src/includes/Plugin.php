@@ -2,11 +2,11 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Actions\Installable\UninstallFailureException;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionalityRoot;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Initializable\InitializeAdminNoticesServiceTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\InitializePluginDependenciesContextHandlersTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\SetupDependenciesAdminNoticesTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionalityRoot;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\Actions\Installable\UninstallFailureException;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\InitializePluginDependenciesContextHandlersTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\SetupActiveStateDependenciesAdminNoticesTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\WC_Helpers;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -14,15 +14,14 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\SetupD
  * Main plugin class.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 final class Plugin extends AbstractPluginFunctionalityRoot {
 	// region TRAITS
 
-	use InitializeAdminNoticesServiceTrait;
 	use InitializePluginDependenciesContextHandlersTrait;
-	use SetupDependenciesAdminNoticesTrait;
+	use SetupActiveStateDependenciesAdminNoticesTrait;
 
 	// endregion
 
@@ -32,18 +31,16 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	 * Returns the WC plugin-level dependency.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 *
 	 * @return  array
 	 */
 	protected function get_plugin_dependencies_active(): array {
 		return array(
-			'plugin'          => 'woocommerce/woocommerce.php',
-			'name'            => 'WooCommerce',
-			'min_version'     => '4.5.2',
-			'version_checker' => function() {
-				return \defined( 'WC_VERSION' ) ? WC_VERSION : '0.0.0';
-			},
+			'plugin'         => 'woocommerce/woocommerce.php',
+			'fallback_name'  => 'WooCommerce',
+			'min_version'    => '4.5.2',
+			'version_getter' => array( WC_Helpers::class, 'get_version' ),
 		);
 	}
 

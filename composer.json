@@ -35,8 +35,8 @@
   },
   "require-dev": {
     "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
-    "deep-web-solutions/wp-framework-helpers": "^1.4.5",
-    "deep-web-solutions/wp-framework-foundations": "^1.4.4",
+    "deep-web-solutions/wp-framework-helpers": "^1.5.3",
+    "deep-web-solutions/wp-framework-foundations": "^1.5.4",
     "deep-web-solutions/wp-framework-utilities": "master@dev",
     "deep-web-solutions/wp-framework-core": "master@dev",
     "deep-web-solutions/wp-framework-settings": "master@dev",
@@ -73,19 +73,19 @@
     "psr-4": {
       "DeepWebSolutions\\WC_Plugins\\LinkedOrders\\": "src/includes",
 
-      "DWS_LO_Deps\\Psr\\Container\\": "dependencies/psr/container/src",
-      "DWS_LO_Deps\\Psr\\Log\\": "dependencies/psr/log/Psr/Log",
-      "DWS_LO_Deps\\Opis\\Closure\\": "dependencies/dependency-injection/opis/closure/src",
-      "DWS_LO_Deps\\PhpDocReader\\": "dependencies/dependency-injection/php-di/phpdoc-reader/src",
-      "DWS_LO_Deps\\Invoker\\": "dependencies/dependency-injection/php-di/invoker/src",
-      "DWS_LO_Deps\\DI\\": "dependencies/dependency-injection/php-di/php-di/src",
+      "DWS_LOWC_Deps\\Psr\\Container\\": "dependencies/psr/container/src",
+      "DWS_LOWC_Deps\\Psr\\Log\\": "dependencies/psr/log/Psr/Log",
+      "DWS_LOWC_Deps\\Opis\\Closure\\": "dependencies/dependency-injection/opis/closure/src",
+      "DWS_LOWC_Deps\\PhpDocReader\\": "dependencies/dependency-injection/php-di/phpdoc-reader/src",
+      "DWS_LOWC_Deps\\Invoker\\": "dependencies/dependency-injection/php-di/invoker/src",
+      "DWS_LOWC_Deps\\DI\\": "dependencies/dependency-injection/php-di/php-di/src",
 
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Helpers\\": "dependencies/deep-web-solutions/wp-framework-helpers/src/includes",
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Foundations\\": "dependencies/deep-web-solutions/wp-framework-foundations/src/includes",
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Utilities\\": "dependencies/deep-web-solutions/wp-framework-utilities/src/includes",
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Core\\": "dependencies/deep-web-solutions/wp-framework-core/src/includes",
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\Settings\\": "dependencies/deep-web-solutions/wp-framework-settings/src/includes",
-      "DWS_LO_Deps\\DeepWebSolutions\\Framework\\WooCommerce\\": "dependencies/deep-web-solutions/wp-framework-woocommerce/src/includes"
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\Helpers\\": "dependencies/deep-web-solutions/wp-framework-helpers/src/includes",
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\Foundations\\": "dependencies/deep-web-solutions/wp-framework-foundations/src/includes",
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\Utilities\\": "dependencies/deep-web-solutions/wp-framework-utilities/src/includes",
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\Core\\": "dependencies/deep-web-solutions/wp-framework-core/src/includes",
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\Settings\\": "dependencies/deep-web-solutions/wp-framework-settings/src/includes",
+      "DWS_LOWC_Deps\\DeepWebSolutions\\Framework\\WooCommerce\\": "dependencies/deep-web-solutions/wp-framework-woocommerce/src/includes"
     },
     "classmap": [
       "src/models"
@@ -131,11 +131,11 @@
       "composer prefix-dws-framework"
     ],
     "prefix-dependency-injection": [
-      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LO_Deps --output-dir=./dependencies/dependency-injection --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/dependency-injection.inc.php --force --quiet"
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/dependency-injection --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/dependency-injection.inc.php --force --quiet"
     ],
     "prefix-dws-framework": [
-      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LO_Deps --output-dir=./dependencies/psr --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr.inc.php --force --quiet",
-      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LO_Deps --output-dir=./dependencies/deep-web-solutions --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/deep-web-solutions.inc.php --force --quiet"
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/psr --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr.inc.php --force --quiet",
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/deep-web-solutions --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/deep-web-solutions.inc.php --force --quiet"
     ],
 
     "mess-detector:check": [

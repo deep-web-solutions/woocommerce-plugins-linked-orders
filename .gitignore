@@ -4,6 +4,7 @@ auth.json
 codeception.yml
 tests/_data/dump.sql
 /dependencies/
+!/src/assets/dist/*/index.php
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,composer,phpstorm+all,sass
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,composer,phpstorm+all,sass

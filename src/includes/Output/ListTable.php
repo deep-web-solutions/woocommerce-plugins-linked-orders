@@ -3,17 +3,15 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Output;
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupScriptsStylesTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Assets\Handlers\ScriptsHandler;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Assets\Handlers\StylesHandler;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Helpers\AssetsHelpersTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Users;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\Actions\SetupHooksTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -21,15 +19,15 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * Outputs a new column, filters, and actions on the orders archive page.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class ListTable extends AbstractPluginFunctionality {
 	// region TRAITS
 
 	use ActiveLocalTrait;
+	use AssetsHelpersTrait;
 	use SetupHooksTrait;
-	use SetupScriptsStylesTrait;
 
 	// endregion
 
@@ -39,17 +37,17 @@ class ListTable extends AbstractPluginFunctionality {
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 */
 	public function is_active_local(): bool {
-		return Users::has_capabilities( array( OutputPermissions::SEE_TABLE_COLUMN ) ) ?? false;
+		return Users::has_capabilities( OutputPermissions::SEE_TABLE_COLUMN ) ?? false;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 */
 	public function register_hooks( HooksService $hooks_service ): void {
 		foreach ( dws_lowc_get_supported_order_types() as $order_type ) {
@@ -60,38 +58,8 @@ class ListTable extends AbstractPluginFunctionality {
 		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_filters', 20 );
 		$hooks_service->add_filter( 'request', $this, 'filter_request_query', 999 );
 
+		$hooks_service->add_action( 'admin_enqueue_scripts', $this, 'enqueue_admin_scripts' );
 		$hooks_service->add_filter( 'woocommerce_admin_order_actions', $this, 'register_actions', 999, 2 );
-	}
-
-	/**
-	 * Registers scripts and styles with WordPress.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @param   ScriptsHandler  $scripts_handler    Instance of the scripts handler.
-	 * @param   StylesHandler   $styles_handler     Instance of the styles handler.
-	 */
-	public function register_scripts_and_styles( ScriptsHandler $scripts_handler, StylesHandler $styles_handler ): void {
-		$styles_handler->enqueue_admin_style(
-			$this->get_asset_handle(),
-			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/css/orders-list-table.css',
-			$this->get_plugin()->get_plugin_version(),
-			array( 'woocommerce_admin_styles' ),
-			'all',
-			array( 'edit.php' ),
-			fn() => \in_array( $GLOBALS['typenow'] ?? '', dws_lowc_get_supported_order_types(), true )
-		);
-
-		$scripts_handler->enqueue_admin_script(
-			$this->get_asset_handle(),
-			$this->get_plugin()->get_plugin_assets_base_relative_url() . 'dist/js/orders-list-table.js',
-			$this->get_plugin()->get_plugin_version(),
-			array( 'jquery' ),
-			true,
-			array( 'edit.php' ),
-			fn() => \in_array( $GLOBALS['typenow'] ?? '', dws_lowc_get_supported_order_types(), true )
-		);
 	}
 
 	// endregion
@@ -109,7 +77,7 @@ class ListTable extends AbstractPluginFunctionality {
 	 * @return  array
 	 */
 	public function register_column( array $columns ): array {
-		$insert_after = \apply_filters( $this->get_hook_tag( 'column', array( 'insert_after' ) ), 'order_total', \get_post_type(), $columns );
+		$insert_after = \apply_filters( $this->get_hook_tag( 'column', 'insert_after' ), 'order_total', \get_post_type(), $columns );
 
 		return Arrays::insert_after(
 			$columns,
@@ -150,7 +118,7 @@ class ListTable extends AbstractPluginFunctionality {
 					);
 				}
 
-				$depth_label = \apply_filters( $this->get_hook_tag( 'column', array( 'content' ) ), $depth_label, $dws_node );
+				$depth_label = \apply_filters( $this->get_hook_tag( 'column', 'content' ), $depth_label, $dws_node );
 				echo \esc_html( $depth_label );
 
 				break;
@@ -292,6 +260,38 @@ class ListTable extends AbstractPluginFunctionality {
 		}
 
 		return $query_vars;
+	}
+
+	/**
+	 * Enqueues the necessary scripts and styles on the orders list table page.
+	 *
+	 * @since   1.1.0
+	 * @version 1.1.0
+	 *
+	 * @param   string  $hook_suffix    The WordPress admin page suffix.
+	 */
+	public function enqueue_admin_scripts( string $hook_suffix ) {
+		if ( 'edit.php' !== $hook_suffix || ! \in_array( $GLOBALS['typenow'] ?? '', dws_lowc_get_supported_order_types(), true ) ) {
+			return;
+		}
+
+		$plugin        = $this->get_plugin();
+		$minified_path = $this->maybe_get_minified_asset_path( $plugin::get_plugin_assets_url() . 'dist/css/orders-list-table.css' );
+		\wp_enqueue_style(
+			$this->get_asset_handle(),
+			$minified_path,
+			array( 'woocommerce_admin_styles' ),
+			$this->maybe_get_minified_asset_path( $minified_path, $plugin->get_plugin_version() )
+		);
+
+		$minified_path = $this->maybe_get_minified_asset_path( $plugin::get_plugin_assets_url() . 'dist/js/orders-list-table.js' );
+		\wp_enqueue_script(
+			$this->get_asset_handle(),
+			$minified_path,
+			array( 'jquery' ),
+			$this->maybe_get_minified_asset_path( $minified_path, $plugin->get_plugin_version() ),
+			true
+		);
 	}
 
 	/**

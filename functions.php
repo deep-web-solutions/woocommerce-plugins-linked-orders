@@ -1,13 +1,10 @@
 <?php
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Plugin;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
-use DWS_LO_Deps\DI\Container;
-use DWS_LO_Deps\DI\ContainerBuilder;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
+use DWS_LOWC_Deps\DI\Container;
+use DWS_LOWC_Deps\DI\ContainerBuilder;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -128,18 +125,17 @@ add_action( 'fs_after_uninstall_linked-orders-for-woocommerce', 'dws_lowc_plugin
  * Shorthand for generating a plugin-level hook tag.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  *
- * @param   string  $name       The actual descriptor of the hook's purpose.
- * @param   array   $extra      Further descriptor of the hook's purpose.
+ * @param   string              $name       The actual descriptor of the hook's purpose.
+ * @param   string|string[]     $extra      Further descriptor of the hook's purpose.
  *
  * @return  string|null
  */
-function dws_lowc_get_hook_tag( string $name, array $extra = array() ): ?string {
+function dws_lowc_get_hook_tag( string $name, $extra = array() ): ?string {
 	try {
 		return dws_lowc_instance()->get_hook_tag( $name, $extra );
-	} catch ( Error $error ) {
-		// Likely to happen if called before initialization.
+	} catch ( Error $error ) { // Likely to happen if called before initialization.
 		return null;
 	}
 }
@@ -148,19 +144,18 @@ function dws_lowc_get_hook_tag( string $name, array $extra = array() ): ?string 
  * Shorthand for generating a component-level hook tag.
  *
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.1.0
  *
- * @param   string  $component_id   The ID of the component as defined in the DI container.
- * @param   string  $name           The actual descriptor of the hook's purpose.
- * @param   array   $extra          Further descriptor of the hook's purpose.
+ * @param   string              $component_id   The ID of the component as defined in the DI container.
+ * @param   string              $name           The actual descriptor of the hook's purpose.
+ * @param   string|string[]     $extra          Further descriptor of the hook's purpose.
  *
  * @return  string|null
  */
-function dws_lowc_get_component_hook_tag( string $component_id, string $name, array $extra = array() ): ?string {
+function dws_lowc_get_component_hook_tag( string $component_id, string $name, $extra = array() ): ?string {
 	try {
 		return dws_lowc_component( $component_id )->get_hook_tag( $name, $extra );
-	} catch ( Error $error ) {
-		// Likely to happen if called before initialization.
+	} catch ( Error $error ) { // Likely to happen if called before initialization.
 		return null;
 	}
 }

@@ -2,14 +2,14 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Initializable\InitializeAdminNoticesServiceTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Actions\Setupable\SetupHooksTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\AdminNoticeTypesEnum;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Helpers\AdminNoticesHelpersTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Notices\DismissibleNotice;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Actions\InitializeAdminNoticesServiceTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\AdminNoticeTypesEnum;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Helpers\AdminNoticesHelpersTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Notices\DismissibleAdminNotice;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\Actions\SetupHooksTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -61,19 +61,19 @@ class Actions extends AbstractPluginFunctionality {
 
 		if ( empty( $dws_parent_node ) ) {
 			$this->get_admin_notices_service()->add_notice(
-				new DismissibleNotice( $this->get_admin_notice_handle( 'invalid-parent-id' ), \__( 'Invalid parent ID.', 'linked-orders-for-woocommerce' ), AdminNoticeTypesEnum::ERROR ),
+				new DismissibleAdminNotice( $this->get_admin_notice_handle( 'invalid-parent-id' ), \__( 'Invalid parent ID.', 'linked-orders-for-woocommerce' ), AdminNoticeTypesEnum::ERROR ),
 				'user-meta'
 			);
 		} elseif ( true !== $dws_parent_node->can_create_child() ) {
 			$this->get_admin_notices_service()->add_notice(
-				new DismissibleNotice( $this->get_admin_notice_handle( 'missing-permissions' ), \__( 'You are not authorized to create linked orders.', 'linked-orders-for-woocommerce' ), AdminNoticeTypesEnum::ERROR ),
+				new DismissibleAdminNotice( $this->get_admin_notice_handle( 'missing-permissions' ), \__( 'You are not authorized to create linked orders.', 'linked-orders-for-woocommerce' ), AdminNoticeTypesEnum::ERROR ),
 				'user-meta'
 			);
 		} else {
 			$linked_order_id = dws_lowc_create_linked_order( $parent_order_id );
 			if ( \is_wp_error( $linked_order_id ) ) {
 				$this->get_admin_notices_service()->add_notice(
-					new DismissibleNotice(
+					new DismissibleAdminNotice(
 						$this->get_admin_notice_handle( 'creation-error' ),
 						/* translators: error message contents */
 						\sprintf( \__( 'Failed to create a new linked order. Error message: %s', 'linked-orders-for-woocommerce' ), $linked_order_id->get_error_message() ),

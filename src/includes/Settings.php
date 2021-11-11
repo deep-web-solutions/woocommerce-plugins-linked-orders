@@ -2,9 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings\GeneralSettings;
-use DeepWebSolutions\WC_Plugins\LinkedOrders\Settings\PluginSettings;
-use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\PluginComponents\WC_AbstractValidatedOptionsSectionFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\Functionalities\WC_AbstractValidatedOptionsSectionFunctionality;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +23,7 @@ class Settings extends WC_AbstractValidatedOptionsSectionFunctionality {
 	 * @version 1.0.0
 	 */
 	protected function get_di_container_children(): array {
-		return array( GeneralSettings::class, PluginSettings::class );
+		return array( Settings\GeneralSettings::class, Settings\PluginSettings::class );
 	}
 
 	/**
@@ -64,7 +62,7 @@ class Settings extends WC_AbstractValidatedOptionsSectionFunctionality {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 */
-	public function get_section_parent_slug(): string {
+	public function get_tab_slug(): string {
 		return 'advanced';
 	}
 

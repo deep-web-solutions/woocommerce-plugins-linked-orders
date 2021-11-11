@@ -1,6 +1,6 @@
 <?php
 
-use function DWS_LO_Deps\DI\factory;
+use function DWS_LOWC_Deps\DI\factory;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,16 +16,8 @@ return array(
 	),
 	'options'  => array(
 		'boolean' => array(
-			'yes' => factory(
-				function() {
-					return _x( 'Yes', 'settings', 'linked-orders-for-woocommerce' );
-				}
-			),
-			'no'  => factory(
-				function() {
-					return _x( 'No', 'settings', 'linked-orders-for-woocommerce' );
-				}
-			),
+			'yes' => factory( fn() => _x( 'Yes', 'settings', 'linked-orders-for-woocommerce' ) ),
+			'no'  => factory( fn() => _x( 'No', 'settings', 'linked-orders-for-woocommerce' ) ),
 		),
 	),
 );

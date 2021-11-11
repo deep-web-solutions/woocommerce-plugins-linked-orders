@@ -4,7 +4,7 @@ Tags: linked orders, woocommerce
 Requires at least: 5.5
 Tested up to: 5.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0  
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,9 @@ There is a chance that your question might be answered [in our knowledge base](h
 4. Example of how to create a new linked child order from the orders list table.
 
 == Changelog ==
+
+= 1.1.0 (TBD) =
+* Dev: updated DWS framework.
 
 = 1.0.0 (October 25th, 2021) =
 * First official release.

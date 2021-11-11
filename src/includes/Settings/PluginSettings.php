@@ -2,8 +2,8 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Settings;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationTypesEnum;
-use DWS_LO_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\PluginComponents\WC_AbstractValidatedOptionsGroupFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Validation\ValidationTypesEnum;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\Settings\Functionalities\WC_AbstractValidatedOptionsGroupFunctionality;
 
 \defined( 'ABSPATH' ) || exit;
 

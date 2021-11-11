@@ -2,7 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\PluginComponents\AbstractPermissionsFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\Functionalities\AbstractPermissionsFunctionality;
 
 \defined( 'ABSPATH' ) || exit;
 

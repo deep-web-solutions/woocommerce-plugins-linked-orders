@@ -11,7 +11,7 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig(
 		{
-			package: grunt.file.readJSON('package.json'),
+			package: grunt.file.readJSON( 'package.json' ),
 			dirs: {
 				code: 'src/includes',
 				assets: 'src/assets',
@@ -79,24 +79,24 @@ module.exports = function( grunt ) {
 					sourceMap: true
 				},
 				dist: {
-					files: [{
+					files: [ {
 						expand: true,
 						cwd: '<%= dirs.assets %>/dev/ts/',
 						src: ['**/*.ts'],
 						dest: '<%= dirs.assets %>/dist/js/',
 						ext: '.js'
-					}]
+					} ]
 				}
 			},
 			sass: {
 				dist: {
-					files: [{
+					files: [ {
 						expand: true,
 						cwd: '<%= dirs.assets %>/dev/scss/',
 						src: ['**/*.scss'],
 						dest: '<%= dirs.assets %>/dist/css/',
 						ext: '.css'
-					}]
+					} ]
 				}
 			},
 
@@ -106,18 +106,18 @@ module.exports = function( grunt ) {
 						inline: false
 					},
 					processors: [
-						require('autoprefixer')({overrideBrowserslist: ['last 2 versions', '> 1%']}),
-						require('cssnano')()
+						require( 'autoprefixer' )( {overrideBrowserslist: ['last 2 versions', '> 1%']} ),
+						require( 'cssnano' )()
 					]
 				},
 				dist: {
-					files: [{
+					files: [ {
 						expand: true,
 						cwd: '<%= dirs.assets %>/dist/css/',
 						src: ['**/*.css'],
 						dest: '<%= dirs.assets %>/dist/css/',
 						ext: '.min.css'
-					}]
+					} ]
 				}
 			},
 			uglify: {
@@ -132,13 +132,13 @@ module.exports = function( grunt ) {
 					sourceMap: true
 				},
 				dist: {
-					files: [{
+					files: [ {
 						expand: true,
 						cwd: '<%= dirs.assets %>/dist/',
 						src: ['**/*.js'],
 						dest: '<%= dirs.assets %>/dist/',
 						ext: '.min.js'
-					}]
+					} ]
 				}
 			},
 
@@ -146,26 +146,21 @@ module.exports = function( grunt ) {
 				readme_txt: {
 					src: ['readme.txt'],
 					overwrite: true,
-					replacements: [
-						{
-							from: /Stable tag: (.*)/,
-							to: "Stable tag: <%= package.version %>  "
-						}
-					]
+					replacements: [ {
+						from: /Stable tag: (.*)/,
+						to: "Stable tag: <%= package.version %>  "
+					} ]
 				},
 				bootstrap_php: {
 					src: ['bootstrap.php'],
 					overwrite: true,
-					replacements: [
-						{
-							from: /Version:(\s*)(.*)/,
-							to: "Version:$1<%= package.version %>"
-						},
-						{
-							from: /define\( 'DWS_WC_LO_VERSION', '(.*)' \);/,
-							to: "define( 'DWS_WC_LO_VERSION', '<%= package.version %>' );"
-						}
-					]
+					replacements: [ {
+						from: /Version:(\s*)(.*)/,
+						to: "Version:$1<%= package.version %>"
+					}, {
+						from: /define\( 'DWS_LOWC_VERSION', '(.*)' \);/,
+						to: "define( 'DWS_LOWC_VERSION', '<%= package.version %>' );"
+					} ]
 				}
 			}
 		}

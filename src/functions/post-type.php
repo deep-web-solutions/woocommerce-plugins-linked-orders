@@ -1,8 +1,8 @@
 <?php
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Callables;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
-use DWS_LO_Deps\Psr\Log\LogLevel;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Callables;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
+use DWS_LOWC_Deps\Psr\Log\LogLevel;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -1,13 +1,13 @@
 <?php
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeInterface;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\ParentInterface;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Exceptions\NotSupportedException;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeInterface;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\NodeTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Hierarchy\ParentInterface;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Users;
 
 defined( 'ABSPATH' ) || exit;
 

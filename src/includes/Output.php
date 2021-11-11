@@ -3,9 +3,9 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
 use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\Plugin\AbstractPluginFunctionality;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
-use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Users;
 
 \defined( 'ABSPATH' ) || exit;
 
@@ -13,7 +13,7 @@ use DWS_LO_Deps\DeepWebSolutions\Framework\Helpers\WordPress\Users;
  * Logical node for managing output nodes.
  *
  * @since   1.0.0
- * @version 1.1.1
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class Output extends AbstractPluginFunctionality {
@@ -29,10 +29,10 @@ class Output extends AbstractPluginFunctionality {
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.1.0
 	 */
 	public function is_active_local(): bool {
-		return Users::has_capabilities( array( OutputPermissions::SEE_ORDER_LINKS ) ) ?? false;
+		return Users::has_capabilities( OutputPermissions::SEE_ORDER_LINKS ) ?? false;
 	}
 
 	/**

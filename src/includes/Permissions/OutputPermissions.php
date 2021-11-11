@@ -2,7 +2,7 @@
 
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions;
 
-use DWS_LO_Deps\DeepWebSolutions\Framework\Core\PluginComponents\AbstractPermissionsChildFunctionality;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\Functionalities\AbstractPermissionsChildFunctionality;
 
 /**
  * Collection of permissions used by the output portion of the plugin.

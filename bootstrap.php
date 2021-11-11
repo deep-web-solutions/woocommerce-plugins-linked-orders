@@ -14,7 +14,7 @@
  * Plugin Name:             Linked Orders for WooCommerce
  * Plugin URI:              https://www.deep-web-solutions.com/plugins/linked-orders-for-woocommerce/
  * Description:             A WooCommerce extension for creating orders that are logically connected to existing ones.
- * Version:                 1.0.0
+ * Version:                 1.1.0
  * Requires at least:       5.5
  * Requires PHP:            7.4
  * Author:                  Deep Web Solutions
@@ -24,7 +24,7 @@
  * Text Domain:             linked-orders-for-woocommerce
  * Domain Path:             /src/languages
  * WC requires at least:    4.5.2
- * WC tested up to:         5.8
+ * WC tested up to:         5.9
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -36,19 +36,21 @@ is_file( __DIR__ . '/vendor/autoload.php' ) && require_once __DIR__ . '/vendor/a
 require_once __DIR__ . '/bootstrap-functions.php';
 
 // Check that the DWS WP Framework is loaded.
-if ( ! function_exists( '\DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_bootstrapper_init_status' ) ) {
+if ( ! function_exists( '\DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_bootstrapper_init_status' ) ) {
 	add_action(
 		'admin_notices',
 		function() {
-			require_once __DIR__ . '/src/templates/admin/composer-error.php';
+			$message      = wp_sprintf( /* translators: %s: Plugin name. */ __( 'It seems like <strong>%s</strong> is corrupted. Please reinstall!', 'linked-orders-for-woocommerce' ), dws_lowc_name() );
+			$html_message = wp_sprintf( '<div class="error notice dws-plugin-corrupted-error">%s</div>', wpautop( $message ) );
+			echo wp_kses_post( $html_message );
 		}
 	);
 	return;
 }
 
 // Define plugin constants.
-define( 'DWS_LOWC_NAME', DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_whitelabel_name() . ': Linked Orders for WooCommerce' );
-define( 'DWS_LOWC_VERSION', '1.0.0' );
+define( 'DWS_LOWC_NAME', DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_whitelabel_name() . ': Linked Orders for WooCommerce' );
+define( 'DWS_LOWC_VERSION', '1.1.0' );
 define( 'DWS_LOWC_PATH', __FILE__ );
 
 // Define minimum environment requirements.
@@ -56,7 +58,7 @@ define( 'DWS_LOWC_MIN_PHP', '7.4' );
 define( 'DWS_LOWC_MIN_WP', '5.5' );
 
 // Start plugin initialization if system requirements check out.
-if ( DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requirements_met( dws_lowc_min_php(), dws_lowc_min_wp() ) ) {
+if ( DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requirements_met( dws_lowc_min_php(), dws_lowc_min_wp() ) ) {
 	if ( ! function_exists( 'dws_lowc_fs' ) ) {
 		include __DIR__ . '/freemius.php';
 		dws_lowc_fs_init();
@@ -66,5 +68,5 @@ if ( DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_check_php_wp_requir
 	add_action( 'plugins_loaded', 'dws_lowc_instance_initialize' );
 	register_activation_hook( __FILE__, 'dws_lowc_plugin_activate' );
 } else {
-	DWS_LO_Deps\DeepWebSolutions\Framework\dws_wp_framework_output_requirements_error( dws_lowc_name(), dws_lowc_version(), dws_lowc_min_php(), dws_lowc_min_wp() );
+	DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framework_output_requirements_error( dws_lowc_name(), dws_lowc_version(), dws_lowc_min_php(), dws_lowc_min_wp() );
 }
