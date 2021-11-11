@@ -2,11 +2,11 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Linked Orders for WooCommerce 1.0.0\n"
+"Project-Id-Version: Linked Orders for WooCommerce 1.1.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders/"
 "issues\n"
-"POT-Creation-Date: 2021-09-30 14:28:07+00:00\n"
+"POT-Creation-Date: 2021-11-11 17:26:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,6 +25,11 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
+#: bootstrap.php:43
+#. translators: %s: Plugin name.
+msgid "It seems like <strong>%s</strong> is corrupted. Please reinstall!"
+msgstr ""
+
 #: dependencies/deep-web-solutions/wp-framework-bootstrapper/src/templates/requirements-error.php:36
 #. translators: 1. Component name, 2. Component version
 msgid ""
@@ -34,7 +39,7 @@ msgstr ""
 
 #: dependencies/deep-web-solutions/wp-framework-bootstrapper/src/templates/requirements-error.php:55
 #: dependencies/deep-web-solutions/wp-framework-bootstrapper/src/templates/requirements-error.php:67
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:315
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:121
 #. translators: PHP version
 #. translators: WordPress version
 #. translators: %s: Installed version of the dependant plugin
@@ -49,27 +54,27 @@ msgid ""
 "target=\"_blank\">the Codex</a>."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/AbstractPermissionsFunctionality.php:72
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/AbstractPermissionsFunctionality.php:72
 msgid "Failed to update permissions"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:152
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:154
 msgid "Please wait..."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:169
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:217
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:171
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:219
 #. translators: 1. Installation node name, 2. Error message.
 msgid ""
 "<strong>%1$s</strong> failed to complete the installation routine. The "
 "error is: %2$s"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:225
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:227
 msgid "<strong>%1$s</strong> was successfully updated."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/PluginComponents/InstallationFunctionality.php:225
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:227
 msgid "<strong>%1$s</strong> was successfully installed."
 msgstr ""
 
@@ -111,100 +116,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-settings/src/includes/PluginComponents/AbstractOptionsPageFunctionality.php:141
+#: dependencies/deep-web-solutions/wp-framework-settings/src/includes/Functionalities/AbstractOptionsPageFunctionality.php:133
 msgid "Failed to delete the plugin options from the database"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/CronEvents/CronIntervalsEnum.php:139
-msgid "Every %s minutes"
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/CronEvents/CronIntervalsEnum.php:140
-msgid "Every %s hours"
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:155
-#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
-#. missing PHP extensions.
-msgid ""
-"<strong>%1$s</strong> may behave unexpectedly because the %2$s PHP "
-"extension is missing. Contact your host or server administrator to install "
-"and configure the missing extension."
-msgid_plural ""
-"<strong>%1$s</strong> may behave unexpectedly because the following PHP "
-"extensions are missing: %2$s. Contact your host or server administrator to "
-"install and configure the missing extensions."
-msgstr[0] ""
-msgstr[1] ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:162
-#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
-#. missing PHP extensions.
-msgid ""
-"<strong>%1$s</strong> requires the %2$s PHP extension to function. Contact "
-"your host or server administrator to install and configure the missing "
-"extension."
-msgid_plural ""
-"<strong>%1$s</strong> requires the following PHP extensions to function: "
-"%2$s. Contact your host or server administrator to install and configure "
-"the missing extensions."
-msgstr[0] ""
-msgstr[1] ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:186
-#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
-#. missing PHP functions.
-msgid ""
-"<strong>%1$s</strong> may behave unexpectedly because the %2$s PHP function "
-"is missing. Contact your host or server administrator to install and "
-"configure the missing function."
-msgid_plural ""
-"<strong>%1$s</strong> may behave unexpectedly because the following PHP "
-"functions are missing: %2$s. Contact your host or server administrator to "
-"install and configure the missing functions."
-msgstr[0] ""
-msgstr[1] ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:193
-#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
-#. missing PHP functions.
-msgid ""
-"<strong>%1$s</strong> requires the %2$s PHP function to exist. Contact your "
-"host or server administrator to install and configure the missing function."
-msgid_plural ""
-"<strong>%1$s</strong> requires the following PHP functions to exist: %2$s. "
-"Contact your host or server administrator to install and configure the "
-"missing functions."
-msgstr[0] ""
-msgstr[1] ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:217
-#. translators: Plugin name or identifiable name.
-msgid ""
-"<strong>%s</strong> may behave unexpectedly because the following PHP "
-"configuration settings are expected:"
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:221
-msgid ""
-"Please contact your hosting provider or server administrator to configure "
-"these settings. The plugin will attempt to run despite this warning."
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:225
-#. translators: Plugin name or identifiable name.
-msgid ""
-"<strong>%s</strong> cannot run because the following PHP configuration "
-"settings are expected:"
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:229
-msgid ""
-"Please contact your hosting provider or server administrator to configure "
-"these settings."
-msgstr ""
-
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:251
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:87
 #. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
 #. missing PHP extensions.
 msgid ""
@@ -218,7 +134,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:258
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:94
 #. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
 #. missing PHP extensions.
 msgid ""
@@ -230,130 +146,206 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Actions/SetupDependenciesAdminNoticesTrait.php:284
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:147
+#. translators: Plugin name or identifiable name.
+msgid ""
+"<strong>%s</strong> may behave unexpectedly because the following PHP "
+"configuration settings are expected:"
+msgstr ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:151
+msgid ""
+"Please contact your hosting provider or server administrator to configure "
+"these settings. The plugin will attempt to run despite this warning."
+msgstr ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:155
+#. translators: Plugin name or identifiable name.
+msgid ""
+"<strong>%s</strong> cannot run because the following PHP configuration "
+"settings are expected:"
+msgstr ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:159
+msgid ""
+"Please contact your hosting provider or server administrator to configure "
+"these settings."
+msgstr ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:183
 #. translators: PHP settings value.
 msgid "%s or higher"
 msgstr ""
 
-#: src/includes/Actions.php:65
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:210
+#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
+#. missing PHP functions.
+msgid ""
+"<strong>%1$s</strong> may behave unexpectedly because the %2$s PHP function "
+"is missing. Contact your host or server administrator to install and "
+"configure the missing function."
+msgid_plural ""
+"<strong>%1$s</strong> may behave unexpectedly because the following PHP "
+"functions are missing: %2$s. Contact your host or server administrator to "
+"install and configure the missing functions."
+msgstr[0] ""
+msgstr[1] ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:217
+#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
+#. missing PHP functions.
+msgid ""
+"<strong>%1$s</strong> requires the %2$s PHP function to exist. Contact your "
+"host or server administrator to install and configure the missing function."
+msgid_plural ""
+"<strong>%1$s</strong> requires the following PHP functions to exist: %2$s. "
+"Contact your host or server administrator to install and configure the "
+"missing functions."
+msgstr[0] ""
+msgstr[1] ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:240
+#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
+#. missing PHP extensions.
+msgid ""
+"<strong>%1$s</strong> may behave unexpectedly because the %2$s PHP "
+"extension is missing. Contact your host or server administrator to install "
+"and configure the missing extension."
+msgid_plural ""
+"<strong>%1$s</strong> may behave unexpectedly because the following PHP "
+"extensions are missing: %2$s. Contact your host or server administrator to "
+"install and configure the missing extensions."
+msgstr[0] ""
+msgstr[1] ""
+
+#: dependencies/deep-web-solutions/wp-framework-utilities/src/includes/Dependencies/Helpers/DependenciesServiceHelpers.php:247
+#. translators: 1. Plugin or identifiable name, 2. Comma-separated list of
+#. missing PHP extensions.
+msgid ""
+"<strong>%1$s</strong> requires the %2$s PHP extension to function. Contact "
+"your host or server administrator to install and configure the missing "
+"extension."
+msgid_plural ""
+"<strong>%1$s</strong> requires the following PHP extensions to function: "
+"%2$s. Contact your host or server administrator to install and configure "
+"the missing extensions."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/includes/Actions.php:64
 msgid "Invalid parent ID."
 msgstr ""
 
-#: src/includes/Actions.php:70
+#: src/includes/Actions.php:69
 msgid "You are not authorized to create linked orders."
 msgstr ""
 
-#: src/includes/Actions.php:80
+#: src/includes/Actions.php:79
 #. translators: error message contents
 msgid "Failed to create a new linked order. Error message: %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:195
+#: src/includes/Output/ListTable.php:162
 #. translators: %s: order type singular name
 msgid "All %s depths"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:332 src/includes/Output/ListTable.php:350
+#: src/includes/Output/ListTable.php:331 src/includes/Output/ListTable.php:349
 #. translators: %s: the post type label, e.g. orders
 msgid "View all customer %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:371
+#: src/includes/Output/ListTable.php:370
 #. translators: %s: the post type label, e.g. orders
 msgid "View all linked %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:394
+#: src/includes/Output/ListTable.php:393
 #. translators: %s: the post type singular label, e.g. order
 msgid "Create empty linked %s"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:109
+#: src/includes/Output/MetaBox.php:108
 msgid "There are no attached children."
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:128
+#: src/includes/Output/MetaBox.php:127
 msgid "Attached children"
 msgstr ""
 
-#: src/includes/Plugin.php:82
+#: src/includes/Plugin.php:78
 msgid "Failed to delete the orders links from the database"
 msgstr ""
 
-#: src/includes/Plugin.php:105
+#: src/includes/Plugin.php:101
 msgid "View settings"
 msgstr ""
 
-#: src/includes/Plugin.php:105
+#: src/includes/Plugin.php:101
 msgid "Settings"
 msgstr ""
 
-#: src/includes/Plugin.php:123
+#: src/includes/Plugin.php:119
 msgid "Visit community forums"
 msgstr ""
 
-#: src/includes/Plugin.php:123
+#: src/includes/Plugin.php:119
 msgid "Community support"
 msgstr ""
 
-#: src/includes/Plugin.php:124
+#: src/includes/Plugin.php:120
 msgid "Send us an inquiry"
 msgstr ""
 
-#: src/includes/Plugin.php:124
+#: src/includes/Plugin.php:120
 msgid "Contact us"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:28
+#: src/includes/Settings/GeneralSettings.php:27
 msgid "General Settings"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:40
+#: src/includes/Settings/GeneralSettings.php:39
 msgid "Maximum linked orders depth"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:48
+#: src/includes/Settings/GeneralSettings.php:47
 msgid ""
 "The maximum number of linked orders levels. Root orders are considered "
 "level 0."
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:51
+#: src/includes/Settings/GeneralSettings.php:50
 msgid "Autocomplete descendant orders?"
 msgstr ""
 
-#: src/includes/Settings/GeneralSettings.php:56
+#: src/includes/Settings/GeneralSettings.php:55
 msgid ""
 "If enabled, all descendant orders will be set to completed automatically "
 "when the parent order is completed."
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:28
+#: src/includes/Settings/PluginSettings.php:27
 msgid "Plugin Settings"
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:40
+#: src/includes/Settings/PluginSettings.php:39
 msgid "Remove all data on uninstallation?"
 msgstr ""
 
-#: src/includes/Settings/PluginSettings.php:45
+#: src/includes/Settings/PluginSettings.php:44
 msgid ""
 "If enabled, the plugin will remove all database data when removed and you "
 "will need to reconfigure everything if you install it again at a later time."
 msgstr ""
 
-#: src/includes/ShopOrder.php:68
+#: src/includes/ShopOrder.php:67
 msgid "Child order autocompleted."
 msgstr ""
 
-#: src/models/DWS_Order_Node.php:255
+#: src/models/DWS_Order_Node.php:254
 #. translators: 1. Post type name. 2. Order number; 3. Order status label.
 msgid "%1$s #%2$s - %3$s"
-msgstr ""
-
-#: src/templates/admin/composer-error.php:20
-#. translators: %s: Plugin Name
-msgid "It seems like <strong>%s</strong> is corrupted. Please reinstall!"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -378,68 +370,68 @@ msgstr ""
 msgid "https://www.deep-web-solutions.com"
 msgstr ""
 
-#: src/configs/settings.php:21
+#: src/configs/settings.php:19
 msgctxt "settings"
 msgid "Yes"
 msgstr ""
 
-#: src/configs/settings.php:26
+#: src/configs/settings.php:20
 msgctxt "settings"
 msgid "No"
 msgstr ""
 
-#: src/includes/Settings.php:59
+#: src/includes/Settings.php:56
 msgctxt "settings"
 msgid "Linked Orders"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:119
+#: src/includes/Output/ListTable.php:86
 msgctxt "list table heading"
 msgid "Depth"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:142
+#: src/includes/Output/ListTable.php:109
 #. translators: %s: order type singular name
 msgctxt "list table content"
 msgid "Root %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:148
+#: src/includes/Output/ListTable.php:115
 #. translators: %s: order type singular name; %d: numerical depth of the order
 msgctxt "list table content"
 msgid "Child %1$s (level %2$d)"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:206
+#: src/includes/Output/ListTable.php:173
 #. translators: %s: order type plural name
 msgctxt "list table filter"
 msgid "Root %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:218
+#: src/includes/Output/ListTable.php:185
 #. translators: %s: order type plural name; %d: numerical depth of the order
 msgctxt "list table filter"
 msgid "Child %1$s (level %2$d)"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:59
+#: src/includes/Output/MetaBox.php:58
 #. translators: %s: post type label
 msgctxt "metabox heading"
 msgid "Linked %s"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:93
+#: src/includes/Output/MetaBox.php:92
 msgctxt "metabox"
 msgid "Parent"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:115
+#: src/includes/Output/MetaBox.php:114
 #. translators: node post type singular name
 msgctxt "metabox"
 msgid "New children cannot be added to this %s."
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:153
+#: src/includes/Output/MetaBox.php:152
 #. translators: post type singular name
 msgctxt "metabox"
 msgid "Add new child %s"
