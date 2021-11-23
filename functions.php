@@ -125,7 +125,7 @@ add_action( 'fs_after_uninstall_linked-orders-for-woocommerce', 'dws_lowc_plugin
  * Shorthand for generating a plugin-level hook tag.
  *
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.1.1
  *
  * @param   string              $name       The actual descriptor of the hook's purpose.
  * @param   string|string[]     $extra      Further descriptor of the hook's purpose.
@@ -133,18 +133,14 @@ add_action( 'fs_after_uninstall_linked-orders-for-woocommerce', 'dws_lowc_plugin
  * @return  string|null
  */
 function dws_lowc_get_hook_tag( string $name, $extra = array() ): ?string {
-	try {
-		return dws_lowc_instance()->get_hook_tag( $name, $extra );
-	} catch ( Error $error ) { // Likely to happen if called before initialization.
-		return null;
-	}
+	return dws_lowc_instance()->get_hook_tag( $name, $extra );
 }
 
 /**
  * Shorthand for generating a component-level hook tag.
  *
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.1.1
  *
  * @param   string              $component_id   The ID of the component as defined in the DI container.
  * @param   string              $name           The actual descriptor of the hook's purpose.
@@ -153,11 +149,16 @@ function dws_lowc_get_hook_tag( string $name, $extra = array() ): ?string {
  * @return  string|null
  */
 function dws_lowc_get_component_hook_tag( string $component_id, string $name, $extra = array() ): ?string {
-	try {
-		return dws_lowc_component( $component_id )->get_hook_tag( $name, $extra );
-	} catch ( Error $error ) { // Likely to happen if called before initialization.
+	$component = dws_lowc_component( $component_id );
+	if ( is_null( $component ) ) {
 		return null;
 	}
+
+	if ( ! did_action( 'dws_lowc_initialized' ) ) {
+		$component->set_plugin( dws_lowc_instance() );
+	}
+
+	return $component->get_hook_tag( $name, $extra );
 }
 
 // endregion
