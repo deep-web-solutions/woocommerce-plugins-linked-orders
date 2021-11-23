@@ -80,7 +80,7 @@ There is a chance that your question might be answered [in our knowledge base](h
 ### 1.1.1 (November 23rd, 2021)
 
 * Fixed assets version.
-* Dev: hook generator helpers can now be called at any point.
+* Dev: hook generator helpers can now be called before initialization.
 * Dev: updated DWS framework.
 
 ### 1.1.0 (November 11th, 2021)
