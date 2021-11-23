@@ -19,7 +19,7 @@ use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * Outputs a new column, filters, and actions on the orders archive page.
  *
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.1.1
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class ListTable extends AbstractPluginFunctionality {
@@ -266,7 +266,7 @@ class ListTable extends AbstractPluginFunctionality {
 	 * Enqueues the necessary scripts and styles on the orders list table page.
 	 *
 	 * @since   1.1.0
-	 * @version 1.1.0
+	 * @version 1.1.1
 	 *
 	 * @param   string  $hook_suffix    The WordPress admin page suffix.
 	 */
@@ -281,7 +281,7 @@ class ListTable extends AbstractPluginFunctionality {
 			$this->get_asset_handle(),
 			$minified_path,
 			array( 'woocommerce_admin_styles' ),
-			$this->maybe_get_minified_asset_path( $minified_path, $plugin->get_plugin_version() )
+			$this->maybe_get_asset_mtime_version( $minified_path, $plugin->get_plugin_version() )
 		);
 
 		$minified_path = $this->maybe_get_minified_asset_path( $plugin::get_plugin_assets_url() . 'dist/js/orders-list-table.js' );
@@ -289,7 +289,7 @@ class ListTable extends AbstractPluginFunctionality {
 			$this->get_asset_handle(),
 			$minified_path,
 			array( 'jquery' ),
-			$this->maybe_get_minified_asset_path( $minified_path, $plugin->get_plugin_version() ),
+			$this->maybe_get_asset_mtime_version( $minified_path, $plugin->get_plugin_version() ),
 			true
 		);
 	}
