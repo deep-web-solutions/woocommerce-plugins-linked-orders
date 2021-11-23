@@ -62,6 +62,7 @@ return array_merge(
 	// Plugin
 	array(
 		Plugin::class                        => autowire( Plugin::class )
+			->constructorParameter( 'plugin_slug', 'linked-orders-for-woocommerce' )
 			->constructorParameter( 'plugin_file_path', dws_lowc_path() ),
 		Actions::class                       => autowire( Actions::class )
 			->constructorParameter( 'component_id', 'actions' )

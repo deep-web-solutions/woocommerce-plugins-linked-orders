@@ -35,8 +35,8 @@
   },
   "require-dev": {
     "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
-    "deep-web-solutions/wp-framework-helpers": "^1.5.3",
-    "deep-web-solutions/wp-framework-foundations": "^1.5.4",
+    "deep-web-solutions/wp-framework-helpers": "^1.5.5",
+    "deep-web-solutions/wp-framework-foundations": "^1.6.0",
     "deep-web-solutions/wp-framework-utilities": "master@dev",
     "deep-web-solutions/wp-framework-core": "master@dev",
     "deep-web-solutions/wp-framework-settings": "master@dev",
@@ -58,13 +58,13 @@
     "lucatume/wp-browser": "3.*",
     "codeception/module-asserts": "^1.3",
     "codeception/module-phpbrowser": "^1.0",
-    "codeception/module-webdriver": "^1.2",
+    "codeception/module-webdriver": "^1.4",
     "codeception/module-db": "^1.1",
     "codeception/module-filesystem": "^1.0",
     "codeception/module-cli": "^1.1",
     "codeception/util-universalframework": "^1.0",
     "hoa/console": "^3.17",
-    "vlucas/phpdotenv": "^5.3",
+    "vlucas/phpdotenv": "^5.4",
 
     "wpreadme2markdown/wp2md": "^3.1"
   },
