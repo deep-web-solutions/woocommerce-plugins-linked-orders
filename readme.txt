@@ -66,6 +66,7 @@ There is a chance that your question might be answered [in our knowledge base](h
 
 = 1.2.0 (TBD) =
 * Better support for 3rd-party order types.
+* Removed Freemius contact form functionality.
 * Tweak: updated 'tested up to' headers.
 * Dev: added more automated testing.
 * Dev: updated DWS framework.

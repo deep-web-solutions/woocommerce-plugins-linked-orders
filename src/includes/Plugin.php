@@ -109,7 +109,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.2.0
 	 */
 	public function register_plugin_row_meta( array $plugin_meta, string $plugin_file, array $plugin_data, string $status ): array {
 		if ( $this->get_plugin_basename() !== $plugin_file ) {
@@ -118,7 +118,6 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 
 		$row_meta = array(
 			'support' => '<a href="' . \esc_url( dws_lowc_fs()->get_support_forum_url() ) . '" aria-label="' . \esc_attr__( 'Visit community forums', 'linked-orders-for-woocommerce' ) . '">' . \esc_html__( 'Community support', 'linked-orders-for-woocommerce' ) . '</a>',
-			'contact' => '<a href="' . \esc_url( dws_lowc_fs()->contact_url() ) . '" aria-label="' . \esc_attr__( 'Send us an inquiry', 'linked-orders-for-woocommerce' ) . '">' . \esc_html__( 'Contact us', 'linked-orders-for-woocommerce' ) . '</a>',
 		);
 
 		return \array_merge( $plugin_meta, $row_meta );
