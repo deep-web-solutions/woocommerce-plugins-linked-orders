@@ -2,11 +2,11 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Linked Orders for WooCommerce 1.1.0\n"
+"Project-Id-Version: Linked Orders for WooCommerce 1.2.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/deep-web-solutions/woocommerce-plugins-linked-orders/"
 "issues\n"
-"POT-Creation-Date: 2021-11-11 18:30:14+00:00\n"
+"POT-Creation-Date: 2021-12-17 13:58:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: bootstrap.php:43
+#: bootstrap.php:45
 #. translators: %s: Plugin name.
 msgid "It seems like <strong>%s</strong> is corrupted. Please reinstall!"
 msgstr ""
@@ -62,19 +62,19 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:171
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:219
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:176
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:224
 #. translators: 1. Installation node name, 2. Error message.
 msgid ""
 "<strong>%1$s</strong> failed to complete the installation routine. The "
 "error is: %2$s"
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:227
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:232
 msgid "<strong>%1$s</strong> was successfully updated."
 msgstr ""
 
-#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:227
+#: dependencies/deep-web-solutions/wp-framework-core/src/includes/Functionalities/InstallationFunctionality.php:232
 msgid "<strong>%1$s</strong> was successfully installed."
 msgstr ""
 
@@ -232,50 +232,51 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/includes/Actions.php:67
+#: src/includes/Actions.php:68
 #. translators: %d: parent order ID.
 msgid "Invalid parent ID -- cannot create linked child for order %d."
 msgstr ""
 
-#: src/includes/Actions.php:85
+#: src/includes/Actions.php:86
 #. translators: %d: parent order ID.
 msgid "You are not authorized to create linked children for order %d."
 msgstr ""
 
-#: src/includes/Actions.php:100
+#: src/includes/Actions.php:101
 #. translators: %d: parent order ID; %s: error message contents.
 msgid "Failed to create a new linked child for order %1$d. Error message: %2$s"
 msgstr ""
 
-#: src/includes/Autocompletion.php:74
-msgid "Child order autocompleted."
+#: src/includes/Autocompletion.php:76
+#. translators: %s post type label.
+msgid "Child %s autocompleted."
 msgstr ""
 
-#: src/includes/Output/ListTable.php:162
+#: src/includes/Output/ListTable.php:175
 #. translators: %s: order type singular name
 msgid "All %s depths"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:331 src/includes/Output/ListTable.php:349
+#: src/includes/Output/ListTable.php:344 src/includes/Output/ListTable.php:362
 #. translators: %s: the post type label, e.g. orders
 msgid "View all customer %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:370
+#: src/includes/Output/ListTable.php:383
 #. translators: %s: the post type label, e.g. orders
 msgid "View all linked %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:393
+#: src/includes/Output/ListTable.php:406
 #. translators: %s: the post type singular label, e.g. order
 msgid "Create empty linked %s"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:108
+#: src/includes/Output/MetaBox.php:120
 msgid "There are no attached children."
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:127
+#: src/includes/Output/MetaBox.php:139
 msgid "Attached children"
 msgstr ""
 
@@ -387,53 +388,53 @@ msgctxt "settings"
 msgid "Linked Orders"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:86
+#: src/includes/Output/ListTable.php:99
 msgctxt "list table heading"
 msgid "Depth"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:109
+#: src/includes/Output/ListTable.php:122
 #. translators: %s: order type singular name
 msgctxt "list table content"
 msgid "Root %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:115
+#: src/includes/Output/ListTable.php:128
 #. translators: %s: order type singular name; %d: numerical depth of the order
 msgctxt "list table content"
 msgid "Child %1$s (level %2$d)"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:173
+#: src/includes/Output/ListTable.php:186
 #. translators: %s: order type plural name
 msgctxt "list table filter"
 msgid "Root %s"
 msgstr ""
 
-#: src/includes/Output/ListTable.php:185
+#: src/includes/Output/ListTable.php:198
 #. translators: %s: order type plural name; %d: numerical depth of the order
 msgctxt "list table filter"
 msgid "Child %1$s (level %2$d)"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:58
+#: src/includes/Output/MetaBox.php:74
 #. translators: %s: post type label
 msgctxt "metabox heading"
 msgid "Linked %s"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:92
+#: src/includes/Output/MetaBox.php:104
 msgctxt "metabox"
 msgid "Parent"
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:114
+#: src/includes/Output/MetaBox.php:126
 #. translators: node post type singular name
 msgctxt "metabox"
 msgid "New children cannot be added to this %s."
 msgstr ""
 
-#: src/includes/Output/MetaBox.php:152
+#: src/includes/Output/MetaBox.php:164
 #. translators: post type singular name
 msgctxt "metabox"
 msgid "Add new child %s"
