@@ -65,7 +65,10 @@ There is a chance that your question might be answered [in our knowledge base](h
 == Changelog ==
 
 = 1.2.0 (TBD) =
-
+* Better support for 3rd-party order types.
+* Tweak: updated 'tested up to' headers.
+* Dev: added more automated testing.
+* Dev: updated DWS framework.
 
 = 1.1.1 (November 23rd, 2021) =
 * Fixed assets version.

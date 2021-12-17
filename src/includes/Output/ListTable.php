@@ -6,6 +6,7 @@ use DeepWebSolutions\WC_Plugins\LinkedOrders\Permissions\OutputPermissions;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Helpers\AssetsHelpersTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\States\Activeable\ActiveLocalTrait;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\Assets;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Strings;
@@ -278,7 +279,7 @@ class ListTable extends AbstractPluginFunctionality {
 	 * Enqueues the necessary scripts and styles on the orders list table page.
 	 *
 	 * @since   1.1.0
-	 * @version 1.1.1
+	 * @version 1.2.0
 	 *
 	 * @param   string  $hook_suffix    The WordPress admin page suffix.
 	 */
@@ -288,20 +289,20 @@ class ListTable extends AbstractPluginFunctionality {
 		}
 
 		$plugin        = $this->get_plugin();
-		$minified_path = $this->maybe_get_minified_asset_path( $plugin::get_plugin_assets_url() . 'dist/css/orders-list-table.css' );
+		$minified_path = Assets::maybe_get_minified_path( $plugin::get_plugin_assets_url() . 'dist/css/orders-list-table.css' );
 		\wp_enqueue_style(
 			$this->get_asset_handle(),
 			$minified_path,
 			array( 'woocommerce_admin_styles' ),
-			$this->maybe_get_asset_mtime_version( $minified_path, $plugin->get_plugin_version() )
+			Assets::maybe_get_mtime_version( $minified_path, $plugin->get_plugin_version() )
 		);
 
-		$minified_path = $this->maybe_get_minified_asset_path( $plugin::get_plugin_assets_url() . 'dist/js/orders-list-table.js' );
+		$minified_path = Assets::maybe_get_minified_path( $plugin::get_plugin_assets_url() . 'dist/js/orders-list-table.js' );
 		\wp_enqueue_script(
 			$this->get_asset_handle(),
 			$minified_path,
 			array( 'jquery' ),
-			$this->maybe_get_asset_mtime_version( $minified_path, $plugin->get_plugin_version() ),
+			Assets::maybe_get_mtime_version( $minified_path, $plugin->get_plugin_version() ),
 			true
 		);
 	}

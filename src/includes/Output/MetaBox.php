@@ -100,14 +100,14 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			$dws_node_parent = $dws_node->get_parent();
 			?>
 
-            <div class="dws-linked-orders__parent">
+			<div class="dws-linked-orders__parent">
 				<?php echo \esc_html_x( 'Parent', 'metabox', 'linked-orders-for-woocommerce' ); ?>:
-                <a href="<?php echo \esc_url( \get_edit_post_link( $dws_node_parent->get_id() ) ); ?>" target="_blank">
+				<a href="<?php echo \esc_url( \get_edit_post_link( $dws_node_parent->get_id() ) ); ?>" target="_blank">
 					<?php echo \wp_kses_post( $dws_node_parent->get_formatted_name() ); ?>
-                </a>
-            </div>
+				</a>
+			</div>
 
-            <hr/>
+			<hr/>
 
 			<?php
 		}
@@ -116,7 +116,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 		if ( true !== $dws_node->has_children() ) {
 			?>
 
-            <div class="dws-linked-orders__no-children">
+			<div class="dws-linked-orders__no-children">
 				<?php \esc_html_e( 'There are no attached children.', 'linked-orders-for-woocommerce' ); ?>
 				<?php if ( true !== $dws_node->can_create_child() ) : ?>
 					<?php
@@ -129,24 +129,24 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 					);
 					?>
 				<?php endif; ?>
-            </div>
+			</div>
 
 			<?php
 		} else {
 			?>
 
-            <div class="dws-linked-orders__children">
+			<div class="dws-linked-orders__children">
 				<?php \esc_html_e( 'Attached children', 'linked-orders-for-woocommerce' ); ?>:
-                <ul class="dws-linked-orders__children-list">
+				<ul class="dws-linked-orders__children-list">
 					<?php foreach ( $dws_node->get_children() as $dws_child ) : ?>
-                        <li id="linked-order-<?php echo \esc_attr( $dws_child->get_id() ); ?>" class="dws-linked-order">
-                            <a href="<?php echo \esc_url( \get_edit_post_link( $dws_child->get_id() ) ); ?>" target="_blank">
+						<li id="linked-order-<?php echo \esc_attr( $dws_child->get_id() ); ?>" class="dws-linked-order">
+							<a href="<?php echo \esc_url( \get_edit_post_link( $dws_child->get_id() ) ); ?>" target="_blank">
 								<?php echo \wp_kses_post( $dws_child->get_formatted_name() ); ?>
-                            </a>
-                        </li>
+							</a>
+						</li>
 					<?php endforeach; ?>
-                </ul>
-            </div>
+				</ul>
+			</div>
 
 			<?php
 		}
@@ -156,7 +156,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			$link = \wp_nonce_url( \admin_url( 'admin-post.php?action=dws_lowc_create_linked_child&parent_id=' . $order_id ), 'dws_create_linked_child' );
 			?>
 
-            <a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">
+			<a class="button button-alt" href="<?php echo \esc_url( $link ); ?>">
 				<?php
 				echo \esc_html(
 					\sprintf(
@@ -166,7 +166,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 					)
 				);
 				?>
-            </a>
+			</a>
 
 			<?php
 		}
