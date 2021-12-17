@@ -89,7 +89,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.1.0
+	 * @version 1.2.0
 	 */
 	protected function output_local(): ?OutputFailureException {
 		$order_id = \get_the_ID();
@@ -160,7 +160,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 				<?php
 				echo \esc_html(
 					\sprintf(
-					/* translators: post type singular name */
+						/* translators: post type singular name */
 						\_x( 'Add new child %s', 'metabox', 'linked-orders-for-woocommerce' ),
 						$dws_node->get_post_type()->labels->singular_name
 					)
@@ -169,6 +169,8 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			</a>
 
 			<?php
+
+			\do_action( $this->get_hook_tag( 'after_add_new_child_button' ), $dws_node );
 		}
 
 		return null;
