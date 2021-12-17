@@ -19,7 +19,7 @@ use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * Outputs a new column, filters, and actions on the orders archive page.
  *
  * @since   1.0.0
- * @version 1.1.1
+ * @version 1.2.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class ListTable extends AbstractPluginFunctionality {
@@ -47,13 +47,10 @@ class ListTable extends AbstractPluginFunctionality {
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.1.0
+	 * @version 1.2.0
 	 */
 	public function register_hooks( HooksService $hooks_service ): void {
-		foreach ( dws_lowc_get_supported_order_types() as $order_type ) {
-			$hooks_service->add_filter( "manage_edit-{$order_type}_columns", $this, 'register_column' );
-			$hooks_service->add_action( "manage_{$order_type}_posts_custom_column", $this, 'output_column', 10, 2 );
-		}
+		$hooks_service->add_action( 'plugins_loaded', $this, 'hook_columns_for_supported_order_types', 99 );
 
 		$hooks_service->add_action( 'restrict_manage_posts', $this, 'output_filters', 20 );
 		$hooks_service->add_filter( 'request', $this, 'filter_request_query', 999 );
@@ -65,6 +62,21 @@ class ListTable extends AbstractPluginFunctionality {
 	// endregion
 
 	// region HOOKS
+
+	/**
+	 * Hooks the column registration and output methods for all supported order types.
+	 *
+	 * @since   1.2.0
+	 * @version 1.2.0
+	 *
+	 * @return  void
+	 */
+	public function hook_columns_for_supported_order_types() {
+		foreach ( dws_lowc_get_supported_order_types() as $order_type ) {
+			\add_filter( "manage_edit-{$order_type}_columns", array( $this, 'register_column' ) );
+			\add_action( "manage_{$order_type}_posts_custom_column", array( $this, 'output_column' ), 10, 2 );
+		}
+	}
 
 	/**
 	 * Registers new table columns.
@@ -129,14 +141,14 @@ class ListTable extends AbstractPluginFunctionality {
 	 * Outputs HTML for new table filters.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.2.0
 	 */
 	public function output_filters() {
 		global $typenow;
 
 		if ( \in_array( $typenow, dws_lowc_get_supported_order_types(), true ) ) {
 			$post_type_object = \get_post_type_object( $typenow );
-			$max_depth        = $this->get_max_depth();
+			$max_depth        = $this->get_max_depth( $typenow );
 
 			?>
 
@@ -410,15 +422,20 @@ class ListTable extends AbstractPluginFunctionality {
 	 * creating deeper children.
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.2.0
+	 *
+	 * @param   string  $post_type  The post type to return the value for.
 	 *
 	 * @return  int
 	 */
-	protected function get_max_depth(): int {
+	protected function get_max_depth( string $post_type ): int {
 		global $wpdb;
 
 		$max_database = $wpdb->get_var( // phpcs:ignore WordPress.DB
-			"SELECT MAX( meta_value ) FROM $wpdb->postmeta WHERE meta_key = '_dws_lo_depth'"
+			$wpdb->prepare(
+				"SELECT MAX( meta_value ) FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id WHERE post_type = %s AND meta_key = '_dws_lo_depth'",
+				$post_type
+			)
 		);
 		$max_database = Integers::maybe_cast( $max_database, 0 );
 
