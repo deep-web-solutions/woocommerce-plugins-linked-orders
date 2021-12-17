@@ -14,7 +14,7 @@ use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\WC_Helpers;
  * Main plugin class.
  *
  * @since   1.0.0
- * @version 1.1.0
+ * @version 1.2.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 final class Plugin extends AbstractPluginFunctionalityRoot {
@@ -48,7 +48,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	 * {@inheritDoc}
 	 *
 	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @version 1.2.0
 	 */
 	protected function get_di_container_children(): array {
 		return \array_merge(
@@ -59,6 +59,7 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 				Permissions::class,
 				Settings::class,
 				Autocompletion::class,
+				Integrations::class,
 			)
 		);
 	}
