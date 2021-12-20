@@ -91,7 +91,10 @@ class Actions extends AbstractPluginFunctionality {
 				'user-meta'
 			);
 		} else {
-			$linked_order_id = dws_lowc_create_linked_child( $parent_order_id, Arrays::maybe_cast_input( INPUT_GET, 'args', array() ) );
+			$args = Arrays::maybe_cast_input( INPUT_GET, 'args', array() );
+			\array_walk( $args, 'sanitize_text_field' );
+
+			$linked_order_id = dws_lowc_create_linked_child( $parent_order_id, $args );
 			if ( \is_wp_error( $linked_order_id ) ) {
 				$this->get_admin_notices_service()->add_notice(
 					new DismissibleAdminNotice(
