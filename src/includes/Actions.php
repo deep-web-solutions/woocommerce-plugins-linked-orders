@@ -3,7 +3,6 @@
 namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionality;
-use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Arrays;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Helpers\DataTypes\Integers;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\Actions\InitializeAdminNoticesServiceTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\AdminNotices\AdminNoticeTypesEnum;
@@ -18,7 +17,7 @@ use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Hooks\HooksService;
  * Handles the registration of AJAX actions.
  *
  * @since   1.0.0
- * @version 1.2.0
+ * @version 1.1.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  */
 class Actions extends AbstractPluginFunctionality {
@@ -52,7 +51,7 @@ class Actions extends AbstractPluginFunctionality {
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 *
 	 * @since   1.0.0
-	 * @version 1.2.0
+	 * @version 1.1.0
 	 */
 	public function create_linked_child() {
 		\check_admin_referer( 'dws_create_linked_child' );
@@ -91,10 +90,7 @@ class Actions extends AbstractPluginFunctionality {
 				'user-meta'
 			);
 		} else {
-			$args = Arrays::maybe_cast_input( INPUT_GET, 'args', array() );
-			\array_walk( $args, 'sanitize_text_field' );
-
-			$linked_order_id = dws_lowc_create_linked_child( $parent_order_id, $args );
+			$linked_order_id = dws_lowc_create_linked_child( $parent_order_id );
 			if ( \is_wp_error( $linked_order_id ) ) {
 				$this->get_admin_notices_service()->add_notice(
 					new DismissibleAdminNotice(
