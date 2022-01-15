@@ -3180,9 +3180,6 @@
                 "symfony/filesystem": "^3.2 || ^4.0",
                 "symfony/finder": "^3.2 || ^4.0"
             },
-            "replace": {
-                "humbug/php-scoper": "self.version"
-            },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.1",
                 "humbug/box": "^3.11",
@@ -3720,9 +3717,6 @@
                 "illuminate/support": ">=4.0.0",
                 "php": ">=5.3.0"
             },
-            "replace": {
-                "mikemclin/laravel-wp-password": "self.version"
-            },
             "require-dev": {
                 "mockery/mockery": "~0.9",
                 "phpunit/phpunit": "~4.0",
@@ -3835,9 +3829,6 @@
             },
             "require": {
                 "php": "^7.1 || ^8.0"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
@@ -9443,5 +9434,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

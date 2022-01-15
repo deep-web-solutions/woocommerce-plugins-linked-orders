@@ -672,3 +672,10 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
+
+ADDITIONAL TERMS per GNU GPL Section 7
+The origin of this software must not be misrepresented; you must
+not claim that you wrote the original software. Altered source
+versions must be plainly marked as such, and must not be
+misrepresented as being the original software. This notice may
+not be removed or altered from any source distribution.

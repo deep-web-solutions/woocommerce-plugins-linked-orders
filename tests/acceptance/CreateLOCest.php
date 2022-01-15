@@ -141,7 +141,6 @@ class CreateLOCest {
 		$I->click( 'Orders' );
 		$I->see( 'Root Order' );
 		$I->see( 'Child Order (level 2)' );
-		$I->wait( 5 );
 	}
 
 	/**
