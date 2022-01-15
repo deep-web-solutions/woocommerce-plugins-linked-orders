@@ -217,18 +217,18 @@ jobs:
 
     strategy:
       fail-fast: true
-      max-parallel: 1
+      max-parallel: 2
       matrix:
-        php: [ 7.4 ]
-        WP_VERSION: [ latest, nightly ]
+        php: [ 7.4, 8.0 ]
+        WP_VERSION: [ latest ]
         WC_VERSION: [ latest ]
         include:
           - php: 7.4
             WP_VERSION: 5.5
             WC_VERSION: 4.5.2
-          - php: 8.0
-            WP_VERSION: latest
-            WC_VERSION: latest
+          #- php: 8.1
+          #  WP_VERSION: latest
+          #  WC_VERSION: latest
 
     runs-on: ubuntu-latest
 
