@@ -61,8 +61,8 @@ class AcceptanceTester extends \Codeception\Actor
      * @since   1.2.0
      */
     public function activate_wc_and_lowc() {
-        $this->activate_lowc_free( true, false );
         $this->activatePlugin( 'woocommerce' );
         $this->seePluginActivated( 'woocommerce' );
+        $this->activate_lowc_free( true, true );
     }
 }
