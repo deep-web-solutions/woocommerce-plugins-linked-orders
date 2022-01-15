@@ -4,6 +4,7 @@ namespace DeepWebSolutions\WC_Plugins\LinkedOrders;
 
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\AbstractPluginFunctionalityRoot;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Core\Actions\Installable\UninstallFailureException;
+use DWS_LOWC_Deps\DeepWebSolutions\Framework\Foundations\Actions\Initializable\InitializationFailureException;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\InitializePluginDependenciesContextHandlersTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\Utilities\Dependencies\Actions\SetupActiveStateDependenciesAdminNoticesTrait;
 use DWS_LOWC_Deps\DeepWebSolutions\Framework\WooCommerce\WC_Helpers;
@@ -62,6 +63,17 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 				Integrations::class,
 			)
 		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 */
+	public function initialize(): ?InitializationFailureException { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+		// The parent class method is overwritten by the plugin dependencies trait in this class, so we need this override to bypass that.
+		return parent::initialize();
 	}
 
 	/**
