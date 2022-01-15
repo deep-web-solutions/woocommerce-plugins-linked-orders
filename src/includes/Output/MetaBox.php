@@ -70,7 +70,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 			\add_meta_box(
 				'dws-linked-orders',
 				\sprintf(
-				/* translators: %s: post type label */
+					/* translators: %s: post type label */
 					\_x( 'Linked %s', 'metabox heading', 'linked-orders-for-woocommerce' ),
 					\get_post_type_object( $post_type )->label
 				),
@@ -122,7 +122,7 @@ class MetaBox extends AbstractPluginFunctionality implements OutputtableInterfac
 					<?php
 					echo \esc_html(
 						\sprintf(
-						/* translators: node post type singular name */
+							/* translators: node post type singular name */
 							\_x( 'New children cannot be added to this %s.', 'metabox', 'linked-orders-for-woocommerce' ),
 							$dws_node->get_post_type()->labels->singular_name
 						)
