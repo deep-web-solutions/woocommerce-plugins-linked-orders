@@ -26,7 +26,7 @@ class CreateLOCest {
 	 * @version 1.2.0
 	 *
 	 * @param AcceptanceTester $I Instance of the Codeception actor.
-     *
+	 *
 	 * @throws Exception
 	 */
 	public function _before( AcceptanceTester $I ) {
@@ -141,6 +141,7 @@ class CreateLOCest {
 		$I->click( 'Orders' );
 		$I->see( 'Root Order' );
 		$I->see( 'Child Order (level 2)' );
+		$I->wait( 5 );
 	}
 
 	/**
