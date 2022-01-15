@@ -350,7 +350,7 @@ jobs:
           java-version: '11'
 
       - name: Run Selenium
-        run: nohup java -jar $SELENIUM_JAR_PATH &
+        run: nohup java -jar $SELENIUM_JAR_PATH standalone --port 4444 &
 
       - name: Run chromedriver
         run: nohup $CHROMEWEBDRIVER/chromedriver --url-base=/wd/hub /dev/null 2>&1 &
