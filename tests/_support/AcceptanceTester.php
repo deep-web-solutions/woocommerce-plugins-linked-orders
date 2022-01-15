@@ -38,7 +38,7 @@ class AcceptanceTester extends \Codeception\Actor
 	 *
 	 * @throws  Exception
 	 */
-	public function activate_lowc_free( bool $grant_access = true, bool $is_wc_active = true ) {
+	public function activate_lowc_free( bool $grant_access = true, bool $is_wc_active = false ) {
 		$this->click( array( 'id' => 'activate-linked-orders-for-woocommerce' ) ); // doing it like this will trigger the Freemius redirect
 
 		$this->see( 'Never miss an important update', '.fs-content' );

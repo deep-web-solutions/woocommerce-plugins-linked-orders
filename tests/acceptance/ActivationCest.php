@@ -30,6 +30,7 @@ class ActivationCest {
 		$I->loginAsAdmin();
 
 		$I->amOnPluginsPage();
+		$I->seePluginDeactivated( 'woocommerce' );
 		$I->seePluginDeactivated( 'linked-orders-for-woocommerce' );
 	}
 

@@ -9,7 +9,7 @@ use Exception;
 /**
  * Test that activation is successful and that all the proper admin notices are outputted.
  *
- * @since   1.0.0
+ * @since   1.2.0
  * @version 1.2.0
  * @author  Cristina Hegyes <c.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WC_Plugins\LinkedOrders\Tests\Acceptance
@@ -22,18 +22,17 @@ class CreateLOCest {
 	/**
 	 * Start every test on the plugins list page.
 	 *
-	 * @param AcceptanceTester $I Instance of the Codeception actor.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.0
+	 * @since   1.2.0
 	 * @version 1.2.0
+	 *
+	 * @param   AcceptanceTester    $I  Instance of the Codeception actor.
 	 */
 	public function _before( AcceptanceTester $I ) {
 		$I->setTestCookie();
 		$I->loginAsAdmin();
 
 		$I->amOnPluginsPage();
+		$I->seePluginDeactivated( 'woocommerce' );
 		$I->seePluginDeactivated( 'linked-orders-for-woocommerce' );
 		$I->activate_lowc_free();
 	}
@@ -45,7 +44,7 @@ class CreateLOCest {
 	/**
 	 * Test that creating a linked order is working properly from the edit order screen.
 	 *
-	 * @since   1.0.0
+	 * @since   1.2.0
 	 * @version 1.2.0
 	 *
 	 * @param   AcceptanceTester    $I      Instance of the Codeception actor.
@@ -97,7 +96,7 @@ class CreateLOCest {
 	/**
 	 * Test that creating a linked order is working properly from the orders list table.
 	 *
-	 * @since   1.0.0
+	 * @since   1.2.0
 	 * @version 1.2.0
 	 *
 	 * @param   AcceptanceTester    $I      Instance of the Codeception actor.
@@ -149,7 +148,7 @@ class CreateLOCest {
 	 *
 	 * @throws Exception
 	 *
-	 * @since   1.0.0
+	 * @since   1.2.0
 	 * @version 1.2.0
 	 */
 	public function test_permission( AcceptanceTester $I ) {
