@@ -26,7 +26,7 @@ class ActivationCest {
 		$I->loginAsAdmin();
 
 		$I->amOnPluginsPage();
-        $I->seePluginDeactivated( 'woocommerce' );
+		$I->seePluginDeactivated( 'woocommerce' );
 		$I->seePluginDeactivated( 'linked-orders-for-woocommerce' );
 	}
 
@@ -46,7 +46,7 @@ class ActivationCest {
 		$I->dontSeeOptionInDatabase( 'linked_orders_for_woocommerce_version' );
 		$I->dontSeeOptionInDatabase( 'linked_orders_for_woocommerce_original_version' );
 
-        $I->activatePlugin( 'woocommerce' );
+		$I->activatePlugin( 'woocommerce' );
 		$I->activatePlugin( 'linked-orders-for-woocommerce' );
 		$I->seePluginActivated( 'linked-orders-for-woocommerce' );
 
