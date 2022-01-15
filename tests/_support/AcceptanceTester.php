@@ -53,4 +53,16 @@ class AcceptanceTester extends \Codeception\Actor
 			$this->seeInCurrentUrl( 'admin.php?page=wc-settings&tab=advanced&section=dws-linked-orders' );
 		}
 	}
+
+    /**
+     * @throws Exception
+     * @version 1.2.0
+     *
+     * @since   1.2.0
+     */
+    public function activate_wc_and_lowc() {
+        $this->activate_lowc_free( true, false );
+        $this->activatePlugin( 'woocommerce' );
+        $this->seePluginActivated( 'woocommerce' );
+    }
 }

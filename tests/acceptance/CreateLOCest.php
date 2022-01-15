@@ -25,7 +25,9 @@ class CreateLOCest {
 	 * @since   1.2.0
 	 * @version 1.2.0
 	 *
-	 * @param   AcceptanceTester    $I  Instance of the Codeception actor.
+	 * @param AcceptanceTester $I Instance of the Codeception actor.
+     *
+	 * @throws Exception
 	 */
 	public function _before( AcceptanceTester $I ) {
 		$I->setTestCookie();
@@ -34,7 +36,7 @@ class CreateLOCest {
 		$I->amOnPluginsPage();
 		$I->seePluginDeactivated( 'woocommerce' );
 		$I->seePluginDeactivated( 'linked-orders-for-woocommerce' );
-		$I->activate_lowc_free();
+		$I->activate_wc_and_lowc();
 	}
 
 	// endregion
