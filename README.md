@@ -79,6 +79,7 @@ There is a chance that your question might be answered [in our knowledge base](h
 
 ### 1.2.0 (January 15th, 2022)
 
+* New: integration with SkyVerge's WC Sequential Order Numbers Pro.
 * Better support for 3rd-party order types.
 * Removed Freemius contact form functionality.
 * Tweak: updated 'tested up to' headers.

@@ -14,7 +14,6 @@ use Exception;
  * @author  Cristina Hegyes <c.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WC_Plugins\LinkedOrders\Tests\Acceptance
  */
-
 class CreateLOCest {
 
 	// region HOOKS
@@ -25,9 +24,9 @@ class CreateLOCest {
 	 * @since   1.2.0
 	 * @version 1.2.0
 	 *
-	 * @param AcceptanceTester $I Instance of the Codeception actor.
+	 * @param   AcceptanceTester    $I  Instance of the Codeception actor.
 	 *
-	 * @throws Exception
+	 * @throws  Exception   Thrown if plugin activation fails.
 	 */
 	public function _before( AcceptanceTester $I ) {
 		$I->setTestCookie();
@@ -51,7 +50,6 @@ class CreateLOCest {
 	 *
 	 * @param   AcceptanceTester    $I      Instance of the Codeception actor.
 	 */
-
 	public function test_create_LO_editorder( AcceptanceTester $I ) {
 		// create order
 		$I->amOnAdminPage( 'edit.php?post_type=shop_order' );
@@ -103,7 +101,6 @@ class CreateLOCest {
 	 *
 	 * @param   AcceptanceTester    $I      Instance of the Codeception actor.
 	 */
-
 	public function test_create_LO_orderslist( AcceptanceTester $I ) {
 		// create order
 		$I->amOnAdminPage( 'edit.php?post_type=shop_order' );
@@ -146,12 +143,12 @@ class CreateLOCest {
 	/**
 	 * Test permissions.
 	 *
-	 * @param AcceptanceTester $I Instance of the Codeception actor.
-	 *
-	 * @throws Exception
-	 *
 	 * @since   1.2.0
 	 * @version 1.2.0
+	 *
+	 * @param   AcceptanceTester    $I  Instance of the Codeception actor.
+	 *
+	 * @throws  Exception   Thrown if plugin activation fails.
 	 */
 	public function test_permission( AcceptanceTester $I ) {
 		$editor_id = $I->haveUserInDatabase( 'test_editor', 'editor' );

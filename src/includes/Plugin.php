@@ -68,8 +68,8 @@ final class Plugin extends AbstractPluginFunctionalityRoot {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @since   1.2.0
+	 * @version 1.2.0
 	 */
 	public function initialize(): ?InitializationFailureException { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		// The parent class method is overwritten by the plugin dependencies trait in this class, so we need this override to bypass that.
