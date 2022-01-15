@@ -34,9 +34,9 @@
     "freemius/wordpress-sdk": "^2.4"
   },
   "require-dev": {
-    "deep-web-solutions/wp-framework-bootstrapper": "^1.2.0",
-    "deep-web-solutions/wp-framework-helpers": "^1.6.1",
-    "deep-web-solutions/wp-framework-foundations": "^1.6.0",
+    "deep-web-solutions/wp-framework-bootstrapper": "^1.3.0",
+    "deep-web-solutions/wp-framework-helpers": "^1.7.0",
+    "deep-web-solutions/wp-framework-foundations": "^1.7.0",
     "deep-web-solutions/wp-framework-utilities": "master@dev",
     "deep-web-solutions/wp-framework-core": "master@dev",
     "deep-web-solutions/wp-framework-settings": "master@dev",
@@ -111,6 +111,9 @@
   },
 
   "scripts": {
+    "pre-autoload-dump": [
+      "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::preAutoloadDump"
+    ],
     "post-autoload-dump": [
       "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::postAutoloadDump",
       "DeepWebSolutions\\Config\\Composer\\DowngradePhp::postAutoloadDump"
@@ -120,7 +123,7 @@
       "@composer install --ignore-platform-reqs"
     ],
     "composer:update": [
-      "@composer update --ignore-platform-reqs"
+      "@composer update"
     ],
 
     "downgrade-php": [
@@ -142,7 +145,7 @@
       "@php ./vendor/bin/phpmd . json phpmd.xml.dist"
     ],
     "coding-standards:check": [
-      "@php ./vendor/bin/phpcs --standard=phpcs.xml.dist -v"
+      "@php ./vendor/bin/phpcs --standard=phpcs.xml.dist -s -v"
     ],
     "coding-standards:fix": [
       "@php ./vendor/bin/phpcbf --standard=phpcs.xml.dist -v"
@@ -163,6 +166,13 @@
     "convert-readme": [
       "@php ./vendor/bin/wp2md -i readme.txt -o README.md"
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/*": true,
+      "deep-web-solutions/*": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
 
   "extra": {
