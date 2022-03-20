@@ -3,9 +3,9 @@
 **Contributors:** ahegyes, deepwebsolutions \
 **Tags:** linked orders, woocommerce \
 **Requires at least:** 5.5 \
-**Tested up to:** 5.8 \
+**Tested up to:** 5.9 \
 **Requires PHP:** 7.4 \
-**Stable tag:** 1.2.0   \
+**Stable tag:** 1.2.1   \
 **License:** GPLv3 or later \
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -76,6 +76,12 @@ There is a chance that your question might be answered [in our knowledge base](h
 
 
 ## Changelog
+
+### 1.2.1 (March 20th, 2022)
+
+* Tested up to WordPress 5.9.
+* Tested up to WooCommerce 6.3.
+* Security: updated Freemius SDK.
 
 ### 1.2.0 (January 15th, 2022)
 

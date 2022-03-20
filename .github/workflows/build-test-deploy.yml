@@ -226,9 +226,9 @@ jobs:
           - php: 7.4
             WP_VERSION: 5.5
             WC_VERSION: 4.5.2
-          #- php: 8.1
-          #  WP_VERSION: latest
-          #  WC_VERSION: latest
+          - php: 8.1
+            WP_VERSION: latest
+            WC_VERSION: latest
 
     runs-on: ubuntu-latest
 
