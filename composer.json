@@ -138,8 +138,8 @@
       "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/dependency-injection --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/dependency-injection.inc.php --force --quiet"
     ],
     "prefix-dws-framework": [
-      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_Deps --output-dir=./dependencies/psr/container --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr/container.inc.php --force --quiet",
-      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_Deps --output-dir=./dependencies/psr/log --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr/log.inc.php --force --quiet",
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/psr/container --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr/container.inc.php --force --quiet",
+      "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/psr/log --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/psr/log.inc.php --force --quiet",
       "@php ./vendor/humbug/php-scoper/bin/php-scoper add-prefix --prefix=DWS_LOWC_Deps --output-dir=./dependencies/deep-web-solutions --config=./vendor/deep-web-solutions/wordpress-configs/src/php-scoper/deep-web-solutions.inc.php --force --quiet"
     ],
 
