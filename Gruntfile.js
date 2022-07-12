@@ -32,7 +32,7 @@ module.exports = function( grunt ) {
 			makepot: {
 				dist: {
 					options: {
-						domainPath: '<%= dirs.languages %>',
+						domainPath: '<%= dirs.lang %>',
 						exclude: ['node_modules/.*', 'vendor/.*'],
 						potFilename: 'linked-orders-for-woocommerce.pot',
 						mainFile: 'bootstrap.php',
