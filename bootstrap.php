@@ -16,7 +16,7 @@
  * Plugin Name:             Linked Orders for WooCommerce
  * Plugin URI:              https://www.deep-web-solutions.com/plugins/linked-orders-for-woocommerce/
  * Description:             A WooCommerce extension for creating orders that are logically connected to existing ones.
- * Version:                 1.2.1
+ * Version:                 1.2.2
  * Requires at least:       5.5
  * Requires PHP:            7.4
  * Author:                  Deep Web Solutions
@@ -26,7 +26,7 @@
  * Text Domain:             linked-orders-for-woocommerce
  * Domain Path:             /src/languages
  * WC requires at least:    4.5.2
- * WC tested up to:         6.3
+ * WC tested up to:         6.7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -52,7 +52,7 @@ if ( ! function_exists( '\DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framew
 
 // Define plugin constants.
 define( 'DWS_LOWC_NAME', DWS_LOWC_Deps\DeepWebSolutions\Framework\dws_wp_framework_get_whitelabel_name() . ': Linked Orders for WooCommerce' );
-define( 'DWS_LOWC_VERSION', '1.2.1' );
+define( 'DWS_LOWC_VERSION', '1.2.2' );
 define( 'DWS_LOWC_PATH', __FILE__ );
 
 // Define minimum environment requirements.

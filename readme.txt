@@ -2,9 +2,9 @@
 Contributors: ahegyes, deepwebsolutions
 Tags: linked orders, woocommerce
 Requires at least: 5.5
-Tested up to: 5.9
+Tested up to: 6.0.1
 Requires PHP: 7.4
-Stable tag: 1.2.1  
+Stable tag: 1.2.2  
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,11 @@ There is a chance that your question might be answered [in our knowledge base](h
 4. Example of how to create a new linked child order from the orders list table.
 
 == Changelog ==
+
+= 1.2.2 (July 12th, 2022) =
+* Tested up to WordPress 6.0.1.
+* Tested up to WooCommerce 6.7.0.
+* Updated Freemius SDK.
 
 = 1.2.1 (March 20th, 2022) =
 * Tested up to WordPress 5.9.
